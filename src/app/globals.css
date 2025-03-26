@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@400;700&family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap');
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --primary: #973B00; /* Updated from amber-600 */
+  --primary-dark: #BA4D00; /* Updated from amber-700 */
+  --secondary: #BA4D00; /* Updated from indigo-700 */
+  --light: #fef3c7; /* amber-100 */
+  --font-serif: 'Playfair Display', serif;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-serif);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Winky Sans", sans-serif;
+  font-weight: 400;
+  /* font-style: normal; */
+}
+h1,h2,h3,h4,h5,h6,p {
+  font-family: "Winky Sans", sans-serif !important;
+  font-weight: 400;
+  /* font-style: normal; */
+}
+
+/* Smooth animation for chat messages */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.logo-font {
+  font-family: "Amaranth", sans-serif;
+  font-weight: 400;
+  /* font-style: normal; */
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Serif font for headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+}
+
+/* Custom scrollbar for chat window */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 8px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #973B00;
+  border-radius: 10px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: #BA4D00;
+} 
