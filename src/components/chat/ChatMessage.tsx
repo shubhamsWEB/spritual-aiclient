@@ -12,7 +12,7 @@ export default function ChatMessage({ message }: ChatMessageProps) {
   const messageStyles = {
     user: 'bg-purple-100 text-purple-900 border border-purple-200 ml-auto',
     bot: 'bg-amber-50 text-[#973B00] border-l-4 border-[#973B00] border-t border-r border-b border-amber-200',
-    system: 'bg-gradient-to-r from-purple-50 to-amber-50 text-[#973B00] mx-auto text-center italic border border-amber-200'
+    system: 'bg-gradient-to-r from-purple-50 to-amber-50 text-[#973B00] mx-auto text-center italic border border-amber-200 text-xs'
   };
 
   // Container styles for alignment
