@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-4 md:mb-0">
-            <h3 className="text-lg font-serif">Gita Guide</h3>
+            <span className="text-lg font-serif logo-font">GITA GUIDE</span>
             <p className="text-xs opacity-75">
               Wisdom from the sacred Bhagavad Gita teachings
             </p>

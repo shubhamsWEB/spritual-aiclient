@@ -48,7 +48,7 @@ export default function ChatPage() {
         </div>
         
         {/* Main chat container with responsive height */}
-        <div className="bg-white rounded-lg sm:rounded-2xl shadow-xl flex flex-col overflow-hidden border border-amber-100 mx-auto w-full max-w-5xl h-[88vh] sm:h-[85vh]">
+        <div className="bg-white rounded-lg sm:rounded-2xl shadow-xl flex flex-col overflow-hidden border border-amber-100 mx-auto w-full max-w-5xl h-[80vh] sm:h-[85vh]">
           <div className="p-3 sm:p-4 bg-gradient-to-r from-[#973B00] to-[#BA4D00] text-white">
             <h1 className="text-lg sm:text-xl font-serif">Bhagavad Gita Divine Guide</h1>
             <p className="text-xs sm:text-sm opacity-90">Seek wisdom from the timeless teachings</p>
