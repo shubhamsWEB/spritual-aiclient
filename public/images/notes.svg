@@ -1,0 +1,43 @@
+<svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+    <!-- Musical Notes -->
+    <g fill="black" font-size="24" font-family="Arial" font-weight="bold">
+        <text x="250" y="200" class="note note1">♪♪</text>
+        <text x="250" y="200" class="note note2">♫♫</text>
+        <text x="250" y="200" class="note note3">♬♬</text>
+    </g>
+    
+    <style>
+        @keyframes floatUp1 {
+            0% { transform: translate(0, 0); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translate(-80px, -120px); opacity: 0; }
+        }
+        @keyframes floatUp2 {
+            0% { transform: translate(0, 0); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translate(30px, -110px); opacity: 0; }
+        }
+        @keyframes floatUp3 {
+            0% { transform: translate(0, 0); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translate(-40px, -130px); opacity: 0; }
+        }
+        .note {
+            animation-duration: 3s;
+            animation-timing-function: ease-out;
+            animation-iteration-count: infinite;
+            opacity: 0;
+        }
+        .note1 {
+            animation-name: floatUp1;
+        }
+        .note2 {
+            animation-name: floatUp2;
+            animation-delay: 1s;
+        }
+        .note3 {
+            animation-name: floatUp3;
+            animation-delay: 2s;
+        }
+    </style>
+</svg>

@@ -7,8 +7,8 @@ import TestimonialsSection from '@/components/home/TestimonialsSection';
 import CTASection from '@/components/home/CTASection';
 import FeatureSection from '@/components/home/FeatureSection';
 import ChatNowButton from '@/components/common/ChatNowButton';
-
 export default function Home() {
+  const [isPlaying, setIsPlaying] = React.useState(false);
   return (
     <div className="min-h-screen bg-amber-50">
       {/* Main Content */}
@@ -25,7 +25,17 @@ export default function Home() {
                   priority
                 />
               </div>
-              
+              {isPlaying && (
+                <div className="absolute top-[-5%] left-[-60%] right-0 h-[260px] md:h-[400px] w-[100%] pointer-events-none">
+                  <Image
+                    src="/images/notes.svg"
+                  alt="Musical Notes"
+                  fill
+                  className="object-contain"
+                  priority
+                />
+              </div>
+              )}
               <div className="absolute top-[200px] md:top-[330px] left-0 right-0 h-[180px] md:h-[250px]">
                 <Image
                   src="/images/peacock-feather.svg"
@@ -48,7 +58,7 @@ export default function Home() {
             
             <div className="flex justify-center md:justify-start items-center gap-3">
               <ChatNowButton />
-              <AudioPlayer audioSrc="/audio/flute.mp3" />
+              <AudioPlayer audioSrc="/audio/flute.mp3" isPlaying={isPlaying} setIsPlaying={setIsPlaying} />
             </div>
 
             <div className="space-y-3 md:space-y-4 mt-4 md:mt-8">
@@ -76,8 +86,7 @@ export default function Home() {
 }
 
 // Audio Player Component with combined functionality
-function AudioPlayer({ audioSrc }: { audioSrc: string }) {
-  const [isPlaying, setIsPlaying] = React.useState(false);
+function AudioPlayer({ audioSrc, isPlaying, setIsPlaying }: { audioSrc: string, isPlaying: boolean, setIsPlaying: (isPlaying: boolean) => void }) {
   const audioRef = React.useRef<HTMLAudioElement>(null);
 
   const toggleAudio = () => {
