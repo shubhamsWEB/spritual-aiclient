@@ -22,10 +22,13 @@ export default function ChatMessage({ message }: ChatMessageProps) {
     system: 'flex justify-center'
   };
 
+  // Process text to handle line breaks
+  const processedText = text.replace(/\n/g, '<br />');
+
   return (
     <div className={`${containerStyles[type]} w-full`}>
       <div className={`rounded-lg p-4 mb-4 shadow-sm animate-fadeIn ${messageStyles[type]} sm:max-w-[75%] max-w-[85%] inline-block`}>
-        <div className="prose" dangerouslySetInnerHTML={{ __html: text }} />
+        <div className="prose" dangerouslySetInnerHTML={{ __html: processedText }} />
         
         {sources && sources.length > 0 && (
           <div className="mt-3 pt-2 text-xs text-[#973B00] border-t border-amber-200">
