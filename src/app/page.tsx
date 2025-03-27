@@ -41,7 +41,7 @@ export default function Home() {
                   src="/images/peacock-feather.svg"
                   alt="Peacock Feathers"
                   fill
-                  className="object-contain"
+                  className="object-contain peacock-feather"
                   priority
                 />
               </div>

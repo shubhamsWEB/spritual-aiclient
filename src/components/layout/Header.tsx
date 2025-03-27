@@ -57,9 +57,9 @@ export default function Header() {
                 START CHAT
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link 
-                href="/blog" 
+                href="/" 
                 className="text-[#973B00] hover:text-[#BA4D00]"
               >
                 BLOG
@@ -67,12 +67,12 @@ export default function Header() {
             </li>
             <li>
               <Link 
-                href="/settings" 
+                href="/" 
                 className="text-[#973B00] hover:text-[#BA4D00]"
               >
                 SETTINGS
               </Link>
-            </li>
+            </li> */}
           </ul>
         </nav>
       </div>

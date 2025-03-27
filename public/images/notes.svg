@@ -23,7 +23,7 @@
             100% { transform: translate(-40px, -130px); opacity: 0; }
         }
         .note {
-            animation-duration: 3s;
+            animation-duration: 4s;
             animation-timing-function: ease-out;
             animation-iteration-count: infinite;
             opacity: 0;
@@ -33,11 +33,11 @@
         }
         .note2 {
             animation-name: floatUp2;
-            animation-delay: 1s;
+            animation-delay: 1.5s;
         }
         .note3 {
             animation-name: floatUp3;
-            animation-delay: 2s;
+            animation-delay: 3s;
         }
     </style>
 </svg>
