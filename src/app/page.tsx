@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -6,6 +7,7 @@ import TestimonialsSection from '@/components/home/TestimonialsSection';
 import CTASection from '@/components/home/CTASection';
 import FeatureSection from '@/components/home/FeatureSection';
 import ChatNowButton from '@/components/common/ChatNowButton';
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-amber-50">
@@ -44,8 +46,9 @@ export default function Home() {
               <q>The Bhagavad Gita Has the Answers</q>
             </h2>
             
-            <div className="flex justify-center md:justify-start">
+            <div className="flex justify-center md:justify-start items-center gap-3">
               <ChatNowButton />
+              <AudioPlayer audioSrc="/audio/flute.mp3" />
             </div>
 
             <div className="space-y-3 md:space-y-4 mt-4 md:mt-8">
@@ -68,6 +71,50 @@ export default function Home() {
       <FeatureSection />
       {/* <TestimonialsSection /> */}
       <CTASection />
+    </div>
+  );
+}
+
+// Audio Player Component with combined functionality
+function AudioPlayer({ audioSrc }: { audioSrc: string }) {
+  const [isPlaying, setIsPlaying] = React.useState(false);
+  const audioRef = React.useRef<HTMLAudioElement>(null);
+
+  const toggleAudio = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.volume = 0.3;
+        audioRef.current.play().catch(err => {
+          console.log("Audio play was prevented:", err);
+        });
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  return (
+    <div className="flex items-center bg-white/80 backdrop-blur-sm rounded-full p-2 shadow-md">
+      <audio ref={audioRef} src={audioSrc} loop />
+      
+      {/* Combined Play/Pause/Mute Button */}
+      <button 
+        onClick={toggleAudio}
+        className="text-gray-700 hover:text-amber-600 transition-colors"
+        aria-label={isPlaying ? "Pause background music" : "Play background music"}
+      >
+        {isPlaying ? (
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+          </svg>
+        ) : (
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+          </svg>
+        )}
+      </button>
     </div>
   );
 } 
