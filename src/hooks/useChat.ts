@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { ChatMessage } from '@/types';
 import { sendChatMessage } from '@/services/api';
-
+import { getRandomWelcomeMessage } from '@/services/messages';
 export function useChat() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -10,6 +10,7 @@ export function useChat() {
 
   // Initialize with welcome message
   useEffect(() => {
+    // Add system message immediately
     setMessages([
       {
         id: uuidv4(),
@@ -18,6 +19,22 @@ export function useChat() {
         timestamp: Date.now()
       }
     ]);
+    
+    // Add bot welcome message after 2 seconds
+    const timer = setTimeout(() => {
+      setMessages(prev => [
+        ...prev,
+        {
+          id: uuidv4(),
+          text: getRandomWelcomeMessage(),
+          type: 'bot',
+          timestamp: Date.now()
+        }
+      ]);
+    }, 1500);
+    
+    // Clean up timeout if component unmounts
+    return () => clearTimeout(timer);
   }, []);
 
   const sendMessage = useCallback(async (messageText: string) => {
