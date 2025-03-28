@@ -31,6 +31,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Amaranth:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"></link>
+        <link rel="icon" type="image/jpeg" href="/peacock-feather.jpg"></link>
         </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

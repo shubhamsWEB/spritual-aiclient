@@ -5,7 +5,6 @@ import { useChat } from '@/hooks/useChat';
 import ChatMessage from '@/components/chat/ChatMessage';
 import ChatInput from '@/components/chat/ChatInput';
 import TypingIndicator from '@/components/chat/TypingIndicator';
-import Footer from '@/components/layout/Footer';
 import Image from 'next/image';
 
 export default function ChatPage() {
