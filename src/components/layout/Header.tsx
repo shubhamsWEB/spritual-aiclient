@@ -14,7 +14,7 @@ export default function Header() {
     <header className="bg-amber-50 shadow-sm p-4 sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-2xl font-serif text-[#973B00] logo-font">GITA GUIDE</span>
+          <span className="text-lg sm:text-2xl font-serif text-[#973B00] logo-font">GITA GUIDE</span>
         </Link>
         
         {/* Mobile menu button */}
@@ -99,7 +99,7 @@ export default function Header() {
                 START CHAT
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link 
                 href="/blog" 
                 className="text-[#973B00] hover:text-[#BA4D00] block py-2"
@@ -116,7 +116,7 @@ export default function Header() {
               >
                 SETTINGS
               </Link>
-            </li>
+            </li> */}
           </ul>
         </nav>
       )}

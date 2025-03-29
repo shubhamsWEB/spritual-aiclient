@@ -49,7 +49,7 @@ export default function ChatPage() {
         </div>
 
         {/* Main chat container with improved mobile height */}
-        <div className="bg-white rounded-lg sm:rounded-2xl shadow-xl flex flex-col border border-amber-100 mx-auto w-full max-w-5xl h-[85vh] sm:h-[85vh] overflow-hidden">
+        <div className="bg-white rounded-lg sm:rounded-2xl shadow-xl flex flex-col border border-amber-100 mx-auto w-full max-w-5xl h-[82vh] sm:h-[85vh] overflow-hidden">
           {/* Header with responsive layout */}
           <div className="p-2 sm:p-4 bg-gradient-to-r from-[#973B00] to-[#BA4D00] text-white flex flex-col sm:flex-row sm:gap-2 sm:items-center sm:justify-between">
             <div>
