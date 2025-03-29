@@ -1,18 +1,22 @@
 'use client';
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useChat } from '@/hooks/useChat';
+import { useAuth } from '@/contexts/AuthContext';
 import ChatMessage from '@/components/chat/ChatMessage';
 import ChatInput from '@/components/chat/ChatInput';
 import TypingIndicator from '@/components/chat/TypingIndicator';
 import Image from 'next/image';
 import { useViewportHeight } from '@/hooks/useViewportHeight';
+import Link from 'next/link';
 
 export default function ChatPage() {
   const { messages, isLoading, sendMessage, tokens } = useChat();
+  const { isAuthenticated, user } = useAuth();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const { viewportHeight, headerHeight } = useViewportHeight();
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   
   // Calculate available height (subtract header height and some padding)
   const chatContainerHeight = viewportHeight ? `${viewportHeight - headerHeight - 32}px` : '85vh';
@@ -28,6 +32,24 @@ export default function ChatPage() {
 
     return () => clearTimeout(scrollTimer);
   }, [messages, isLoading]); // Also trigger on isLoading changes to scroll when typing indicator appears
+
+  // Set a limit of free messages for non-authenticated users
+  useEffect(() => {
+    if (!isAuthenticated) {
+        setShowLoginPrompt(true);
+    }
+  }, [isAuthenticated]);
+
+  // Handle send message for authenticated and non-authenticated users
+  const handleSendMessage = (message: string) => {
+    if (isAuthenticated || !showLoginPrompt) {
+      sendMessage(message);
+    } else {
+      // If the login prompt is shown and user is not authenticated,
+      // don't allow more messages
+      return;
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-amber-50">
@@ -64,12 +86,12 @@ export default function ChatPage() {
                 <p className="text-xs sm:text-sm opacity-90">Seek wisdom from the timeless teachings</p>
               </div>
               <div>
-              <p className="text-xs opacity-90">
-                <span>Tokens: </span>{' '}
-                <span className="font-bold">{tokens.total}</span>
-              </p>
-              <p className='text-xs opacity-90'>  <i>Input: </i>{tokens.prompt}</p>
-              <p className='text-xs opacity-90'>  <i>Output: </i>{tokens.completion}</p>
+                <p className="text-xs opacity-90">
+                  <span>Tokens: </span>{' '}
+                  <span className="font-bold">{tokens.total}</span>
+                </p>
+                <p className='text-xs opacity-90'>  <i>Input: </i>{tokens.prompt}</p>
+                <p className='text-xs opacity-90'>  <i>Output: </i>{tokens.completion}</p>
               </div>
             </div>
           </div>
@@ -83,12 +105,15 @@ export default function ChatPage() {
             ))}
 
             {isLoading && <TypingIndicator />}
-
             <div ref={messagesEndRef} />
           </div>
 
           <div className="sticky bottom-0 bg-white border-t border-amber-100 z-10">
-            <ChatInput onSendMessage={sendMessage} isLoading={isLoading} />
+            <ChatInput 
+              onSendMessage={handleSendMessage} 
+              isLoading={isLoading} 
+              isDisabled={showLoginPrompt && !isAuthenticated}
+            />
           </div>
         </div>
       </main>

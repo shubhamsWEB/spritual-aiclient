@@ -6,17 +6,17 @@ const socialLinks = [
   {
     name: 'Instagram',
     icon: '/images/social/instagram.svg',
-    url: 'https://instagram.com/gitaguide'
+    url: '/'
   },
   {
     name: 'Facebook',
     icon: '/images/social/facebook.svg',
-    url: 'https://facebook.com/gitaguide'
+    url: '/'
   },
   {
     name: 'X (Twitter)',
     icon: '/images/social/x.svg',
-    url: 'https://x.com/gitaguide'
+    url: '/'
   }
 ];
 
@@ -86,7 +86,7 @@ export default function CTASection() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/privacy"
+                  href="/"
                   className="text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   Privacy Policy
@@ -94,7 +94,7 @@ export default function CTASection() {
               </li>
               <li>
                 <Link
-                  href="/refund"
+                  href="/"
                   className="text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   Refund Policy
@@ -102,7 +102,7 @@ export default function CTASection() {
               </li>
               <li>
                 <Link
-                  href="/blog"
+                  href="/"
                   className="text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   Blog

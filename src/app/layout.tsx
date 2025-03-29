@@ -5,6 +5,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Analytics } from '@vercel/analytics/next';
 import InstallPrompt from "@/components/common/InstallPrompt";
+import { Providers } from "./providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -52,12 +53,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header />
-        {children}
-        <Footer />
-        <InstallPrompt />
-        <Analytics />
+        <Providers>
+          <Header />
+          {children}
+          <Footer />
+          <InstallPrompt />
+          <Analytics />
+        </Providers>
       </body>
     </html>
   );
-} 
+}

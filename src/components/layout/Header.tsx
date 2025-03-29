@@ -1,10 +1,12 @@
-'use client'
+'use client';
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, isAuthenticated, logout } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -40,7 +42,7 @@ export default function Header() {
         
         {/* Desktop navigation */}
         <nav className="hidden md:block">
-          <ul className="flex gap-6">
+          <ul className="flex gap-6 items-center">
             <li>
               <Link 
                 href="/" 
@@ -57,22 +59,45 @@ export default function Header() {
                 START CHAT
               </Link>
             </li>
-            {/* <li>
-              <Link 
-                href="/" 
-                className="text-[#973B00] hover:text-[#BA4D00]"
-              >
-                BLOG
-              </Link>
-            </li>
-            <li>
-              <Link 
-                href="/" 
-                className="text-[#973B00] hover:text-[#BA4D00]"
-              >
-                SETTINGS
-              </Link>
-            </li> */}
+            {isAuthenticated ? (
+              <>
+                <li>
+                  <Link 
+                    href="/profile" 
+                    className="text-[#973B00] hover:text-[#BA4D00]"
+                  >
+                    PROFILE
+                  </Link>
+                </li>
+                <li>
+                  <button 
+                    onClick={logout}
+                    className="text-[#973B00] hover:text-[#BA4D00] bg-transparent border border-[#973B00] rounded-full px-4 py-1"
+                  >
+                    SIGN OUT
+                  </button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link 
+                    href="/auth/login" 
+                    className="text-[#973B00] hover:text-[#BA4D00] bg-transparent border border-[#973B00] rounded-full px-4 py-1"
+                  >
+                    SIGN IN
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/auth/register" 
+                    className="text-white bg-[#973B00] hover:bg-[#BA4D00] rounded-full px-4 py-1 transition-colors"
+                  >
+                    JOIN
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
         </nav>
       </div>
@@ -99,27 +124,54 @@ export default function Header() {
                 START CHAT
               </Link>
             </li>
-            {/* <li>
-              <Link 
-                href="/blog" 
-                className="text-[#973B00] hover:text-[#BA4D00] block py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                BLOG
-              </Link>
-            </li>
-            <li>
-              <Link 
-                href="/settings" 
-                className="text-[#973B00] hover:text-[#BA4D00] block py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                SETTINGS
-              </Link>
-            </li> */}
+            {isAuthenticated ? (
+              <>
+                <li>
+                  <Link 
+                    href="/profile" 
+                    className="text-[#973B00] hover:text-[#BA4D00] block py-2"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    PROFILE
+                  </Link>
+                </li>
+                <li>
+                  <button 
+                    onClick={() => {
+                      logout();
+                      setIsMenuOpen(false);
+                    }}
+                    className="text-[#973B00] hover:text-[#BA4D00] block py-2 w-full text-left"
+                  >
+                    SIGN OUT
+                  </button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link 
+                    href="/auth/login" 
+                    className="text-[#973B00] hover:text-[#BA4D00] block py-2"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    SIGN IN
+                  </Link>
+                </li>
+                <li>
+                  <Link 
+                    href="/auth/register" 
+                    className="text-[#973B00] hover:text-[#BA4D00] block py-2"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    JOIN
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
         </nav>
       )}
     </header>
   );
-} 
+}
