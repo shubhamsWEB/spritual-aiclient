@@ -5,10 +5,11 @@ import { useChat } from '@/hooks/useChat';
 import ChatMessage from '@/components/chat/ChatMessage';
 import ChatInput from '@/components/chat/ChatInput';
 import TypingIndicator from '@/components/chat/TypingIndicator';
+import Tooltip from '@/components/ui/Tooltip';
 import Image from 'next/image';
 
 export default function ChatPage() {
-  const { messages, isLoading, sendMessage } = useChat();
+  const { messages, isLoading, sendMessage, tokens } = useChat();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -20,13 +21,43 @@ export default function ChatPage() {
         chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
       }
     }, 100);
-    
+
     return () => clearTimeout(scrollTimer);
   }, [messages, isLoading]); // Also trigger on isLoading changes to scroll when typing indicator appears
 
+  // Disable body scrolling on mobile
+  useEffect(() => {
+    // Function to disable scrolling
+    const disableScroll = () => {
+      // Only apply on mobile devices
+      if (window.innerWidth < 768) {
+        document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.width = '100%';
+        document.body.style.height = '100%';
+      }
+    };
+
+    // Function to re-enable scrolling
+    const enableScroll = () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.height = '';
+    };
+
+    // Apply the scroll lock
+    disableScroll();
+
+    // Clean up function to re-enable scrolling when component unmounts
+    return () => {
+      enableScroll();
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen flex flex-col bg-amber-50">      
-      <main className="flex-1 container mx-auto px-2 sm:px-4 py-2 sm:py-4 flex flex-col relative">
+    <div className="min-h-screen flex flex-col bg-amber-50">
+      <main className="flex-1 container mx-auto px-1 sm:px-4 py-1 sm:py-4 flex flex-col relative">
         {/* Decorative elements */}
         <div className="absolute -left-10 top-1/4 hidden xl:block opacity-20 pointer-events-none">
           <Image
@@ -36,7 +67,7 @@ export default function ChatPage() {
             height={240}
           />
         </div>
-        
+
         <div className="absolute -right-10 top-1/2 hidden xl:block opacity-20 pointer-events-none">
           <Image
             src="/images/hand-illustration.svg"
@@ -45,27 +76,42 @@ export default function ChatPage() {
             height={240}
           />
         </div>
-        
-        {/* Main chat container with responsive height */}
-        <div className="bg-white rounded-lg sm:rounded-2xl shadow-xl flex flex-col overflow-hidden border border-amber-100 mx-auto w-full max-w-5xl h-[80vh] sm:h-[85vh]">
-          <div className="p-3 sm:p-4 bg-gradient-to-r from-[#973B00] to-[#BA4D00] text-white">
-            <h1 className="text-lg sm:text-xl font-serif">Bhagavad Gita Divine Guide</h1>
-            <p className="text-xs sm:text-sm opacity-90">Seek wisdom from the timeless teachings</p>
+
+        {/* Main chat container with improved mobile height */}
+        <div className="bg-white rounded-lg sm:rounded-2xl shadow-xl flex flex-col border border-amber-100 mx-auto w-full max-w-5xl h-[90vh] sm:h-[85vh]">
+          {/* Header with responsive layout */}
+          <div className="p-2 sm:p-4 bg-gradient-to-r from-[#973B00] to-[#BA4D00] text-white flex flex-col sm:flex-row sm:gap-2 sm:items-center sm:justify-between">
+            <div>
+              <h1 className="text-lg sm:text-xl font-serif">Bhagavad Gita Divine Guide</h1>
+              <p className="text-xs sm:text-sm opacity-90">Seek wisdom from the timeless teachings</p>
+            </div>
+            <div className="flex flex-row sm:flex-col justify-end mt-1 sm:mt-0">
+              <Tooltip position="top" content={<div className='w-[60px]'>
+                <h1>Input: {tokens.prompt}</h1>
+                <h1>Output: {tokens.completion}</h1>
+              </div>}>
+                <p className="text-xs sm:text-sm opacity-90">
+                  <span>Tokens Consumed: </span>{' '}
+                  <span className="font-bold">{tokens.total}</span>
+                </p>
+              </Tooltip>
+              
+            </div>
           </div>
-          
-          <div 
+
+          <div
             ref={chatContainerRef}
-            className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-3 sm:space-y-4 bg-gradient-to-b from-amber-50/50 to-white"
+            className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-2 sm:space-y-4 bg-gradient-to-b from-amber-50/50 to-white"
           >
             {messages.map((msg) => (
               <ChatMessage key={msg.id} message={msg} />
             ))}
-            
+
             {isLoading && <TypingIndicator />}
-            
+
             <div ref={messagesEndRef} />
           </div>
-          
+
           <ChatInput onSendMessage={sendMessage} isLoading={isLoading} />
         </div>
       </main>

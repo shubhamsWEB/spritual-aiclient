@@ -7,6 +7,11 @@ export function useChat() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [tokens, setTokens] = useState({
+    prompt: 0,
+    completion: 0,
+    total: 0
+  });
 
   // Initialize with welcome message
   useEffect(() => {
@@ -74,7 +79,13 @@ export function useChat() {
           }
         });
       }
-      
+      const tokensUsed = response.data.metadata.tokenUsage;
+      setTokens(prev => ({
+        ...prev,
+        prompt: prev.prompt + tokensUsed.prompt_tokens,
+        completion: prev.completion + tokensUsed.completion_tokens,
+        total: prev.total + tokensUsed.prompt_tokens + tokensUsed.completion_tokens
+      }));
       // Add bot response
       const botMessage: ChatMessage = {
         id: uuidv4(),
@@ -107,6 +118,7 @@ export function useChat() {
     messages,
     isLoading, 
     error,
-    sendMessage
+    sendMessage,
+    tokens
   };
 } 
