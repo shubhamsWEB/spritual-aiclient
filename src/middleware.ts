@@ -43,7 +43,13 @@ export async function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// Configure the middleware to run on specific paths
+// Define the config with proper matcher syntax (without spread operator)
 export const config = {
-  matcher: [...PROTECTED_PATHS, ...AUTH_PATHS]
+  matcher: [
+    '/profile/:path*',
+    '/chat/:path*',
+    '/auth/login/:path*',
+    '/auth/register/:path*',
+    '/auth/forgot-password/:path*'
+  ]
 };

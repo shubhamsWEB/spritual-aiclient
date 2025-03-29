@@ -4,7 +4,7 @@ import axios from 'axios';
 // This is a dynamic API route handler for auth endpoints
 export async function POST(
   request: NextRequest,
-  { params }: { params: { endpoint: string } }
+  { params }: any
 ) {
   try {
     // Await params before destructuring
@@ -66,7 +66,7 @@ export async function POST(
 // Handler for GET requests (like /api/auth/me)
 export async function GET(
   request: NextRequest,
-  { params }: { params: { endpoint: string } }
+  { params }: any
 ) {
   try {
     // Await params before destructuring
@@ -123,7 +123,7 @@ export async function GET(
 // Handler for PUT requests (like /api/auth/profile)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { endpoint: string } }
+  { params }: any
 ) {
   try {
     // Await params before destructuring
