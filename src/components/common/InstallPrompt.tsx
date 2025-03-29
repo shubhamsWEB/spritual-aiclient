@@ -7,14 +7,36 @@ export default function InstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
   useEffect(() => {
+    // Check if we should show the prompt based on last shown time
+    const checkPromptEligibility = () => {
+      const lastPromptTime = localStorage.getItem('installPromptLastShown');
+      
+      if (lastPromptTime) {
+        const lastShown = parseInt(lastPromptTime, 10);
+        const currentTime = Date.now();
+        const hoursDiff = (currentTime - lastShown) / (1000 * 60 * 60);
+        
+        // Only allow showing if 24 hours have passed since last shown
+        return hoursDiff >= 24;
+      }
+      
+      // If never shown before, allow showing
+      return true;
+    };
+
     // Handler functions
     const handleBeforeInstallPrompt = (e: Event) => {
       // Prevent Chrome 67 and earlier from automatically showing the prompt
       e.preventDefault();
       // Stash the event so it can be triggered later
       setDeferredPrompt(e as any);
-      // Show the install button
-      setShowPrompt(true);
+      
+      // Only show the prompt if eligible based on time
+      if (checkPromptEligibility()) {
+        setShowPrompt(true);
+        // Record the current time in localStorage
+        localStorage.setItem('installPromptLastShown', Date.now().toString());
+      }
     };
 
     const handleAppInstalled = () => {
@@ -27,12 +49,7 @@ export default function InstallPrompt() {
     };
 
     // Add event listeners
-    window.addEventListener('beforeinstallprompt', (e) => {
-      console.log('beforeinstallprompt event fired');
-      e.preventDefault();
-      setDeferredPrompt(e);
-      setShowPrompt(true);
-    });
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     window.addEventListener('appinstalled', handleAppInstalled);
 
     // Cleanup
