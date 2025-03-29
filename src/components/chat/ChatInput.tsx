@@ -6,15 +6,16 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
   isLoading: boolean;
+  isDisabled?: boolean;
 }
 
-export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) {
+export default function ChatInput({ onSendMessage, isLoading, isDisabled = false }: ChatInputProps) {
   const [message, setMessage] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (message.trim() && !isLoading) {
+    if (message.trim() && !isLoading && !isDisabled) {
       onSendMessage(message);
       setMessage('');
       // Focus the textarea after sending
@@ -39,8 +40,11 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
           ref={textareaRef}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="Ask about spiritual wisdom..."
-          className="flex-grow p-2 border border-amber-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 min-h-[36px] max-h-[120px] resize-none text-amber-900 bg-white text-sm"
+          placeholder={isDisabled ? "Please sign in to continue..." : "Ask about spiritual wisdom..."}
+          className={`flex-grow p-2 border rounded-lg focus:outline-none focus:ring-2 min-h-[36px] max-h-[120px] resize-none text-sm
+            ${isDisabled 
+              ? 'border-gray-200 bg-gray-100 text-gray-500 cursor-not-allowed' 
+              : 'border-amber-200 focus:ring-amber-500 text-amber-900 bg-white'}`}
           rows={1}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
@@ -50,15 +54,19 @@ export default function ChatInput({ onSendMessage, isLoading }: ChatInputProps) 
           }}
           aria-label="Message input"
           id="chatInput"
+          disabled={isDisabled}
         />
       </div>
       <Button
         type="submit"
-        disabled={isLoading || !message.trim()}
-        className="flex-shrink-0 bg-[#973B00] hover:bg-[#BA4D00] text-white font-bold rounded-full p-2 sm:p-3"
+        disabled={isLoading || !message.trim() || isDisabled}
+        className={`flex-shrink-0 font-bold rounded-full p-2 sm:p-3
+          ${isDisabled 
+            ? 'bg-gray-300 cursor-not-allowed' 
+            : 'bg-[#973B00] hover:bg-[#BA4D00] text-white'}`}
         variant="primary"
         size="sm"
-        aria-label={isLoading ? "Thinking" : "Send message"}
+        aria-label={isDisabled ? "Sign in to continue" : isLoading ? "Thinking" : "Send message"}
       >
         {isLoading ? 
           <AiOutlineLoading3Quarters className="w-4 h-4 animate-spin" /> : 
