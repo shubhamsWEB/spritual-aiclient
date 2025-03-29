@@ -11,7 +11,7 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-amber-50 shadow-sm p-4 sticky top-0 z-50">
+    <header className="bg-amber-50 shadow-sm p-2 sm:p-4 sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2">
           <span className="text-lg sm:text-2xl font-serif text-[#973B00] logo-font">GITA GUIDE</span>

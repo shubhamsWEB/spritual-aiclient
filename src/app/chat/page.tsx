@@ -7,11 +7,16 @@ import ChatInput from '@/components/chat/ChatInput';
 import TypingIndicator from '@/components/chat/TypingIndicator';
 import Tooltip from '@/components/ui/Tooltip';
 import Image from 'next/image';
+import { useViewportHeight } from '@/hooks/useViewportHeight';
 
 export default function ChatPage() {
   const { messages, isLoading, sendMessage, tokens } = useChat();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const { viewportHeight, headerHeight } = useViewportHeight();
+  
+  // Calculate available height (subtract header height and some padding)
+  const chatContainerHeight = viewportHeight ? `${viewportHeight - headerHeight - 32}px` : '85vh';
 
   // Auto-scroll the message container when messages change
   useEffect(() => {
@@ -47,24 +52,26 @@ export default function ChatPage() {
           />
         </div>
 
-        {/* Main chat container with improved mobile height */}
-        <div className="bg-white rounded-lg sm:rounded-2xl shadow-xl flex flex-col border border-amber-100 mx-auto w-full max-w-5xl h-[90vh] sm:h-[85vh] overflow-hidden">
+        {/* Main chat container with dynamic height */}
+        <div 
+          className="bg-white rounded-lg sm:rounded-2xl shadow-xl flex flex-col border border-amber-100 mx-auto w-full max-w-5xl"
+          style={{ height: chatContainerHeight }}
+        >
           {/* Header with responsive layout */}
           <div className="p-2 sm:p-4 bg-gradient-to-r from-[#973B00] to-[#BA4D00] text-white flex flex-col sm:flex-row sm:gap-2 sm:items-center sm:justify-between">
-            <div>
-              <h1 className="text-base sm:text-xl font-serif">Bhagavad Gita Divine Guide</h1>
-              <p className="text-xs sm:text-sm opacity-90">Seek wisdom from the timeless teachings</p>
-            </div>
-            <div className="flex flex-row sm:flex-col justify-end mt-1 sm:mt-0">
-              <Tooltip position="top" content={<div className='w-[60px]'>
-                <h1>Input: {tokens.prompt}</h1>
-                <h1>Output: {tokens.completion}</h1>
-              </div>}>
-                <p className="text-xs opacity-90">
-                  <span>Tokens: </span>{' '}
-                  <span className="font-bold">{tokens.total}</span>
-                </p>
-              </Tooltip>
+            <div className='flex flex-row sm:flex-col justify-between mt-1 sm:mt-0 items-center'>
+              <div>
+                <h1 className="text-md sm:text-xl font-serif">Bhagavad Gita Divine Guide</h1>
+                <p className="text-xs sm:text-sm opacity-90">Seek wisdom from the timeless teachings</p>
+              </div>
+              <div>
+              <p className="text-xs opacity-90">
+                <span>Tokens: </span>{' '}
+                <span className="font-bold">{tokens.total}</span>
+              </p>
+              <p className='text-xs opacity-90'>  <i>Input: </i>{tokens.prompt}</p>
+              <p className='text-xs opacity-90'>  <i>Output: </i>{tokens.completion}</p>
+              </div>
             </div>
           </div>
 
