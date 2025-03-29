@@ -25,35 +25,6 @@ export default function ChatPage() {
     return () => clearTimeout(scrollTimer);
   }, [messages, isLoading]); // Also trigger on isLoading changes to scroll when typing indicator appears
 
-  // Disable body scrolling on mobile
-  useEffect(() => {
-    // Function to disable scrolling
-    const disableScroll = () => {
-      // Only apply on mobile devices
-      if (window.innerWidth < 768) {
-        document.body.style.overflow = 'hidden';
-        document.body.style.position = 'fixed';
-        document.body.style.width = '100%';
-        document.body.style.height = '100%';
-      }
-    };
-
-    // Function to re-enable scrolling
-    const enableScroll = () => {
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
-      document.body.style.height = '';
-    };
-
-    // Apply the scroll lock
-    disableScroll();
-
-    // Clean up function to re-enable scrolling when component unmounts
-    return () => {
-      enableScroll();
-    };
-  }, []);
 
   return (
     <div className="min-h-screen flex flex-col bg-amber-50">
@@ -78,7 +49,7 @@ export default function ChatPage() {
         </div>
 
         {/* Main chat container with improved mobile height */}
-        <div className="bg-white rounded-lg sm:rounded-2xl shadow-xl flex flex-col border border-amber-100 mx-auto w-full max-w-5xl h-[90vh] sm:h-[85vh]">
+        <div className="bg-white rounded-lg sm:rounded-2xl shadow-xl flex flex-col border border-amber-100 mx-auto w-full max-w-5xl h-[85vh] sm:h-[85vh] overflow-hidden">
           {/* Header with responsive layout */}
           <div className="p-2 sm:p-4 bg-gradient-to-r from-[#973B00] to-[#BA4D00] text-white flex flex-col sm:flex-row sm:gap-2 sm:items-center sm:justify-between">
             <div>
@@ -112,7 +83,9 @@ export default function ChatPage() {
             <div ref={messagesEndRef} />
           </div>
 
-          <ChatInput onSendMessage={sendMessage} isLoading={isLoading} />
+          <div className="sticky bottom-0 bg-white border-t border-amber-100 z-10">
+            <ChatInput onSendMessage={sendMessage} isLoading={isLoading} />
+          </div>
         </div>
       </main>
     </div>
