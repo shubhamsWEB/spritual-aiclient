@@ -6,12 +6,14 @@
     "dev": "PORT=3001 next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate-icons": "pwa-asset-generator public/peacock-feather.jpg public/icons --background '#fff9e6' --padding '15%'"
   },
   "dependencies": {
     "@vercel/analytics": "^1.5.0",
     "axios": "^1.8.4",
     "next": "15.2.4",
+    "next-pwa": "^5.6.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
@@ -19,10 +21,12 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/next-pwa": "^5.6.9",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/uuid": "^10.0.0",
+    "pwa-asset-generator": "^8.0.2",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

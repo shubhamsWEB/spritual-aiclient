@@ -5,7 +5,6 @@ import { useChat } from '@/hooks/useChat';
 import ChatMessage from '@/components/chat/ChatMessage';
 import ChatInput from '@/components/chat/ChatInput';
 import TypingIndicator from '@/components/chat/TypingIndicator';
-import Tooltip from '@/components/ui/Tooltip';
 import Image from 'next/image';
 import { useViewportHeight } from '@/hooks/useViewportHeight';
 
@@ -59,7 +58,7 @@ export default function ChatPage() {
         >
           {/* Header with responsive layout */}
           <div className="p-2 sm:p-4 bg-gradient-to-r from-[#973B00] to-[#BA4D00] text-white flex flex-col sm:flex-row sm:gap-2 sm:items-center sm:justify-between">
-            <div className='flex flex-row sm:flex-col justify-between mt-1 sm:mt-0 items-center'>
+            <div className='flex flex-row justify-between mt-1 sm:mt-0 items-center w-full'>
               <div>
                 <h1 className="text-md sm:text-xl font-serif">Bhagavad Gita Divine Guide</h1>
                 <p className="text-xs sm:text-sm opacity-90">Seek wisdom from the timeless teachings</p>
