@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
-import { deleteCookie, getCookie } from '@/utils/cookies';
+import { deleteCookie, getCookie, setCookie } from '@/utils/cookies';
 // Define types
 export interface User {
   id: string;
@@ -86,7 +86,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       
       if (response.data.success) {
         const { user, token } = response.data.data;
-        document.cookie = `authToken=${token}; path=/;`;
+        setCookie('authToken', token);
         setUser(user);
         setIsLoading(false);
         router.push('/');
@@ -122,9 +122,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         
         // If registration is immediate
         const { user, token } = response.data.data;
-        document.cookie = `authToken=${token}; path=/;`;
+        setCookie('authToken', token);
         setUser(user);
         setIsLoading(false);
+        router.push('/');
         return { success: true };
       } else {
         setIsLoading(false);
