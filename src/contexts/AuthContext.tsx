@@ -24,7 +24,7 @@ interface AuthContextType {
   logout: () => Promise<void>;
   checkAuth: () => Promise<boolean>;
   updateUserDetails: (user: User) => Promise<void>;
-
+  loginWithGoogle: () => Promise<{success: boolean, message?: string}>;
 }
 
 // Create the context
@@ -140,6 +140,41 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  // Google login function
+// Inside the AuthProvider function, update this method:
+
+// Google login function
+const loginWithGoogle = async (): Promise<{success: boolean, message?: string}> => {
+  try {
+    setIsLoading(true);
+    
+    // First, get the auth URL from the backend
+    const response = await axios.get('/api/auth/google');
+    
+    if (response.data.success && response.data.data.url) {
+      // Create a redirect URL that will come back to our hash-callback page
+      // This is more reliable with Supabase's OAuth flow
+      const redirectUrl = new URL(response.data.data.url);
+      
+      // Redirect to Google's OAuth consent screen
+      window.location.href = redirectUrl.toString();
+      return { success: true };
+    } else {
+      setIsLoading(false);
+      return { 
+        success: false, 
+        message: response.data.error?.message || 'Failed to initiate Google login' 
+      };
+    }
+  } catch (error: any) {
+    setIsLoading(false);
+    return { 
+      success: false, 
+      message: error.response?.data?.error?.message || 'An error occurred during Google login' 
+    };
+  }
+};
+
   // Logout function
   const logout = async (): Promise<void> => {
     try {
@@ -165,20 +200,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const updateUserDetails = async (user: User) => {
-  try {
-    setIsLoading(true);
-    const authCookie = document.cookie.split('; ').find(row => row.startsWith('authToken='));
-    const token = authCookie ? authCookie.split('=')[1] : null;
-    const response = await axios.put('/api/auth/profile', user, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-    setUser(response.data.data.user);
-    setIsLoading(false);
-  } catch (error) {
-    console.error('Update user details error:', error);
-  }
+    try {
+      setIsLoading(true);
+      const authCookie = document.cookie.split('; ').find(row => row.startsWith('authToken='));
+      const token = authCookie ? authCookie.split('=')[1] : null;
+      const response = await axios.put('/api/auth/profile', user, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      setUser(response.data.data.user);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Update user details error:', error);
+    }
   }
 
   const value = {
@@ -189,7 +224,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     register,
     logout,
     checkAuth,
-    updateUserDetails
+    updateUserDetails,
+    loginWithGoogle
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

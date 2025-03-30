@@ -8,7 +8,6 @@ import ChatInput from '@/components/chat/ChatInput';
 import TypingIndicator from '@/components/chat/TypingIndicator';
 import Image from 'next/image';
 import { useViewportHeight } from '@/hooks/useViewportHeight';
-import Link from 'next/link';
 
 export default function ChatPage() {
   const { messages, isLoading, sendMessage, tokens } = useChat();
@@ -85,14 +84,14 @@ export default function ChatPage() {
                 <h1 className="text-md sm:text-xl font-serif">Bhagavad Gita Divine Guide</h1>
                 <p className="text-xs sm:text-sm opacity-90">Seek wisdom from the timeless teachings</p>
               </div>
-              <div>
+              {/* <div>
                 <p className="text-xs opacity-90">
                   <span>Tokens: </span>{' '}
                   <span className="font-bold">{tokens.total}</span>
                 </p>
                 <p className='text-xs opacity-90'>  <i>Input: </i>{tokens.prompt}</p>
                 <p className='text-xs opacity-90'>  <i>Output: </i>{tokens.completion}</p>
-              </div>
+              </div> */}
             </div>
           </div>
 

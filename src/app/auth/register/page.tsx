@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import Image from 'next/image';
+import { FcGoogle } from 'react-icons/fc';
 
 export default function RegisterPage() {
   const [name, setName] = useState('');
@@ -14,7 +15,7 @@ export default function RegisterPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { register, isAuthenticated } = useAuth();
+  const { register, isAuthenticated, loginWithGoogle } = useAuth();
   const router = useRouter();
 
   // Redirect if already authenticated
@@ -67,6 +68,25 @@ export default function RegisterPage() {
       setError('An unexpected error occurred');
       console.error(err);
     } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleGoogleSignup = async () => {
+    try {
+      setIsSubmitting(true);
+      setError('');
+      
+      const result = await loginWithGoogle();
+      
+      if (!result.success) {
+        setError(result.message || 'Google sign up failed');
+        setIsSubmitting(false);
+      }
+      // No need to handle success case here as it will redirect to Google's OAuth page
+    } catch (err) {
+      setError('An unexpected error occurred');
+      console.error(err);
       setIsSubmitting(false);
     }
   };
@@ -170,6 +190,24 @@ export default function RegisterPage() {
             className="w-full bg-[#973B00] hover:bg-[#BA4D00] text-white font-bold py-3 px-4 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {isSubmitting ? 'Creating account...' : 'Create Account'}
+          </button>
+
+          {/* Google Sign Up Button */}
+          <div className="relative flex items-center justify-center my-6">
+            <div className="border-t border-gray-300 absolute w-full"></div>
+            <div className="bg-white px-4 text-sm text-gray-500 relative">
+              or sign up with
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleGoogleSignup}
+            disabled={isSubmitting}
+            className="w-full flex items-center justify-center gap-2 border border-gray-300 bg-white text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            <FcGoogle className="text-2xl" />
+            Sign up with Google
           </button>
 
           <div className="text-center mt-8">

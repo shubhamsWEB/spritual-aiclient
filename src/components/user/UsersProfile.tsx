@@ -32,11 +32,11 @@ export default function UserProfile() {
       setIsSubmitting(false);
     }
   };
-  useEffect(() => {
-    if(!user?.profile?.[0]?.full_name){  
-      checkAuth();
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if(!user?.profile?.[0]?.full_name){  
+  //     checkAuth();
+  //   }
+  // }, [user]);
 
   return (
     <div className="bg-white rounded-lg shadow p-6 max-w-lg mx-auto">
@@ -56,7 +56,7 @@ export default function UserProfile() {
       
       <div className="mb-4">
         <div className="text-sm text-gray-500">Email</div>
-        <div className="font-medium text-gray-800">{user.email}</div>
+        <div className="font-medium text-gray-800">{user?.email}</div>
       </div>
       
       {isEditing ? (
@@ -87,7 +87,7 @@ export default function UserProfile() {
               type="button"
               onClick={() => {
                 setIsEditing(false);
-                setName(user.profile[0].full_name || '');
+                  setName(user?.profile?.[0]?.full_name || '');
               }}
               className="border border-gray-300 text-gray-700 font-medium py-2 px-4 rounded hover:bg-gray-50 transition-colors"
             >

@@ -51,5 +51,6 @@ export const config = {
     '/auth/login/:path*',
     '/auth/register/:path*',
     '/auth/forgot-password/:path*'
+    // Do not include '/auth/hash-callback/:path*' here
   ]
 };
