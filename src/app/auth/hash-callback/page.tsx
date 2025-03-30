@@ -1,4 +1,3 @@
-// src/app/auth/hash-callback/page.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -12,26 +11,56 @@ export default function HashCallbackPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Function to extract data from URL hash
+    // Function to extract data from URL hash with improved error handling
     const getHashParams = () => {
-      const hash = window.location.hash.substring(1);
-      return hash.split('&').reduce((params, pair) => {
-        const [key, value] = pair.split('=');
-        params[decodeURIComponent(key)] = decodeURIComponent(value);
-        return params;
-      }, {} as Record<string, string>);
+      try {
+        const hash = window.location.hash.substring(1);
+        if (!hash) {
+          console.error('No hash found in URL');
+          return {};
+        }
+        
+        console.log('Processing hash: ', hash.substring(0, 20) + '...');
+        
+        return hash.split('&').reduce((params, pair) => {
+          try {
+            const [key, value] = pair.split('=');
+            if (key && value) {
+              params[decodeURIComponent(key)] = decodeURIComponent(value);
+            }
+          } catch (e) {
+            console.error('Error parsing hash parameter:', pair, e);
+          }
+          return params;
+        }, {} as Record<string, string>);
+      } catch (e) {
+        console.error('Error parsing hash:', e);
+        return {};
+      }
     };
 
     try {
       // Extract token from hash
       const hashParams = getHashParams();
+      
+      console.log('Hash parameters found:', Object.keys(hashParams).join(', '));
+      
       const token = hashParams.access_token;
+      const errorMessage = hashParams.error_description || hashParams.error;
+      
+      if (errorMessage) {
+        setError(decodeURIComponent(errorMessage));
+        setIsLoading(false);
+        return;
+      }
       
       if (!token) {
         setError('No authentication token received');
         setIsLoading(false);
         return;
       }
+      
+      console.log('Token received, storing and redirecting...');
       
       // Store token in cookie
       setCookie('authToken', token);

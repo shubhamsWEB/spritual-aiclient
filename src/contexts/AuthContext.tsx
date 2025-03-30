@@ -140,24 +140,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Google login function
-// Inside the AuthProvider function, update this method:
-
 // Google login function
 const loginWithGoogle = async (): Promise<{success: boolean, message?: string}> => {
   try {
     setIsLoading(true);
     
+    // Get current URL for redirect
+    const currentOrigin = typeof window !== 'undefined' ? window.location.origin : '';
+    
     // First, get the auth URL from the backend
-    const response = await axios.get('/api/auth/google');
+    const response = await axios.get('/api/auth/google', {
+      params: { redirect_url: currentOrigin }
+    });
     
     if (response.data.success && response.data.data.url) {
-      // Create a redirect URL that will come back to our hash-callback page
-      // This is more reliable with Supabase's OAuth flow
-      const redirectUrl = new URL(response.data.data.url);
-      
       // Redirect to Google's OAuth consent screen
-      window.location.href = redirectUrl.toString();
+      window.location.href = response.data.data.url;
       return { success: true };
     } else {
       setIsLoading(false);

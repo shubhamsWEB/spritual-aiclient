@@ -73,6 +73,24 @@ export async function GET(
     const resolvedParams = await params;
     const { endpoint } = resolvedParams;
     
+    // Special handling for Google OAuth
+    if (endpoint === 'google') {
+      // Extract redirect URL from query parameters
+      const { searchParams } = new URL(request.url);
+      const redirectUrl = searchParams.get('redirect_url') || process.env.FRONTEND_URL;
+      
+      // Forward the request to the backend API with the redirect URL
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/google`, 
+        {
+          params: { redirect_url: redirectUrl }
+        }
+      );
+      
+      // Return the response from the backend
+      return NextResponse.json(response.data);
+    }
+    
     // Forward the request to the backend API
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/${endpoint}`,
