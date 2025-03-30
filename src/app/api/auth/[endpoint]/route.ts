@@ -134,7 +134,6 @@ export async function PUT(
     console.log(`Auth API PUT request to ${endpoint}:`, body);
     
     // Forward the request to the backend API
-    console.log("🚀 ~ ... ~ request.headers.get('Authorization'):", request.headers.get('Authorization'));
     const response = await axios.put(
       `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/${endpoint}`,
       body,

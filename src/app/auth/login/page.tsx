@@ -5,13 +5,14 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import Image from 'next/image';
+import { FcGoogle } from 'react-icons/fc';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { login, isAuthenticated } = useAuth();
+  const { login, isAuthenticated, loginWithGoogle } = useAuth();
   const router = useRouter();
 
   // Redirect if already authenticated
@@ -45,6 +46,25 @@ export default function LoginPage() {
       setError('An unexpected error occurred');
       console.error(err);
     } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      setIsSubmitting(true);
+      setError('');
+      
+      const result = await loginWithGoogle();
+      
+      if (!result.success) {
+        setError(result.message || 'Google login failed');
+        setIsSubmitting(false);
+      }
+      // No need to handle success case here as it will redirect to Google's OAuth page
+    } catch (err) {
+      setError('An unexpected error occurred');
+      console.error(err);
       setIsSubmitting(false);
     }
   };
@@ -115,6 +135,24 @@ export default function LoginPage() {
             className="w-full bg-[#973B00] hover:bg-[#BA4D00] text-white font-bold py-3 px-4 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {isSubmitting ? 'Signing in...' : 'Sign in'}
+          </button>
+
+          {/* Google Sign In Button */}
+          <div className="relative flex items-center justify-center my-6">
+            <div className="border-t border-gray-300 absolute w-full"></div>
+            <div className="bg-white px-4 text-sm text-gray-500 relative">
+              or continue with
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleGoogleLogin}
+            disabled={isSubmitting}
+            className="w-full flex items-center justify-center gap-2 border border-gray-300 bg-white text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            <FcGoogle className="text-2xl" />
+            Sign in with Google
           </button>
 
           <div className="text-center mt-8">
