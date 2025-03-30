@@ -28,7 +28,7 @@ export function useChat() {
     };
     
     // Add personalized welcome message if authenticated
-    const welcomeMessageText = getRandomWelcomeMessage(user?.name || '');
+    const welcomeMessageText = getRandomWelcomeMessage(user?.name && user.name.split(' ')[0] || '');
     
     // Start with just the system message
     setMessages([systemMessage]);

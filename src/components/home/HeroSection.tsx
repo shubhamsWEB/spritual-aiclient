@@ -5,7 +5,7 @@ import Button from '@/components/ui/Button';
 
 export default function HeroSection() {
   return (
-    <section className="py-20 relative overflow-hidden">
+    <section className="py-10 relative overflow-hidden">
       {/* Background with overlay */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -18,7 +18,7 @@ export default function HeroSection() {
       </div>
       
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-center">
           <div className="text-white">
             <h1 className="text-4xl md:text-5xl font-serif mb-6 leading-tight">
               Divine Wisdom from the Bhagavad Gita

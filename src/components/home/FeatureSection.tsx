@@ -25,10 +25,10 @@ const features = [
 
 export default function FeatureSection() {
   return (
-    <section id="features" className="py-20 bg-amber-50">
+    <section id="features" className="py-10 bg-amber-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-5xl font-serif text-gray-700 mb-4">
+          <h2 className="text-4xl sm:text-5xl font-serif text-gray-700 mb-4">
             Sacred Wisdom for Your Journey
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">

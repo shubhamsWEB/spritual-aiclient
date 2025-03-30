@@ -13,7 +13,7 @@ export default function Home() {
     <div className="min-h-screen bg-amber-50">
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8 md:py-12">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="w-full md:w-1/2 flex justify-center">
             <div className="relative w-[280px] h-[400px] md:w-[400px] md:h-[600px]">
               <div className="absolute top-0 left-0 right-0 h-[260px] md:h-[400px]">

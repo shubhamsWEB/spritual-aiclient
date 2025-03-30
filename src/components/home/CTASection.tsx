@@ -22,11 +22,11 @@ const socialLinks = [
 
 export default function CTASection() {
   return (
-    <section className="py-20 bg-amber-50">
+    <section className="py-10 bg-amber-50">
       <div className="container mx-auto px-4 flex flex-col items-center">
         {/* Main CTA */}
         <div className="text-center mb-20">
-          <h2 className="text-5xl font-serif text-gray-700 mb-4">
+          <h2 className="text-4xl sm:text-5xl font-serif text-gray-700 mb-4">
             Ready to receive wisdom from the Gita?
           </h2>
           <p className="text-xl text-gray-600 mb-8">

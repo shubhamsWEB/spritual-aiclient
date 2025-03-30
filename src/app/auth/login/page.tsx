@@ -12,6 +12,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showManualLogin, setShowManualLogin] = useState(false);
   const { login, isAuthenticated, loginWithGoogle } = useAuth();
   const router = useRouter();
 
@@ -70,10 +71,10 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-amber-50 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8 border border-amber-100">
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-6">
+    <div className="min-h-auto bg-amber-50 flex justify-center p-4">
+      <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-4 border border-amber-100">
+        <div className="text-center mb-4">
+          <div className="flex justify-center">
             <div className="relative w-20 h-20">
               <Image
                 src="/images/peacock-feather.svg"
@@ -93,77 +94,105 @@ export default function LoginPage() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-6">
-            <label htmlFor="email" className="block text-gray-700 text-sm font-medium mb-2">
-              Email Address
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-3 border border-amber-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 text-[#973B00]"
-              placeholder="Your email"
-              required
-            />
+        {!showManualLogin ? (
+          <div className="space-y-4">
+            <button
+              type="button"
+              onClick={handleGoogleLogin}
+              disabled={isSubmitting}
+              className="w-full flex items-center justify-center gap-2 border border-gray-300 bg-white text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              <FcGoogle className="text-2xl" />
+              Sign in with Google
+            </button>
+            
+            <div className="relative flex items-center justify-center my-6">
+              <div className="border-t border-gray-300 absolute w-full"></div>
+              <div className="bg-white px-4 text-sm text-gray-500 relative">
+                or
+              </div>
+            </div>
+            
+            <button
+              type="button"
+              onClick={() => setShowManualLogin(true)}
+              className="w-full bg-[#973B00] hover:bg-[#BA4D00] text-white font-bold py-3 px-4 rounded-lg transition-colors"
+            >
+              Sign in with Email
+            </button>
+            
+            <div className="text-center mt-8">
+              <p className="text-gray-600">
+                Don't have an account?{' '}
+                <Link href="/auth/register" className="text-[#973B00] hover:underline">
+                  Create an account
+                </Link>
+              </p>
+            </div>
           </div>
-
-          <div className="mb-6">
-            <div className="flex justify-between items-center mb-2">
-              <label htmlFor="password" className="block text-gray-700 text-sm font-medium">
-                Password
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <div className="mb-6">
+              <label htmlFor="email" className="block text-gray-700 text-sm font-medium mb-2">
+                Email Address
               </label>
-              <Link href="/auth/forgot-password" className="text-sm text-[#973B00] hover:underline">
-                Forgot password?
-              </Link>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full p-3 border border-amber-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 text-[#973B00]"
+                placeholder="Your email"
+                required
+              />
             </div>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-3 border border-amber-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 text-[#973B00]"
-              placeholder="Your password"
-              required
-            />
-          </div>
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full bg-[#973B00] hover:bg-[#BA4D00] text-white font-bold py-3 px-4 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
-          >
-            {isSubmitting ? 'Signing in...' : 'Sign in'}
-          </button>
-
-          {/* Google Sign In Button */}
-          <div className="relative flex items-center justify-center my-6">
-            <div className="border-t border-gray-300 absolute w-full"></div>
-            <div className="bg-white px-4 text-sm text-gray-500 relative">
-              or continue with
+            <div className="mb-6">
+              <div className="flex justify-between items-center mb-2">
+                <label htmlFor="password" className="block text-gray-700 text-sm font-medium">
+                  Password
+                </label>
+                <Link href="/auth/forgot-password" className="text-sm text-[#973B00] hover:underline">
+                  Forgot password?
+                </Link>
+              </div>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full p-3 border border-amber-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 text-[#973B00]"
+                placeholder="Your password"
+                required
+              />
             </div>
-          </div>
 
-          <button
-            type="button"
-            onClick={handleGoogleLogin}
-            disabled={isSubmitting}
-            className="w-full flex items-center justify-center gap-2 border border-gray-300 bg-white text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
-          >
-            <FcGoogle className="text-2xl" />
-            Sign in with Google
-          </button>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full bg-[#973B00] hover:bg-[#BA4D00] text-white font-bold py-3 px-4 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? 'Signing in...' : 'Sign in'}
+            </button>
+            
+            <button
+              type="button"
+              onClick={() => setShowManualLogin(false)}
+              className="w-full mt-4 border border-gray-300 bg-white text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              Back to login options
+            </button>
 
-          <div className="text-center mt-8">
-            <p className="text-gray-600">
-              Don't have an account?{' '}
-              <Link href="/auth/register" className="text-[#973B00] hover:underline">
-                Create an account
-              </Link>
-            </p>
-          </div>
-        </form>
+            <div className="text-center mt-8">
+              <p className="text-gray-600">
+                Don't have an account?{' '}
+                <Link href="/auth/register" className="text-[#973B00] hover:underline">
+                  Create an account
+                </Link>
+              </p>
+            </div>
+          </form>
+        )}
       </div>
     </div>
   );

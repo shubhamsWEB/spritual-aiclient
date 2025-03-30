@@ -50,8 +50,25 @@ export default function ChatPage() {
     }
   };
 
+  // Prevent scrolling on the body element when component mounts
+  useEffect(() => {
+    // Lock body scroll
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
+    document.body.style.height = '100%';
+    
+    // Cleanup function to restore body scroll when component unmounts
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.height = '';
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen flex flex-col bg-amber-50">
+    <div className="h-screen w-screen flex flex-col bg-amber-50 overflow-hidden">
       <main className="flex-1 container mx-auto px-1 sm:px-4 py-1 sm:py-4 flex flex-col relative">
         {/* Decorative elements - only show on larger screens */}
         <div className="absolute -left-10 top-1/4 hidden xl:block opacity-20 pointer-events-none">
@@ -84,14 +101,6 @@ export default function ChatPage() {
                 <h1 className="text-md sm:text-xl font-serif">Bhagavad Gita Divine Guide</h1>
                 <p className="text-xs sm:text-sm opacity-90">Seek wisdom from the timeless teachings</p>
               </div>
-              {/* <div>
-                <p className="text-xs opacity-90">
-                  <span>Tokens: </span>{' '}
-                  <span className="font-bold">{tokens.total}</span>
-                </p>
-                <p className='text-xs opacity-90'>  <i>Input: </i>{tokens.prompt}</p>
-                <p className='text-xs opacity-90'>  <i>Output: </i>{tokens.completion}</p>
-              </div> */}
             </div>
           </div>
 
