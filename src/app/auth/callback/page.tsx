@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { setCookie } from '@/utils/cookies';
 
-export default function AuthCallbackPage() {
+function AuthCallbackContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [error, setError] = useState('');
@@ -105,4 +105,32 @@ export default function AuthCallbackPage() {
   }
 
   return null; // When loading, return nothing (will redirect when done)
+}
+
+// Loading fallback component
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen bg-amber-50 flex items-center justify-center">
+      <div className="text-center">
+        <div className="relative w-24 h-24 mx-auto mb-6">
+          <Image
+            src="/images/peacock-feather.svg"
+            alt="Loading"
+            fill
+            className="object-contain animate-pulse"
+          />
+        </div>
+        <h2 className="text-2xl font-serif text-gray-800 mb-4">Preparing authentication</h2>
+        <p className="text-gray-600">Please wait a moment...</p>
+      </div>
+    </div>
+  );
+}
+
+export default function AuthCallbackPage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <AuthCallbackContent />
+    </Suspense>
+  );
 }
