@@ -16,9 +16,36 @@ export default function ChatPage() {
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const { viewportHeight, headerHeight } = useViewportHeight();
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
   
   // Calculate available height (subtract header height and some padding)
   const chatContainerHeight = viewportHeight ? `${viewportHeight - headerHeight - 32}px` : '85vh';
+
+  // Detect keyboard open/close on mobile
+  useEffect(() => {
+    const detectKeyboard = () => {
+      // On mobile, when keyboard opens, the visual viewport height becomes smaller
+      const isKeyboardOpen = window.visualViewport && 
+        window.visualViewport.height < window.innerHeight * 0.75;
+      setKeyboardOpen(isKeyboardOpen || false);
+    };
+
+    // Add event listeners for visual viewport changes
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', detectKeyboard);
+      window.visualViewport.addEventListener('scroll', detectKeyboard);
+    }
+
+    // Initial check
+    detectKeyboard();
+
+    return () => {
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', detectKeyboard);
+        window.visualViewport.removeEventListener('scroll', detectKeyboard);
+      }
+    };
+  }, []);
 
   // Auto-scroll the message container when messages change
   useEffect(() => {
@@ -52,11 +79,19 @@ export default function ChatPage() {
 
   // Prevent scrolling on the body element when component mounts
   useEffect(() => {
-    // Lock body scroll
-    document.body.style.overflow = 'hidden';
-    document.body.style.position = 'fixed';
-    document.body.style.width = '100%';
-    document.body.style.height = '100%';
+    // Only apply fixed positioning when keyboard is not open on mobile
+    if (!keyboardOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.height = '100%';
+    } else {
+      // When keyboard is open, allow normal scrolling
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.height = '';
+    }
     
     // Cleanup function to restore body scroll when component unmounts
     return () => {
@@ -65,10 +100,10 @@ export default function ChatPage() {
       document.body.style.width = '';
       document.body.style.height = '';
     };
-  }, []);
+  }, [keyboardOpen]);
 
   return (
-    <div className="h-screen w-screen flex flex-col bg-amber-50 overflow-hidden">
+    <div className={`h-screen w-screen flex flex-col bg-amber-50 overflow-hidden ${keyboardOpen ? 'overflow-y-auto' : ''}`}>
       <main className="flex-1 container mx-auto px-1 sm:px-4 py-1 sm:py-4 flex flex-col relative">
         {/* Decorative elements - only show on larger screens */}
         <div className="absolute -left-10 top-1/4 hidden xl:block opacity-20 pointer-events-none">
@@ -92,7 +127,7 @@ export default function ChatPage() {
         {/* Main chat container with dynamic height */}
         <div 
           className="bg-white rounded-lg sm:rounded-2xl shadow-xl flex flex-col border border-amber-100 mx-auto w-full max-w-5xl"
-          style={{ height: chatContainerHeight }}
+          style={{ height: keyboardOpen ? 'auto' : chatContainerHeight }}
         >
           {/* Header with responsive layout */}
           <div className="p-2 sm:p-4 bg-gradient-to-r from-[#973B00] to-[#BA4D00] text-white flex flex-col sm:flex-row sm:gap-2 sm:items-center sm:justify-between">
