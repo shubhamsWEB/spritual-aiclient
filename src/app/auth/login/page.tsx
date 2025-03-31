@@ -19,7 +19,7 @@ export default function LoginPage() {
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
-      router.push('/chat');
+      router.replace('/chat');
     }
   }, [isAuthenticated, router]);
 
@@ -41,7 +41,7 @@ export default function LoginPage() {
         setError(result.message || 'Invalid email or password');
       } else {
         // Redirect to chat page on successful login
-        router.push('/chat');
+        router.replace('/chat');
       }
     } catch (err) {
       setError('An unexpected error occurred');

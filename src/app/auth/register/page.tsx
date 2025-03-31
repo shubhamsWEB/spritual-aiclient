@@ -60,7 +60,7 @@ export default function RegisterPage() {
           setSuccess(result.message);
         } else {
           // If registration is immediate, redirect to chat
-          router.push('/chat');
+          router.replace('/chat');
         }
       } else {
         setError(result.message || 'Registration failed');

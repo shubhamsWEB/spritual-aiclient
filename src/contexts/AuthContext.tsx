@@ -89,7 +89,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setCookie('authToken', token);
         setUser(user);
         setIsLoading(false);
-        router.push('/');
+        // router.replace('/');
         return { success: true };
       } else {
         setIsLoading(false);
@@ -125,7 +125,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setCookie('authToken', token);
         setUser(user);
         setIsLoading(false);
-        router.push('/');
+        // router.replace('/');
         return { success: true };
       } else {
         setIsLoading(false);
@@ -193,7 +193,7 @@ const loginWithGoogle = async (): Promise<{success: boolean, message?: string}> 
       document.cookie = 'authToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
       setUser(null);
       setIsLoading(false);
-      router.push('/');
+       router.replace('/');
     }
   };
 

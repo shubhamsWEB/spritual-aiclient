@@ -32,11 +32,11 @@ export default function UserProfile() {
       setIsSubmitting(false);
     }
   };
-  // useEffect(() => {
-  //   if(!user?.profile?.[0]?.full_name){  
-  //     checkAuth();
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    if(!user?.profile?.[0]?.full_name){  
+      checkAuth();
+    }
+  }, [user]);
 
   return (
     <div className="bg-white rounded-lg shadow p-6 max-w-lg mx-auto">
