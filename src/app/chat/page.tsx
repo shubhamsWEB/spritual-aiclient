@@ -103,6 +103,11 @@ export default function ChatPage() {
               </div>
             </div>
           </div>
+          {!isAuthenticated && showLoginPrompt && (
+            <div className="p-2 sm:p-4 bg-amber-50 text-amber-900">
+              <p>Please login to continue</p>
+            </div>
+          )}
 
           <div
             ref={chatContainerRef}
