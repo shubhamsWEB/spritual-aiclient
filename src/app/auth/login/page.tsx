@@ -17,7 +17,7 @@ function LoginContent() {
   const { login, isAuthenticated, loginWithGoogle } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectPath = searchParams.get('redirect') || '/chat';
+  const redirectPath = searchParams.get('redirect_to') || '/chat';
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -42,9 +42,7 @@ function LoginContent() {
       
       if (!result.success) {
         setError(result.message || 'Invalid email or password');
-      } else {
-        // Redirect to the path from the redirect parameter or default to chat page
-        router.replace(redirectPath);
+        setIsSubmitting(false);
       }
     } catch (err) {
       setError('An unexpected error occurred');
