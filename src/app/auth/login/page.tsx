@@ -1,13 +1,14 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import Image from 'next/image';
 import { FcGoogle } from 'react-icons/fc';
 
-export default function LoginPage() {
+// Create a separate component that uses useSearchParams
+function LoginContent() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -197,5 +198,14 @@ export default function LoginPage() {
         )}
       </div>
     </div>
+  );
+}
+
+// Main component that wraps the content with Suspense
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-auto bg-amber-50 flex justify-center p-4">Loading...</div>}>
+      <LoginContent />
+    </Suspense>
   );
 }
