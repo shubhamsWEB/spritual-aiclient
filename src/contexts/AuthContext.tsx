@@ -24,7 +24,7 @@ interface AuthContextType {
   logout: () => Promise<void>;
   checkAuth: () => Promise<boolean>;
   updateUserDetails: (user: User) => Promise<void>;
-  loginWithGoogle: () => Promise<{success: boolean, message?: string}>;
+  loginWithGoogle: (redirectPath?: string) => Promise<{success: boolean, message?: string}>;
 }
 
 // Create the context
@@ -141,7 +141,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
 // Google login function
-const loginWithGoogle = async (): Promise<{success: boolean, message?: string}> => {
+const loginWithGoogle = async (redirectPath = '/chat'): Promise<{success: boolean, message?: string}> => {
   try {
     setIsLoading(true);
     
@@ -150,7 +150,10 @@ const loginWithGoogle = async (): Promise<{success: boolean, message?: string}> 
     
     // First, get the auth URL from the backend
     const response = await axios.get('/api/auth/google', {
-      params: { redirect_url: currentOrigin }
+      params: { 
+        redirect_url: currentOrigin,
+        redirect_after: redirectPath // Pass the redirect path to be used after authentication
+      }
     });
     
     if (response.data.success && response.data.data.url) {

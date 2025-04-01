@@ -62,11 +62,15 @@ export default function HashCallbackPage() {
       
       console.log('Token received, storing and redirecting...');
       
+      // Extract redirect path from URL if available
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirectPath = urlParams.get('redirect_to') || '/chat';
+      
       // Store token in cookie
       setCookie('authToken', token);
       
-      // Redirect to chat page
-      router.push('/chat');
+      // Redirect to the specified path or chat page
+      router.push(redirectPath);
     } catch (err: any) {
       console.error('Hash callback error:', err);
       setError(err.message || 'Authentication failed');

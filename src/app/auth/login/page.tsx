@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import Image from 'next/image';
 import { FcGoogle } from 'react-icons/fc';
@@ -15,6 +15,8 @@ export default function LoginPage() {
   const [showManualLogin, setShowManualLogin] = useState(false);
   const { login, isAuthenticated, loginWithGoogle } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectPath = searchParams.get('redirect') || '/chat';
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -40,8 +42,8 @@ export default function LoginPage() {
       if (!result.success) {
         setError(result.message || 'Invalid email or password');
       } else {
-        // Redirect to chat page on successful login
-        router.replace('/chat');
+        // Redirect to the path from the redirect parameter or default to chat page
+        router.replace(redirectPath);
       }
     } catch (err) {
       setError('An unexpected error occurred');
@@ -56,13 +58,13 @@ export default function LoginPage() {
       setIsSubmitting(true);
       setError('');
       
-      const result = await loginWithGoogle();
+      // Pass the redirect path to the Google login function
+      const result = await loginWithGoogle(redirectPath);
       
       if (!result.success) {
         setError(result.message || 'Google login failed');
         setIsSubmitting(false);
       }
-      // No need to handle success case here as it will redirect to Google's OAuth page
     } catch (err) {
       setError('An unexpected error occurred');
       console.error(err);

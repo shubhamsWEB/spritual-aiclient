@@ -28,7 +28,7 @@ export async function middleware(request: NextRequest) {
   // If the path is protected and no token is present, redirect to login
   if (isProtectedPath && !token) {
     const loginUrl = new URL('/auth/login', request.url);
-    loginUrl.searchParams.set('redirect', path);
+    loginUrl.searchParams.set('redirect_to', path);
     return NextResponse.redirect(loginUrl);
   }
   

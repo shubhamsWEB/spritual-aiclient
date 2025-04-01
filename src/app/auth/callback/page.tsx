@@ -42,7 +42,7 @@ function AuthCallbackContent() {
         if (data.token) {
           setCookie('authToken', data.token);
           
-          // Redirect to home or a specified redirect URL
+          // Get redirect path from URL parameters
           const redirectTo = searchParams.get('redirect_to') || '/chat';
           router.push(redirectTo);
         } else {
