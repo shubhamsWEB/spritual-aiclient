@@ -89,7 +89,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setCookie('authToken', token);
         setUser(user);
         setIsLoading(false);
-        // router.replace('/');
+        router.replace('/chat');
         return { success: true };
       } else {
         setIsLoading(false);
@@ -125,7 +125,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setCookie('authToken', token);
         setUser(user);
         setIsLoading(false);
-        // router.replace('/');
+        router.replace('/chat');
         return { success: true };
       } else {
         setIsLoading(false);
