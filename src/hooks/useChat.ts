@@ -4,9 +4,10 @@ import { ChatMessage } from '@/types';
 import { sendChatMessage } from '@/services/api';
 import { getRandomWelcomeMessage } from '@/services/messages';
 import { useAuth } from '@/contexts/AuthContext';
+import { useConversations } from '@/contexts/ConversationsContext';
 import { getCookie } from '@/utils/cookies';
+
 export function useChat() {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [tokens, setTokens] = useState({
@@ -14,44 +15,68 @@ export function useChat() {
     completion: 0,
     total: 0
   });
+  
   const { isAuthenticated, user } = useAuth();
+  const { 
+    conversations, 
+    currentConversationId, 
+    setCurrentConversationId,
+    updateConversation,
+    addMessageToConversation,
+    activeConversationMessages,
+    setActiveConversationMessages,
+    addConversation,
+    registerBackendConversation,
+    removeConversation
+  } = useConversations();
 
-  // Initialize with welcome message
+  // Use activeConversationMessages instead of extracting from conversations
+  const messages = activeConversationMessages;
+
+  // Initialize with welcome message when a new conversation is created
   useEffect(() => {
-    // Add system message immediately
-    if(isAuthenticated) {
-    const systemMessage = {
-      id: uuidv4(),
-      text: "Ask me about the spiritual wisdom in the Bhagavad Gita. You can inquire about life's purpose, duty (dharma), devotion (bhakti), knowledge (jnana), action (karma), and more.",
-      type: 'system' as const,
-      timestamp: Date.now()
-    };
-    
-    // Add personalized welcome message if authenticated
-    const welcomeMessageText = getRandomWelcomeMessage(user?.name && user.name.split(' ')[0] || '');
-    
-    // Start with just the system message
-    setMessages([systemMessage]);
-    
-    // Add bot welcome message after 1.5 seconds
-    const timer = setTimeout(() => {
-      setMessages(prev => [
-        ...prev,
-        {
+    if (isAuthenticated && currentConversationId) {
+      const currentConversation = conversations.find(c => c.id === currentConversationId);
+      
+      // Only add welcome message if this is a new conversation with no messages
+      if (currentConversation && activeConversationMessages.length === 0) {
+        // Add system message
+        const systemMessage = {
           id: uuidv4(),
-          text: welcomeMessageText,
-          type: 'bot',
+          text: "Ask me about the spiritual wisdom in the Bhagavad Gita. You can inquire about life's purpose, duty (dharma), devotion (bhakti), knowledge (jnana), action (karma), and more.",
+          type: 'system' as const,
           timestamp: Date.now()
-        }
-      ]);
-    }, 1500);
-    return () => clearTimeout(timer);
+        };
+        
+        // Add personalized welcome message
+        const welcomeMessageText = getRandomWelcomeMessage(user?.name && user.name.split(' ')[0] || '');
+        
+        // Add system message to conversation
+        addMessageToConversation(currentConversationId, systemMessage);
+        
+        // Add bot welcome message after 1.5 seconds
+        const timer = setTimeout(() => {
+          const botMessage = {
+            id: uuidv4(),
+            text: welcomeMessageText,
+            type: 'bot' as const,
+            timestamp: Date.now()
+          };
+          
+          addMessageToConversation(currentConversationId, botMessage);
+        }, 1500);
+        
+        return () => clearTimeout(timer);
+      }
     }
-    // Clean up timeout if component unmounts
-  }, [isAuthenticated, user]); // Re-run when authentication state changes
+  }, [isAuthenticated, user, currentConversationId, conversations, activeConversationMessages, addMessageToConversation]);
 
   const sendMessage = useCallback(async (messageText: string) => {
     if (!messageText.trim() || isLoading) return;
+    
+    // Use current conversation ID or empty string
+    // Let the backend handle creating a new conversation
+    const conversationId = currentConversationId || '';
     
     // Add user message
     const userMessage: ChatMessage = {
@@ -61,7 +86,11 @@ export function useChat() {
       timestamp: Date.now()
     };
     
-    setMessages(prev => [...prev, userMessage]);
+    // If we have a conversation ID, add the message to it
+    if (conversationId) {
+      addMessageToConversation(conversationId, userMessage);
+    }
+    
     setIsLoading(true);
     setError(null);
     
@@ -74,11 +103,33 @@ export function useChat() {
         headers['Authorization'] = `Bearer ${token}`;
       }
       
-      const response = await sendChatMessage(messageText, headers);
+      const response = await sendChatMessage(messageText, conversationId, headers);
       console.log("🚀 ~ sendMessage ~ response:", response);
       
       if (!response.success) {
         throw new Error(response.error?.message || 'Unknown error occurred');
+      }
+      
+      // If the API returns a new conversation ID, update the current one
+      if (response.data.conversationId && (!conversationId || response.data.conversationId !== conversationId)) {
+        // Create a title from the first message
+        const title = messageText.split(' ').slice(0, 4).join(' ') + (messageText.split(' ').length > 4 ? '...' : '');
+        
+        // Register the new conversation in the conversations list
+        registerBackendConversation(response.data.conversationId, title);
+        
+        // If we had a temporary conversation ID, remove it
+        if (conversationId && conversationId !== response.data.conversationId) {
+          removeConversation(conversationId);
+        }
+        
+        // Update the current conversation ID
+        setCurrentConversationId(response.data.conversationId);
+        
+        // If this was a new conversation (empty ID), we need to add the user message to the new conversation
+        if (!conversationId) {
+          addMessageToConversation(response.data.conversationId, userMessage);
+        }
       }
       
       // Format source references
@@ -116,7 +167,16 @@ export function useChat() {
         timestamp: Date.now()
       };
       
-      setMessages(prev => [...prev, botMessage]);
+      // Use the conversation ID from the response
+      const responseConversationId = response.data.conversationId || conversationId;
+      addMessageToConversation(responseConversationId, botMessage);
+      
+      // Update conversation title if it's a new conversation
+      if (response.data.conversationId) {
+        // Use the first few words of the user's first message as the title
+        const title = messageText.split(' ').slice(0, 4).join(' ') + (messageText.split(' ').length > 4 ? '...' : '');
+        updateConversation(response.data.conversationId, { title });
+      }
     } catch (err) {
       console.error(err);
       setError(err instanceof Error ? err.message : 'An error occurred');
@@ -137,17 +197,46 @@ export function useChat() {
         timestamp: Date.now()
       };
       
-      setMessages(prev => [...prev, errorMessage]);
+      if (conversationId) {
+        addMessageToConversation(conversationId, errorMessage);
+      }
     } finally {
       setIsLoading(false);
     }
-  }, [isLoading]);
+  }, [isLoading, currentConversationId, addMessageToConversation, setCurrentConversationId, updateConversation, registerBackendConversation, removeConversation]);
+
+  // Modified to not create a conversation ID on the frontend
+  const startNewChat = useCallback(() => {
+    // Create a temporary conversation ID
+    const tempId = uuidv4();
+    
+    // Add a temporary conversation to the list
+    const newConversation = {
+      id: tempId,
+      title: 'New Conversation',
+      lastMessageTime: Date.now(),
+      messages: []
+    };
+    
+    // Add the conversation to the list
+    const conversationId = addConversation('New Conversation');
+    
+    // Set the current conversation ID
+    setCurrentConversationId(conversationId);
+    
+    // Clear active conversation messages
+    setActiveConversationMessages([]);
+    
+    return conversationId;
+  }, [setCurrentConversationId, setActiveConversationMessages, addConversation, registerBackendConversation]);
 
   return {
     messages,
     isLoading, 
     error,
     sendMessage,
-    tokens
+    tokens,
+    startNewChat,
+    currentConversationId
   };
 }

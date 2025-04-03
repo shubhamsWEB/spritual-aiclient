@@ -6,10 +6,19 @@ export interface ChatMessage {
   timestamp: number;
 }
 
+export interface Conversation {
+  id: string;
+  title: string;
+  lastMessage?: string;
+  lastMessageTime?: number;
+  messages: ChatMessage[];
+}
+
 export interface ChatResponse {
   success: boolean;
   data: {
     answer: string;
+    conversationId?: string;
     sources?: {
       metadata: {
         chapter?: number;
@@ -17,6 +26,12 @@ export interface ChatResponse {
         paragraph_id?: number;
       }
     }[];
+    metadata?: {
+      tokenUsage?: {
+        prompt_tokens: number;
+        completion_tokens: number;
+      }
+    }
   };
   error?: {
     message: string;

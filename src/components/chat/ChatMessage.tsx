@@ -22,6 +22,23 @@ export default function ChatMessage({ message }: ChatMessageProps) {
     system: 'flex justify-center'
   };
 
+  // Format sources based on their type
+  const formattedSources = sources && sources.length > 0 
+    ? sources.map((source: any) => {
+        // If source is an object with metadata containing chapter and verse
+        if (typeof source === 'object' && source.metadata && 
+            source.metadata.chapter !== undefined && source.metadata.verse !== undefined) {
+          return `Chapter ${source.metadata.chapter}, Verse ${source.metadata.verse}`;
+        }
+        // If source is an object with reference property
+        else if (typeof source === 'object' && source.reference) {
+          return source.reference;
+        }
+        // If source is already a string
+        return source;
+      })
+    : [];
+
   return (
     <div className={`${containerStyles[type]} w-full`}>
       <div className={`rounded-lg p-2 sm:p-3 mb-2 sm:mb-3 shadow-sm animate-fadeIn ${messageStyles[type]} sm:max-w-[75%] max-w-[90%] inline-block`}>
@@ -29,7 +46,7 @@ export default function ChatMessage({ message }: ChatMessageProps) {
         
         {sources && sources.length > 0 && (
           <div className="mt-1 pt-1 sm:mt-2 sm:pt-2 text-xs text-[#973B00] border-t border-amber-200">
-            <strong>Sources:</strong> {sources.join(', ')}
+            <strong>Sources:</strong> {formattedSources.join(', ')}
           </div>
         )}
       </div>

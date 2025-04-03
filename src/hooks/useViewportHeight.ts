@@ -1,27 +1,36 @@
 import { useState, useEffect } from 'react';
 
 export function useViewportHeight() {
-  const [viewportHeight, setViewportHeight] = useState(0);
-  const [headerHeight, setHeaderHeight] = useState(0);
+  const [viewportHeight, setViewportHeight] = useState<number | null>(null);
+  const [headerHeight, setHeaderHeight] = useState(64); // Default header height
 
   useEffect(() => {
-    // Function to update measurements
-    const updateMeasurements = () => {
+    // Function to update viewport height
+    const updateHeight = () => {
+      // Use window.innerHeight for the viewport height
       setViewportHeight(window.innerHeight);
-      const headerElement = document.querySelector('header');
-      if (headerElement) {
-        setHeaderHeight(headerElement.offsetHeight);
+      
+      // Get actual header height if header exists
+      const header = document.querySelector('header');
+      if (header) {
+        setHeaderHeight(header.clientHeight);
       }
     };
 
-    // Initial measurement
-    updateMeasurements();
+    // Set initial height
+    updateHeight();
 
-    // Update on resize
-    window.addEventListener('resize', updateMeasurements);
+    // Update height on resize
+    window.addEventListener('resize', updateHeight);
     
+    // Also update on orientation change for mobile devices
+    window.addEventListener('orientationchange', updateHeight);
+
     // Cleanup
-    return () => window.removeEventListener('resize', updateMeasurements);
+    return () => {
+      window.removeEventListener('resize', updateHeight);
+      window.removeEventListener('orientationchange', updateHeight);
+    };
   }, []);
 
   return { viewportHeight, headerHeight };

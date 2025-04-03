@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
 
-export async function POST(request: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
-    const { question, language, conversationId } = await request.json();
-    
     // Get auth token from cookies or Authorization header
     let token = request.cookies.get('authToken')?.value;
     
@@ -16,33 +14,29 @@ export async function POST(request: NextRequest) {
       }
     }
     
+    // Return error if no token
+    if (!token) {
+      return NextResponse.json({ 
+        success: false, 
+        error: { 
+          message: 'Authentication required',
+          code: 'AUTH_REQUIRED'
+        } 
+      }, { status: 401 });
+    }
+    
     // Prepare headers for the external API call
-    const headers: Record<string, string> = {
+    const headers = {
       'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
     };
-    
-    // Add authorization header if token exists
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
-    }
-    
-    // Prepare request body
-    const requestBody: Record<string, any> = {
-      question,
-      language
-    };
-    
-    // Add conversation ID if provided
-    if (conversationId) {
-      requestBody.conversationId = conversationId;
-    }
     
     // Call the actual external API
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/query`, 
-      requestBody, 
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/conversations`,
       { headers }
     );
+    console.log("🚀 ~ GET ~ response:", response);
     
     // Return the data from the external API to the client
     return NextResponse.json(response.data);
@@ -69,4 +63,4 @@ export async function POST(request: NextRequest) {
       } 
     }, { status: error.response?.status || 500 });
   }
-}
+} 

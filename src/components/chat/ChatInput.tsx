@@ -7,9 +7,15 @@ interface ChatInputProps {
   onSendMessage: (message: string) => void;
   isLoading: boolean;
   isDisabled?: boolean;
+  placeholder?: string;
 }
 
-export default function ChatInput({ onSendMessage, isLoading, isDisabled = false }: ChatInputProps) {
+export default function ChatInput({ 
+  onSendMessage, 
+  isLoading, 
+  isDisabled = false,
+  placeholder
+}: ChatInputProps) {
   const [message, setMessage] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -40,7 +46,9 @@ export default function ChatInput({ onSendMessage, isLoading, isDisabled = false
           ref={textareaRef}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder={isDisabled ? "Please sign in to continue..." : "Ask about spiritual wisdom..."}
+          placeholder={isDisabled 
+            ? "Please sign in to continue..." 
+            : placeholder || "Ask about spiritual wisdom..."}
           className={`flex-grow p-2 border rounded-lg focus:outline-none focus:ring-2 min-h-[36px] max-h-[120px] resize-none text-sm
             ${isDisabled 
               ? 'border-gray-200 bg-gray-100 text-gray-500 cursor-not-allowed' 
