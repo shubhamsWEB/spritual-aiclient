@@ -3,11 +3,11 @@ import axios from 'axios';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: any
 ) {
   try {
-    // Await the params object before accessing the id property
-    const { id } = await params;
+    // No need to await params - it's already an object
+    const { id } = params;
     const conversationId = id;
     
     // Get auth token from cookies or Authorization header
