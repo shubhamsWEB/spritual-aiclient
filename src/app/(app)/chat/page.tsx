@@ -9,9 +9,8 @@ import ChatInput from '@/components/chat/ChatInput';
 import TypingIndicator from '@/components/chat/TypingIndicator';
 import ConversationsSidebar from '@/components/chat/ConversationsSidebar';
 import EmptyConversation from '@/components/chat/EmptyConversation';
-import Image from 'next/image';
 import { useViewportHeight } from '@/hooks/useViewportHeight';
-import { FiMessageSquare, FiArrowLeft, FiRefreshCw } from 'react-icons/fi';
+import { FiArrowLeft, FiRefreshCw } from 'react-icons/fi';
 import styles from '@/components/chat/ConversationsSidebar.module.css';
 
 export default function ChatPage() {
@@ -223,14 +222,14 @@ export default function ChatPage() {
               <>
                 <EmptyConversation onNewChat={handleNewChat} />
                 {/* Show input box even when no conversation is selected */}
-                <div className="flex-shrink-0 w-full bg-white border-t border-amber-100">
+                {/* <div className="flex-shrink-0 w-full bg-white border-t border-amber-100">
                   <ChatInput
                     onSendMessage={handleSendMessage}
                     isLoading={isLoading}
                     isDisabled={(showLoginPrompt && !isAuthenticated) || isLoadingMessages}
                     placeholder="Type your first message to start a conversation..."
                   />
-                </div>
+                </div> */}
               </>
             )}
           </div>

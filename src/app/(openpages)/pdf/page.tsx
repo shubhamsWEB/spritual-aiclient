@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 
 // Use dynamic import with ssr: false to avoid server-side rendering issues
 const BhagavadGitaPdfVisualizer = dynamic(
-  () => import('../../components/pdf'),
+  () => import('../../../components/pdf'),
   { 
     ssr: false,
     loading: () => <div className="flex items-center justify-center h-screen">
