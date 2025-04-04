@@ -6,8 +6,9 @@ export async function GET(
   { params }: any
 ) {
   try {
-    // No need to await params - it's already an object
-    const { id } = params;
+    // Await params before destructuring
+    const resolvedParams = await params;
+    const { id } = resolvedParams;
     const conversationId = id;
     
     // Get auth token from cookies or Authorization header
@@ -43,7 +44,6 @@ export async function GET(
       `${process.env.NEXT_PUBLIC_API_URL}/api/v1/conversations/${conversationId}`,
       { headers }
     );
-    console.log("🚀 ~ response:", response);
     
     // Return the data from the external API to the client
     return NextResponse.json(response.data);
