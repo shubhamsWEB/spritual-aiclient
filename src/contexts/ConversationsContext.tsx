@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Conversation } from '@/types';
 import { v4 as uuidv4 } from 'uuid';
 import { useAuth } from './AuthContext';
-import { getConversations, getConversationsMessages } from '@/services/api';
+import { getConversations, getConversationsMessages, deleteConversation as apiDeleteConversation } from '@/services/api';
 
 interface ConversationsContextType {
   conversations: Conversation[];
@@ -20,6 +20,7 @@ interface ConversationsContextType {
   setActiveConversationMessages: (messages: any[]) => void;
   registerBackendConversation: (id: string, title: string) => string;
   removeConversation: (id: string) => void;
+  deleteConversation: (id: string) => Promise<boolean>;
 }
 
 const ConversationsContext = createContext<ConversationsContextType | undefined>(undefined);
@@ -165,6 +166,20 @@ export function ConversationsProvider({ children }: { children: React.ReactNode 
     }
   };
 
+  const deleteConversation = async (id: string) => {
+    try {
+      const response = await apiDeleteConversation(id);
+      if (response?.success) {
+        removeConversation(id);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Failed to delete conversation:', error);
+      return false;
+    }
+  };
+
   const value = {
     conversations,
     currentConversationId,
@@ -178,7 +193,8 @@ export function ConversationsProvider({ children }: { children: React.ReactNode 
     activeConversationMessages,
     setActiveConversationMessages,
     registerBackendConversation,
-    removeConversation
+    removeConversation,
+    deleteConversation
   };
 
   return <ConversationsContext.Provider value={value}>{children}</ConversationsContext.Provider>;

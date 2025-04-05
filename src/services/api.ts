@@ -139,4 +139,40 @@ export const updateUserProfile = async (data: any) => {
   }
 };
 
+/**
+ * Deletes a conversation
+ * @param conversationId - The ID of the conversation to delete
+ * @returns A promise that resolves to the API response
+ */
+export const deleteConversation = async (conversationId: string) => {
+  try {
+    const token = getCookie('authToken');
+    
+    if (!token) {
+      throw new Error('No authentication token found');
+    }
+    const response: any = await api.delete(`/conversations/${conversationId}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    const data = await response.data;
+    console.log("🚀 ~ deleteConversation ~ data:", data);
+    
+    if (!data.success) {
+      console.error('Error deleting conversation:', data);
+      return { success: false, error: data.message || 'Failed to delete conversation' };
+    }
+    
+    return { success: true, data };
+  } catch (error) {
+    console.error('Failed to delete conversation:', error);
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : 'An unknown error occurred' 
+    };
+  }
+};
+
 export default api;

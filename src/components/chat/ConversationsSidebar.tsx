@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useConversations } from '@/contexts/ConversationsContext';
-import { FiPlus, FiMessageSquare, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiPlus, FiMessageSquare, FiChevronLeft, FiChevronRight, FiTrash2 } from 'react-icons/fi';
 import { formatDistanceToNow } from 'date-fns';
 import styles from './ConversationsSidebar.module.css';
 
@@ -20,12 +20,36 @@ export default function ConversationsSidebar({
   const { 
     conversations, 
     currentConversationId, 
-    isLoadingConversations
+    isLoadingConversations,
+    deleteConversation
   } = useConversations();
+  
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
 
   // Handle conversation selection
   const handleSelectConversation = (id: string) => {
     onSelectConversation(id);
+  };
+
+  // Handle delete button click
+  const handleDeleteClick = (e: React.MouseEvent, id: string) => {
+    e.stopPropagation(); // Prevent conversation selection
+    setShowDeleteConfirm(id);
+  };
+
+  // Handle delete confirmation
+  const handleConfirmDelete = async (e: React.MouseEvent, id: string) => {
+    e.stopPropagation(); // Prevent conversation selection
+    const success = await deleteConversation(id);
+    if (success) {
+      setShowDeleteConfirm(null);
+    }
+  };
+
+  // Cancel delete operation
+  const handleCancelDelete = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent conversation selection
+    setShowDeleteConfirm(null);
   };
 
   return (
@@ -93,6 +117,34 @@ export default function ConversationsSidebar({
                         <p className="text-xs text-gray-400 mt-1">
                           {formatDistanceToNow(conversation.lastMessageTime, { addSuffix: true })}
                         </p>
+                      )}
+                    </div>
+                    <div className="flex-shrink-0 ml-2">
+                      {showDeleteConfirm === conversation.id ? (
+                        <div className="flex items-center gap-1">
+                          <button 
+                            onClick={(e) => handleConfirmDelete(e, conversation.id)}
+                            className="p-1 text-red-500 rounded hover:bg-red-50"
+                            aria-label="Confirm delete"
+                          >
+                            ✓
+                          </button>
+                          <button 
+                            onClick={handleCancelDelete}
+                            className="p-1 text-gray-500 rounded hover:bg-gray-100"
+                            aria-label="Cancel delete"
+                          >
+                            ✗
+                          </button>
+                        </div>
+                      ) : (
+                        <button 
+                          onClick={(e) => handleDeleteClick(e, conversation.id)}
+                          className="p-1 text-gray-400 rounded hover:bg-gray-100 hover:text-red-500"
+                          aria-label="Delete conversation"
+                        >
+                          <FiTrash2 size={16} />
+                        </button>
                       )}
                     </div>
                   </div>

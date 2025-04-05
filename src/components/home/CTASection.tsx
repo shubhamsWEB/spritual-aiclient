@@ -92,7 +92,7 @@ export default function CTASection() {
                   Privacy Policy
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   href="/"
                   className="text-gray-600 hover:text-gray-900 transition-colors"
@@ -107,7 +107,7 @@ export default function CTASection() {
                 >
                   Blog
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
         </footer>
