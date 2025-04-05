@@ -2,7 +2,7 @@ export interface ChatMessage {
   id: string;
   text: string;
   type: 'user' | 'bot' | 'system';
-  sources?: string[];
+  sources?: any[];
   timestamp: number;
 }
 
