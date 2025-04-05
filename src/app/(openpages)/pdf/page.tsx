@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 import Link from 'next/link';
 import { FiArrowLeft, FiHome } from 'react-icons/fi';
+import { useSearchParams } from 'next/navigation';
 
 // Dynamically import the PdfViewer component to prevent server-side rendering issues
 const PdfViewer = dynamic(

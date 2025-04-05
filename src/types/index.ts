@@ -36,4 +36,18 @@ export interface ChatResponse {
   error?: {
     message: string;
   };
+}
+
+export interface Message {
+  id: string;
+  text: string;
+  type: 'user' | 'bot';
+  timestamp: number;
+  sources?: {
+    metadata: {
+      chapter?: number;
+      verse?: number;
+      paragraph_id?: number;
+    }
+  }[];
 } 

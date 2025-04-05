@@ -158,18 +158,18 @@ export function useChat() {
         }));
       }
       
-      // Add bot response
-      const botMessage: ChatMessage = {
+      // Create the AI message with the original sources structure
+      const aiMessage: ChatMessage = {
         id: uuidv4(),
         text: response.data.answer,
         type: 'bot',
-        sources: sourceRefs.length > 0 ? sourceRefs : undefined,
-        timestamp: Date.now()
+        timestamp: Date.now(),
+        sources: response.data.sources // Keep the original sources structure
       };
       
       // Use the conversation ID from the response
       const responseConversationId = response.data.conversationId || conversationId;
-      addMessageToConversation(responseConversationId, botMessage);
+      addMessageToConversation(responseConversationId, aiMessage);
       
       // Update conversation title if it's a new conversation
       if (response.data.conversationId) {

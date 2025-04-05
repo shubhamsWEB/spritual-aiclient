@@ -1,5 +1,6 @@
 import React from 'react';
 import { ChatMessage as ChatMessageType } from '@/types';
+import SourceReference from './SourceReference';
 
 interface ChatMessageProps {
   message: ChatMessageType;
@@ -45,8 +46,18 @@ export default function ChatMessage({ message }: ChatMessageProps) {
         <div className="prose prose-sm sm:prose max-w-none" dangerouslySetInnerHTML={{ __html: text }} />
         
         {sources && sources.length > 0 && (
-          <div className="mt-1 pt-1 sm:mt-2 sm:pt-2 text-xs text-[#973B00] border-t border-amber-200">
-            <strong>Sources:</strong> {formattedSources.join(', ')}
+          <div className="mt-1 pt-1 sm:mt-2 sm:pt-2 text-xs border-t border-amber-200">
+            <strong className="text-[#973B00]">Sources:</strong>{' '}
+            {sources.map((source, index) => (
+              <span key={index}>
+                {index > 0 && ', '}
+                <SourceReference 
+                  chapter={source.metadata?.chapter} 
+                  verse={source.metadata?.verse}
+                  paragraph_id={source.metadata?.paragraph_id}
+                />
+              </span>
+            ))}
           </div>
         )}
       </div>

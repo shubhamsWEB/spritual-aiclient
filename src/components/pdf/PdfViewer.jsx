@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FiChevronLeft, FiChevronRight, FiArrowUp, FiArrowDown, FiX, FiBook, FiMenu, FiMaximize, FiMinimize } from 'react-icons/fi';
 import BookmarksAccordion from './components/Accordian';
+import { useSearchParams } from 'next/navigation';
 
 // Optional: Define a custom CSS class for the accordion animation
 const accordionStyles = `
@@ -32,6 +33,10 @@ const accordionStyles = `
 `;
 
 const PdfViewer = () => {
+  // Add URL query parameter handling
+  const searchParams = useSearchParams();
+  const pageParam = searchParams ? searchParams.get('page') : null;
+  
   // State Management
   const [pdfDoc, setPdfDoc] = useState(null);
   const [numPages, setNumPages] = useState(null);
@@ -40,7 +45,7 @@ const PdfViewer = () => {
   const [pageTextContents, setPageTextContents] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [scale, setScale] = useState(calculateScale());
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 768); // Close by default on mobile
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [expandedItems, setExpandedItems] = useState({});
   const [activeTab, setActiveTab] = useState('bookmarks');
@@ -50,6 +55,9 @@ const PdfViewer = () => {
   
   const pdfContainerRef = useRef(null);
 
+  // Add a state to track if initial navigation is completed
+  const [initialNavComplete, setInitialNavComplete] = useState(false);
+  
   // Helper function to calculate appropriate scale based on screen width
   function calculateScale() {
     const width = window.innerWidth;
@@ -130,6 +138,7 @@ const PdfViewer = () => {
     setBookmarks([]);
     
     setLoading(true);
+    setInitialNavComplete(false); // Reset navigation flag
     
     try {
       // Check if PDF.js is loaded
@@ -164,8 +173,11 @@ const PdfViewer = () => {
         console.error('Error extracting bookmarks:', outlineErr);
       }
       
-      // Render current page
-      await renderPage(pdf, currentPage);
+      // Don't automatically render page 1 if we have a page parameter
+      // Only render page 1 if there's no page parameter
+      if (!pageParam) {
+        await renderPage(pdf, 1);
+      }
       
       setLoading(false);
     } catch (err) {
@@ -557,6 +569,106 @@ const PdfViewer = () => {
       .sort((a, b) => a.chapterNumber - b.chapterNumber);
   }, [bookmarks]);
 
+  // Add a function to navigate to a chapter/verse
+  const navigateToChapterVerse = async (chapterVerse) => {
+    if (!pdfDoc || !bookmarks.length) return;
+    
+    try {
+      // Parse the chapter.verse format
+      const [chapterStr, verseStr] = chapterVerse.split('.');
+      const chapter = parseInt(chapterStr, 10);
+      const verse = parseInt(verseStr, 10);
+      
+      if (isNaN(chapter)) {
+        console.warn('Invalid chapter format:', chapterVerse);
+        return false;
+      }
+      
+      // Recursive function to search through all bookmarks and their children
+      const findBookmark = (items) => {
+        for (const bookmark of items) {
+          // Check if the title directly contains the chapter.verse format
+          if (bookmark.title) {
+            // Direct match for the full param format (2.1)
+            if (bookmark.title.includes(chapterVerse)) {
+              return bookmark;
+            }
+            
+            // Match for chapter and verse separately (like "Chapter 2, Verse 1")
+            const chapterVerseRegex = new RegExp(`\\b${chapter}\\b.*\\b${verse}\\b`, 'i');
+            if (verse && chapterVerseRegex.test(bookmark.title)) {
+              return bookmark;
+            }
+            
+            // Match just for chapter if no verse or verse not found yet
+            const chapterRegex = new RegExp(`\\bChapter\\s+${chapter}\\b`, 'i');
+            if (!verse && chapterRegex.test(bookmark.title)) {
+              return bookmark;
+            }
+          }
+          
+          // Recursively search in children
+          if (bookmark.items && bookmark.items.length > 0) {
+            const result = findBookmark(bookmark.items);
+            if (result) return result;
+          }
+        }
+        
+        return null;
+      };
+      
+      // Start the search from the root bookmarks
+      const targetBookmark = findBookmark(bookmarks);
+      
+      // If found, navigate to it
+      if (targetBookmark) {
+        console.log('Found bookmark for', chapterVerse, ':', targetBookmark);
+        navigateToBookmark(targetBookmark);
+        return true;
+      } else {
+        console.warn(`Could not find bookmark for ${chapterVerse} in bookmarks`);
+        
+        // Log all bookmark titles for debugging
+        console.log('Available bookmarks:');
+        const logBookmarkTitles = (items, level = 0) => {
+          items.forEach(bookmark => {
+            console.log('  '.repeat(level) + bookmark.title);
+            if (bookmark.items && bookmark.items.length > 0) {
+              logBookmarkTitles(bookmark.items, level + 1);
+            }
+          });
+        };
+        logBookmarkTitles(bookmarks);
+        
+        return false;
+      }
+    } catch (err) {
+      console.error('Error navigating to chapter/verse:', err);
+      return false;
+    }
+  };
+  
+  // Modify the effect that handles navigation to ensure we try multiple times if needed
+  useEffect(() => {
+    const attemptNavigation = async () => {
+      if (!loading && pdfDoc && bookmarks.length > 0 && pageParam && !initialNavComplete) {
+        console.log('Attempting navigation to:', pageParam);
+        const success = await navigateToChapterVerse(pageParam);
+        
+        if (success) {
+          console.log(`Successfully navigated to ${pageParam}`);
+        } else {
+          console.warn(`Could not navigate to ${pageParam}, rendering page 1 as fallback`);
+          // Only now render page 1 as fallback if navigation failed
+          renderPage(pdfDoc, 1);
+        }
+        
+        setInitialNavComplete(true);
+      }
+    };
+    
+    attemptNavigation();
+  }, [loading, pdfDoc, bookmarks, pageParam, initialNavComplete]);
 
   return (
     <div className="h-full w-screen flex flex-col bg-amber-50 overflow-hidden">
@@ -565,7 +677,9 @@ const PdfViewer = () => {
         {/* Sidebar */}
         <aside 
           className={`bg-white shadow-md z-10 transition-all duration-300 ${
-            isSidebarOpen ? 'w-64 md:w-80 opacity-100' : 'w-12 opacity-100'
+            isSidebarOpen 
+              ? 'w-44 sm:w-56 md:w-64 lg:w-80 opacity-100' 
+              : 'w-0 opacity-0'
           } overflow-hidden h-full relative`}
         >
           <div className={`p-4 h-full flex flex-col ${isSidebarOpen ? 'opacity-100' : 'opacity-0'}`}>
@@ -638,16 +752,20 @@ const PdfViewer = () => {
               )}
             </div>
           </div>
-          
-          {/* Sidebar toggle button attached to the sidebar */}
-          <button 
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className={`absolute top-4 ${isSidebarOpen ? 'right-2 translate-x-1/2' : 'right-1'} transform p-3 bg-white rounded-full shadow-lg border border-[#973B00] text-[#973B00] hover:bg-amber-50 transition-colors z-20`}
-            aria-label={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
-          >
-            {isSidebarOpen ? <FiChevronLeft size={22} /> : <FiChevronRight size={22} />}
-          </button>
         </aside>
+
+        {/* Standalone sidebar toggle button to ensure it's always visible */}
+        <button 
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className={`absolute top-4 left-0 ${
+            isSidebarOpen 
+              ? 'translate-x-[calc(100%-8px)] md:translate-x-[calc(100%-8px)]' 
+              : 'translate-x-0'
+          } transform p-2 md:p-3 bg-white rounded-full shadow-lg border border-[#973B00] text-[#973B00] hover:bg-amber-50 transition-colors z-30`}
+          aria-label={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
+        >
+          {isSidebarOpen ? <FiChevronLeft size={20} /> : <FiChevronRight size={20} />}
+        </button>
 
         {/* PDF Content Area */}
         <div 
