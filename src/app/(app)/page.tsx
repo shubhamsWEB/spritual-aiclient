@@ -66,7 +66,7 @@ export default function Home() {
                 Seek Wisdom from the AI-Powered Bhagvad Gita
               </h3>
               <p className="text-base md:text-lg text-gray-600 italic">
-                Now, with Gita Guide, you can experience that wisdom in a 
+                Now, with GitaSpeaks, you can experience that wisdom in a 
                 personal, accessible way.
               </p>
               <p className="text-base md:text-lg text-gray-600 italic">

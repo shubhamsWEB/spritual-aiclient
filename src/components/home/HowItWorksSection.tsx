@@ -34,7 +34,7 @@ export default function HowItWorksSection() {
             HOW IT WORKS?
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Discover how GitaGuide brings the timeless wisdom of the Bhagavad Gita into your daily life.
+            Discover how GitaSpeaks brings the timeless wisdom of the Bhagavad Gita into your daily life.
           </p>
         </div>
 

@@ -6,7 +6,7 @@ const testimonials = [
   {
     name: "Jamie Folsom",
     image: "/images/testimonials/jamie.jpg",
-    text: "I was going through a tough time in my career, and GitaGuide's AI gave me exactly the perspective I needed. It was calm, wise, and eerily accurate.",
+    text: "I was going through a tough time in my career, and GitaSpeaks's AI gave me exactly the perspective I needed. It was calm, wise, and eerily accurate.",
     rating: 5
   },
   {

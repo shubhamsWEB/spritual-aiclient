@@ -72,7 +72,7 @@ export default function Header() {
           </svg>
         </button>
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-lg sm:text-2xl font-serif text-[#973B00] logo-font">GITA GUIDE</span>
+          <span className="text-lg sm:text-2xl font-serif text-[#973B00] logo-font">GITA SPEAKS</span>
         </Link>
         
         
@@ -150,7 +150,7 @@ export default function Header() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-4 flex justify-between items-center border-b border-amber-200">
-              <span className="text-lg font-serif text-[#973B00] logo-font">GITA GUIDE</span>
+              <span className="text-lg font-serif text-[#973B00] logo-font">GITA SPEAKS</span>
               <button 
                 onClick={toggleMenu}
                 aria-label="Close menu"

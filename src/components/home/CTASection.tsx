@@ -30,7 +30,7 @@ export default function CTASection() {
             Ready to receive wisdom from the Gita?
           </h2>
           <p className="text-xl text-gray-600 mb-8">
-            Start your journey with GitaGuide now
+            Start your journey with GitaSpeaks now
           </p>
           
           {/* Decorative Divider */}
@@ -73,10 +73,10 @@ export default function CTASection() {
           <div>
             <h3 className="text-2xl font-serif text-gray-700 mb-4">CONTACT US</h3>
             <a
-              href="mailto:reach@gitaguide.ai"
+              href="mailto:reach@gitaspeaks.com"
               className="text-gray-600 hover:text-gray-900 transition-colors"
             >
-              reach@gitaguide.ai
+              reach@gitaspeaks.com
             </a>
           </div>
 

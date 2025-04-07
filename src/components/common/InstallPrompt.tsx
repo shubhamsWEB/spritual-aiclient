@@ -84,7 +84,7 @@ export default function InstallPrompt() {
     <div className="fixed bottom-4 left-0 right-0 mx-auto w-11/12 max-w-md bg-white rounded-lg shadow-lg z-50 p-4 border border-amber-200 animate-fadeIn">
       <div className="flex items-start">
         <div className="flex-1">
-          <h3 className="text-lg font-serif text-[#973B00]">Install Gita Guide</h3>
+          <h3 className="text-lg font-serif text-[#973B00]">Install Gita Speaks</h3>
           <p className="text-sm text-gray-600 mt-1">
             Install this app on your device for quick access to divine wisdom anytime, even offline.
           </p>

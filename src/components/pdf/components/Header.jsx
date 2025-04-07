@@ -13,7 +13,7 @@ const Header = ({
     <header className="bg-amber-50 text-white p-4 shadow-md sticky top-0 z-10">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
         <Link href="/">
-          <h1 className="text-2xl font-bold mb-4 md:mb-0 text-[#973B00] logo-font">GITA GUIDE</h1>
+          <h1 className="text-2xl font-bold mb-4 md:mb-0 text-[#973B00] logo-font">GITA SPEAKS</h1>
         </Link>
         <div className="flex w-full md:w-auto">
           <input
