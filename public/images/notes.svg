@@ -1,9 +1,10 @@
 <svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
     <!-- Musical Notes -->
-    <g fill="black" font-size="24" font-family="Arial" font-weight="bold">
+    <g fill="black" font-size="16" font-family="Arial" font-weight="bold">
         <text x="250" y="200" class="note note1">♪♪</text>
         <text x="250" y="200" class="note note2">♫♫</text>
         <text x="250" y="200" class="note note3">♬♬</text>
+
     </g>
     
     <style>
@@ -23,7 +24,7 @@
             100% { transform: translate(-40px, -130px); opacity: 0; }
         }
         .note {
-            animation-duration: 4s;
+            animation-duration: 3.5s;
             animation-timing-function: ease-out;
             animation-iteration-count: infinite;
             opacity: 0;
@@ -33,11 +34,11 @@
         }
         .note2 {
             animation-name: floatUp2;
-            animation-delay: 1.5s;
+            animation-delay: 1.1s;
         }
         .note3 {
             animation-name: floatUp3;
-            animation-delay: 3s;
+            animation-delay: 2.5s;
         }
     </style>
 </svg>

@@ -71,7 +71,14 @@ export default function Header() {
             )}
           </svg>
         </button>
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center">
+        <Image 
+            src="/logo.png" 
+            alt="Gita Speaks Logo" 
+            width={40} 
+            height={40} 
+            className="w-10 h-10 sm:w-12 sm:h-12 mt-2"
+          />
           <span className="text-lg sm:text-2xl font-serif text-[#973B00] logo-font">GITA SPEAKS</span>
         </Link>
         

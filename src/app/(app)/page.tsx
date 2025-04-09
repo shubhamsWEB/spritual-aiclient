@@ -16,17 +16,17 @@ export default function Home() {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="w-full md:w-1/2 flex justify-center">
             <div className="relative w-[280px] h-[400px] md:w-[400px] md:h-[600px]">
-              <div className="absolute top-0 left-0 right-0 h-[260px] md:h-[400px]">
+              <div className="absolute top-[10%] left-0 right-0 h-[260px] md:h-[400px]">
                 <Image
-                  src="/images/krishna-flute.svg"
+                  src="/images/homepage.png"
                   alt="Krishna Playing Flute"
                   fill
-                  className="object-contain"
+                  className="object-contain scale-150"
                   priority
                 />
               </div>
               {isPlaying && (
-                <div className="absolute top-[-5%] left-[-60%] right-0 h-[260px] md:h-[400px] w-[100%] pointer-events-none">
+                <div className="absolute top-[-11%] left-[-59%] right-0 h-[260px] md:h-[400px] w-[100%] pointer-events-none">
                   <Image
                     src="/images/notes.svg"
                   alt="Musical Notes"
