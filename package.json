@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate-icons": "pwa-asset-generator public/logo.png public/icons --background '#fff9e6' --padding '15%'"
+    "generate-icons": "pwa-asset-generator public/logo.png public/icons --background '#fff9e6' --padding '15%' --splash-only --icon-only --maskable --type png"
   },
   "dependencies": {
     "@vercel/analytics": "^1.5.0",

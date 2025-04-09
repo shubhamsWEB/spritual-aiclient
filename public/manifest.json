@@ -16,7 +16,32 @@
     {
       "src": "/icons/manifest-icon-512.maskable.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/android-splash-640-480.png",
+      "sizes": "640x480",
+      "type": "image/png",
+      "purpose": "splash"
+    },
+    {
+      "src": "/icons/android-splash-750-1334.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "purpose": "splash"
+    },
+    {
+      "src": "/icons/android-splash-1242-2208.png",
+      "sizes": "1242x2208",
+      "type": "image/png",
+      "purpose": "splash"
+    },
+    {
+      "src": "/icons/android-splash-1125-2436.png",
+      "sizes": "1125x2436",
+      "type": "image/png",
+      "purpose": "splash"
     }
   ]
 } 
