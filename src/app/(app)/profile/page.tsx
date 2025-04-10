@@ -21,9 +21,9 @@ export default function ProfilePage() {
     return (
       <div className="min-h-screen bg-amber-50 flex items-center justify-center">
         <div className="flex flex-col items-center">
-          <div className="relative w-20 h-20 animate-pulse">
+          <div className="relative w-32 h-32 animate-pulse">
             <Image
-              src="/images/peacock-feather.svg"
+              src="/logo.png"
               alt="Loading"
               fill
               className="object-contain"
@@ -46,7 +46,7 @@ export default function ProfilePage() {
           <div className="mb-8 flex justify-center">
             <div className="relative w-24 h-24">
               <Image
-                src="/images/peacock-feather.svg"
+                src="/logo.png"
                 alt="Peacock Feather"
                 fill
                 className="object-contain peacock-feather"

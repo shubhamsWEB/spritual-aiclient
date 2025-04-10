@@ -9,10 +9,10 @@ interface EmptyConversationProps {
 export default function EmptyConversation({ onNewChat }: EmptyConversationProps) {
   return (
     <div className="flex flex-col items-center justify-center h-full p-4 text-center">
-      <div className="relative w-24 h-24 mb-6">
+      <div className="relative w-40 h-40">
         <Image
-          src="/images/peacock-feather.svg"
-          alt="Peacock Feather"
+          src="/logo.png"
+          alt="Gita Speaks Logo"
           fill
           className="object-contain opacity-50"
         />

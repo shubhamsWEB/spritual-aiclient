@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
     config.resolve.alias.encoding = false;
     return config;
   },
+  images: {
+    domains: ['randomuser.me', 'images.unsplash.com'],
+  },
 };
 
 const pwaConfig = withPWA({

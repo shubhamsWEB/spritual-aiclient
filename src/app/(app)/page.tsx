@@ -6,7 +6,10 @@ import HowItWorksSection from '@/components/home/HowItWorksSection';
 import TestimonialsSection from '@/components/home/TestimonialsSection';
 import CTASection from '@/components/home/CTASection';
 import FeatureSection from '@/components/home/FeatureSection';
+import FAQSection from '@/components/home/FAQSection';
+import PricingSection from '@/components/home/PricingSection';
 import ChatNowButton from '@/components/common/ChatNowButton';
+
 export default function Home() {
   const [isPlaying, setIsPlaying] = React.useState(false);
   return (
@@ -36,7 +39,7 @@ export default function Home() {
                 />
               </div>
               )}
-              <div className="absolute top-[200px] md:top-[330px] left-0 right-0 h-[180px] md:h-[250px]">
+              <div className="absolute top-[200px] md:top-[330px] left-0 right-0 h-[150px] md:h-[250px]">
                 <Image
                   src="/images/peacock-feather.svg"
                   alt="Peacock Feathers"
@@ -79,7 +82,9 @@ export default function Home() {
       </main>
       <HowItWorksSection />
       <FeatureSection />
-      {/* <TestimonialsSection /> */}
+      <PricingSection />
+      <TestimonialsSection />
+      <FAQSection />
       <CTASection />
     </div>
   );

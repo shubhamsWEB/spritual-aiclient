@@ -25,6 +25,7 @@ export default function ConversationsSidebar({
   } = useConversations();
   
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   // Handle conversation selection
   const handleSelectConversation = (id: string) => {
@@ -40,10 +41,12 @@ export default function ConversationsSidebar({
   // Handle delete confirmation
   const handleConfirmDelete = async (e: React.MouseEvent, id: string) => {
     e.stopPropagation(); // Prevent conversation selection
+    setDeletingId(id);
     const success = await deleteConversation(id);
     if (success) {
       setShowDeleteConfirm(null);
     }
+    setDeletingId(null);
   };
 
   // Cancel delete operation
@@ -126,13 +129,19 @@ export default function ConversationsSidebar({
                             onClick={(e) => handleConfirmDelete(e, conversation.id)}
                             className="p-1 text-red-500 rounded hover:bg-red-50"
                             aria-label="Confirm delete"
+                            disabled={deletingId === conversation.id}
                           >
-                            ✓
+                            {deletingId === conversation.id ? (
+                              <div className="w-4 h-4 border-2 border-red-500 border-t-transparent rounded-full animate-spin"></div>
+                            ) : (
+                              "✓"
+                            )}
                           </button>
                           <button 
                             onClick={handleCancelDelete}
                             className="p-1 text-gray-500 rounded hover:bg-gray-100"
                             aria-label="Cancel delete"
+                            disabled={deletingId === conversation.id}
                           >
                             ✗
                           </button>

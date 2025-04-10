@@ -1,24 +1,42 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import ChatNowButton from '../common/ChatNowButton';
 
 const testimonials = [
   {
-    name: "Jamie Folsom",
-    image: "/images/testimonials/jamie.jpg",
-    text: "I was going through a tough time in my career, and GitaSpeaks's AI gave me exactly the perspective I needed. It was calm, wise, and eerily accurate.",
+    name: "Emma Rodriguez",
+    image: "https://randomuser.me/api/portraits/women/32.jpg",
+    text: "During a difficult career transition, GitaSpeaks provided me with the clarity I needed. The wisdom from the Gita helped me understand my purpose and make decisions with confidence.",
     rating: 5
   },
   {
-    name: "Ryan Hughes",
-    image: "/images/testimonials/ryan.jpg",
-    text: "The AI replied with something from the Gita that touched me deeply. It helped me let go of guilt and take a step forward.",
+    name: "Michael Chen",
+    image: "https://randomuser.me/api/portraits/men/54.jpg",
+    text: "I've been studying the Bhagavad Gita for years, but GitaSpeaks helped me apply its teachings to my daily challenges. The AI found verses that perfectly addressed my situation about letting go of attachment to results.",
     rating: 5
   },
   {
-    name: "Anthony Garrett",
-    image: "/images/testimonials/anthony.jpg",
-    text: "She starts her day asking a question and feels like she's received Krishna's blessings. It's become part of her morning prayer routine.",
+    name: "David Wilson",
+    image: "https://randomuser.me/api/portraits/men/76.jpg",
+    text: "As someone new to Hindu philosophy, I was amazed at how accessible GitaSpeaks made the Gita's wisdom. It's become an invaluable guide during my spiritual journey, especially when dealing with life's challenges.",
+    rating: 4.5
+  },
+  {
+    name: "Sarah Johnson",
+    image: "https://randomuser.me/api/portraits/women/45.jpg",
+    text: "I start each morning with a question for GitaSpeaks. The insights have transformed how I approach challenges at work and home. It's like having a spiritual mentor available whenever I need guidance.",
+    rating: 5
+  },
+  {
+    name: "James Thompson",
+    image: "https://randomuser.me/api/portraits/men/22.jpg",
+    text: "When I was struggling with grief, GitaSpeaks shared teachings on the eternal nature of the soul. It brought me immense peace during a difficult time and helped me process my emotions.",
+    rating: 5
+  },
+  {
+    name: "Olivia Martinez",
+    image: "https://randomuser.me/api/portraits/women/68.jpg",
+    text: "GitaSpeaks has deepened my understanding of selfless action. I've incorporated the Gita's teachings into my daily meditation practice, and it's helped me maintain balance while running my business.",
     rating: 5
   }
 ];
@@ -26,7 +44,7 @@ const testimonials = [
 const StarRating = ({ rating }: { rating: number }) => {
   return (
     <div className="flex gap-1">
-      {[...Array(rating)].map((_, i) => (
+      {[...Array(Math.floor(rating))].map((_, i) => (
         <svg
           key={i}
           className="w-6 h-6 text-amber-500"
@@ -41,6 +59,68 @@ const StarRating = ({ rating }: { rating: number }) => {
 };
 
 export default function TestimonialsSection() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+  
+  // Detect if we're on mobile
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    // Check initially
+    checkIfMobile();
+    
+    // Add resize listener
+    window.addEventListener('resize', checkIfMobile);
+    
+    // Clean up
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
+  
+  // Auto-advance the carousel
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+    
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => {
+        const maxIndex = isMobile 
+          ? testimonials.length - 1 
+          : Math.max(0, testimonials.length - 3);
+        return prevIndex >= maxIndex ? 0 : prevIndex + 1;
+      });
+    }, 5000); // Change slide every 5 seconds
+    
+    return () => clearInterval(interval);
+  }, [isAutoPlaying, isMobile]);
+  
+  const goToSlide = (index: number) => {
+    setCurrentIndex(index);
+    setIsAutoPlaying(false); // Pause auto-play when manually navigating
+  };
+  
+  const goToPrevious = () => {
+    if (isMobile) {
+      const newIndex = currentIndex === 0 ? testimonials.length - 1 : currentIndex - 1;
+      goToSlide(newIndex);
+    } else {
+      const newIndex = currentIndex === 0 ? Math.max(0, testimonials.length - 3) : currentIndex - 1;
+      goToSlide(newIndex);
+    }
+  };
+  
+  const goToNext = () => {
+    if (isMobile) {
+      const newIndex = currentIndex >= testimonials.length - 1 ? 0 : currentIndex + 1;
+      goToSlide(newIndex);
+    } else {
+      const maxIndex = Math.max(0, testimonials.length - 3);
+      const newIndex = currentIndex >= maxIndex ? 0 : currentIndex + 1;
+      goToSlide(newIndex);
+    }
+  };
+
   return (
     <section className="py-10 bg-amber-50">
       <div className="container mx-auto px-4">
@@ -48,37 +128,99 @@ export default function TestimonialsSection() {
           Testimonials
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {testimonials.map((testimonial, index) => (
-            <div
-              key={index}
-              className="flex flex-col items-center text-center space-y-4"
+        <div className="relative max-w-6xl mx-auto">
+          {/* Carousel container */}
+          <div className="overflow-hidden">
+            <div 
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{ 
+                transform: `translateX(-${currentIndex * (isMobile ? 100 : 100/3)}%)` 
+              }}
             >
-              {/* Image Container */}
-              <div className="w-32 h-32 rounded-lg overflow-hidden mb-4">
-                <Image
-                  src={testimonial.image}
-                  alt={testimonial.name}
-                  width={128}
-                  height={128}
-                  className="object-cover w-full h-full"
-                />
-              </div>
+              {testimonials.map((testimonial, index) => (
+                <div
+                  key={index}
+                  className="w-full md:w-1/3 flex-shrink-0 flex flex-col items-center text-center space-y-4 px-4"
+                >
+                  {/* Image Container */}
+                  <div className="w-24 h-24 md:w-32 md:h-32 rounded-lg overflow-hidden mb-4">
+                    <Image
+                      src={testimonial.image}
+                      alt={testimonial.name}
+                      width={128}
+                      height={128}
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
 
-              {/* Name */}
-              <h3 className="text-2xl font-serif text-gray-700">
-                {testimonial.name}
-              </h3>
+                  {/* Name */}
+                  <h3 className="text-xl md:text-2xl font-serif text-gray-700">
+                    {testimonial.name}
+                  </h3>
 
-              {/* Testimonial Text */}
-              <p className="text-gray-600 leading-relaxed max-w-sm">
-                {testimonial.text}
-              </p>
+                  {/* Testimonial Text */}
+                  <p className="text-gray-600 leading-relaxed max-w-sm">
+                    {testimonial.text}
+                  </p>
 
-              {/* Star Rating */}
-              <StarRating rating={testimonial.rating} />
+                  {/* Star Rating */}
+                  <StarRating rating={testimonial.rating} />
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+          
+          {/* Navigation arrows */}
+          <button 
+            onClick={goToPrevious}
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 md:-translate-x-6 bg-white/80 rounded-full p-1.5 shadow-sm hover:bg-white transition-colors duration-200"
+            aria-label="Previous testimonial"
+          >
+            <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          
+          <button 
+            onClick={goToNext}
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 md:translate-x-6 bg-white/80 rounded-full p-1.5 shadow-sm hover:bg-white transition-colors duration-200"
+            aria-label="Next testimonial"
+          >
+            <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+          
+          {/* Indicator dots */}
+          <div className="flex justify-center mt-8 space-x-2">
+            {/* For mobile: show one dot per testimonial */}
+            <div className="flex md:hidden space-x-2">
+              {testimonials.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => goToSlide(index)}
+                  className={`w-3 h-3 rounded-full ${
+                    index === currentIndex ? 'bg-amber-500' : 'bg-gray-300'
+                  }`}
+                  aria-label={`Go to testimonial ${index + 1}`}
+                />
+              ))}
+            </div>
+            
+            {/* For desktop: show dots for groups of 3 */}
+            <div className="hidden md:flex space-x-2">
+              {Array.from({ length: Math.ceil(testimonials.length / 3) }).map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => goToSlide(index * 3)}
+                  className={`w-3 h-3 rounded-full ${
+                    currentIndex >= index * 3 && currentIndex < (index + 1) * 3 ? 'bg-amber-500' : 'bg-gray-300'
+                  }`}
+                  aria-label={`Go to testimonial group ${index + 1}`}
+                />
+              ))}
+            </div>
+          </div>
         </div>
         
         {/* Call to action with ChatNowButton */}

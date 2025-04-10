@@ -191,22 +191,45 @@ export default function ChatPage() {
                 {/* Scrollable Messages Container */}
                 <div 
                   ref={chatContainerRef}
-                  className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-2 sm:space-y-4 bg-gradient-to-b from-amber-50/50 to-white"
+                  className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-2 sm:space-y-4 relative"
+                  style={{
+                    backgroundColor: "rgba(255, 255, 255, 0.92)"
+                  }}
                 >
-                  {messages.map((msg) => (
-                    <ChatMessage key={msg.id} message={msg} />
-                  ))}
+                  {/* Background image container */}
+                  <div 
+                    className="absolute inset-0 pointer-events-none z-0 flex items-center justify-center"
+                    style={{
+                      overflow: "hidden"
+                    }}
+                  >
+                    <img 
+                      src="/images/peacock-feather.svg" 
+                      alt="" 
+                      className="w-1/4 opacity-15"
+                      style={{
+                        objectFit: "contain"
+                      }}
+                    />
+                  </div>
+                  
+                  {/* Chat messages with higher z-index */}
+                  <div className="relative z-10">
+                    {messages.map((msg) => (
+                      <ChatMessage key={msg.id} message={msg} />
+                    ))}
 
-                  {isLoading && <TypingIndicator />}
-                  {isLoadingMessages && messages.length === 0 && (
-                    <div className="flex justify-center my-8">
-                      <div className="flex items-center space-x-2 bg-amber-50 px-4 py-2 rounded-lg shadow-sm">
-                        <div className="w-5 h-5 border-2 border-amber-600 border-t-transparent rounded-full animate-spin"></div>
-                        <p className="text-amber-800">Loading messages...</p>
+                    {isLoading && <TypingIndicator />}
+                    {isLoadingMessages && messages.length === 0 && (
+                      <div className="flex justify-center my-8">
+                        <div className="flex items-center space-x-2 bg-amber-50 px-4 py-2 rounded-lg shadow-sm">
+                          <div className="w-5 h-5 border-2 border-amber-600 border-t-transparent rounded-full animate-spin"></div>
+                          <p className="text-amber-800">Loading messages...</p>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                  <div ref={messagesEndRef} />
+                    )}
+                    <div ref={messagesEndRef} />
+                  </div>
                 </div>
                 
                 {/* Fixed Input Area */}
@@ -221,15 +244,6 @@ export default function ChatPage() {
             ) : (
               <>
                 <EmptyConversation onNewChat={handleNewChat} />
-                {/* Show input box even when no conversation is selected */}
-                {/* <div className="flex-shrink-0 w-full bg-white border-t border-amber-100">
-                  <ChatInput
-                    onSendMessage={handleSendMessage}
-                    isLoading={isLoading}
-                    isDisabled={(showLoginPrompt && !isAuthenticated) || isLoadingMessages}
-                    placeholder="Type your first message to start a conversation..."
-                  />
-                </div> */}
               </>
             )}
           </div>
