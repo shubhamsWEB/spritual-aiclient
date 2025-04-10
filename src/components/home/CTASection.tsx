@@ -73,10 +73,10 @@ export default function CTASection() {
           <div>
             <h3 className="text-2xl font-serif text-gray-700 mb-4">CONTACT US</h3>
             <a
-              href="mailto:reach@gitaspeaks.com"
+              href="mailto:contact@gitaspeaks.com"
               className="text-gray-600 hover:text-gray-900 transition-colors"
             >
-              reach@gitaspeaks.com
+              contact@gitaspeaks.com
             </a>
           </div>
 

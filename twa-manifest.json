@@ -1,0 +1,43 @@
+{
+  "packageId": "com.gitaspeaks.pwa",
+  "host": "www.gitaspeaks.com",
+  "name": "Bhagavad Gita Spiritual Guide",
+  "launcherName": "Gita Speaks",
+  "display": "standalone",
+  "themeColor": "#973B00",
+  "themeColorDark": "#000000",
+  "navigationColor": "#000000",
+  "navigationColorDark": "#000000",
+  "navigationDividerColor": "#000000",
+  "navigationDividerColorDark": "#000000",
+  "backgroundColor": "#FFF9E6",
+  "enableNotifications": true,
+  "startUrl": "/?source=pwa",
+  "iconUrl": "https://www.gitaspeaks.com/icons/manifest-icon-512.maskable.png",
+  "maskableIconUrl": "https://www.gitaspeaks.com/icons/manifest-icon-512.maskable.png",
+  "splashScreenFadeOutDuration": 3000,
+  "signingKey": {
+    "path": "/Users/shubamagrawal/Documents/spritual-aiclient/android.keystore",
+    "alias": "android"
+  },
+  "appVersionName": "3",
+  "appVersionCode": 3,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://www.gitaspeaks.com/manifest.json",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://www.gitaspeaks.com/",
+  "minSdkVersion": 21,
+  "orientation": "default",
+  "fingerprints": [],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": [],
+  "appVersion": "3"
+}

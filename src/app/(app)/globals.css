@@ -111,4 +111,101 @@ section {
   max-width: 100vw;
   overflow-x: hidden;
 }
+.flying-bird-ltr, .flying-bird-rtl {
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+/* Smooth bird flying left to right */
+@keyframes fly-bird {
+  0%   { transform: translateX(-120vw) translateY(15vh) scale(0.6) rotate(5deg); }
+  20%  { transform: translateX(-80vw) translateY(10vh) scale(0.65) rotate(-3deg); }
+  40%  { transform: translateX(-40vw) translateY(18vh) scale(0.7) rotate(6deg); }
+  60%  { transform: translateX(0vw)    translateY(8vh)  scale(0.75) rotate(-5deg); }
+  80%  { transform: translateX(60vw)   translateY(20vh) scale(0.7) rotate(4deg); }
+  100% { transform: translateX(120vw)  translateY(12vh) scale(0.6) rotate(2deg); }
+}
+
+/* Smooth bird flying right to left */
+@keyframes fly-bird-rtl {
+  0%   { transform: translateX(120vw) translateY(15vh) scale(0.6) rotate(-5deg); }
+  20%  { transform: translateX(80vw)  translateY(10vh) scale(0.65) rotate(3deg); }
+  40%  { transform: translateX(40vw)  translateY(18vh) scale(0.7) rotate(-6deg); }
+  60%  { transform: translateX(0vw)   translateY(8vh)  scale(0.75) rotate(5deg); }
+  80%  { transform: translateX(-60vw) translateY(20vh) scale(0.7) rotate(-4deg); }
+  100% { transform: translateX(-120vw)translateY(12vh) scale(0.6) rotate(-2deg); }
+}
+.bird {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  background: url('/images/flying-bird.svg') no-repeat center/contain;
+  animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1); /* ease-in-out */
+  will-change: transform;
+}
+
+.fly-ltr {
+  animation: fly-bird 20s linear infinite;
+}
+
+.fly-rtl {
+  animation: fly-bird-rtl 22s linear infinite;
+}
+
+
+.flying-bird-ltr {
+  animation: fly-bird 20s linear infinite;
+  position: absolute;
+  z-index: 10;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+}
+
+.flying-bird-rtl {
+  animation: fly-bird-rtl 20s linear infinite;
+  position: absolute;
+  z-index: 10;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+}
+
+.flying-bird {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1); /* ease-in-out */
+  will-change: transform;
+
+}
+
+.flying-bird-delayed {
+  animation: fly-bird 25s linear 5s infinite;
+  transform-origin: center center;
+}
+
+.flying-bird-small {
+  animation-duration: 15s;
+  animation-delay: 2s;
+  transform: scale(0.6);
+}
+
+.flying-bird-large {
+  animation-duration: 25s;
+  animation-delay: 5s;
+  transform-origin: center center;
+}
+
+.flying-bird-random {
+  animation-duration: 22s;
+}
 

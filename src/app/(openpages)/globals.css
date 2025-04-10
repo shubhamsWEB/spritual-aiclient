@@ -12,6 +12,7 @@
   --font-serif: 'Playfair Display', serif;
 }
 
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

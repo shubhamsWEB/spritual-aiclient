@@ -9,13 +9,20 @@ import FeatureSection from '@/components/home/FeatureSection';
 import FAQSection from '@/components/home/FAQSection';
 import PricingSection from '@/components/home/PricingSection';
 import ChatNowButton from '@/components/common/ChatNowButton';
-
+import FlyingBirds from '@/components/animations/FlyingBirds';
 export default function Home() {
   const [isPlaying, setIsPlaying] = React.useState(false);
   return (
     <div className="min-h-screen bg-amber-50 overflow-x-hidden">
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8 md:py-12 overflow-hidden">
+        {/* Flying Birds */}
+        {isPlaying && (
+          <div className="relative w-full h-0">
+            <FlyingBirds count={4} />
+          </div>
+        )}
+        
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="w-full md:w-1/2 flex justify-center">
             <div className="relative w-[280px] h-[400px] md:w-[400px] md:h-[600px]">
