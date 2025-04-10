@@ -86,10 +86,18 @@ export default function CTASection() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/"
+                  href="/privacy-policy"
                   className="text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/terms-and-conditions"
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  Terms and Conditions
                 </Link>
               </li>
               {/* <li>

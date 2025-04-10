@@ -7,7 +7,7 @@ export default function PrivacyPolicy() {
       <Header />
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <h1 className="text-3xl font-bold mb-6 text-[#973B00]">Privacy Policy – GitaSpeaks</h1>
-        <p className="text-sm text-muted-foreground mb-8 text-gray-600">Effective Date: 10th April, 2025</p>
+        <p className="text-sm text-muted-foreground mb-8 text-gray-600"><strong>Effective Date: 10th April, 2025</strong></p>
         
       <p className="mb-6 text-gray-600">
         GitaSpeaks is committed to protecting your personal information and your right to privacy. 

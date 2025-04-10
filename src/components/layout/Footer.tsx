@@ -8,11 +8,11 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-4 md:mb-0 flex items-center">
             <Image 
-              src={'/logo.png'} 
+              src={'/logo.svg'} 
               alt="Gita Speaks Logo" 
               width={60} 
               height={60}
-              className="mr-3"
+              className="mr-3 rounded-full"
             />
             <div>
               <span className="text-lg font-serif logo-font">GITA SPEAKS</span>
