@@ -13,9 +13,9 @@ import ChatNowButton from '@/components/common/ChatNowButton';
 export default function Home() {
   const [isPlaying, setIsPlaying] = React.useState(false);
   return (
-    <div className="min-h-screen bg-amber-50">
+    <div className="min-h-screen bg-amber-50 overflow-x-hidden">
       {/* Main Content */}
-      <main className="container mx-auto px-4 py-8 md:py-12">
+      <main className="container mx-auto px-4 py-8 md:py-12 overflow-hidden">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="w-full md:w-1/2 flex justify-center">
             <div className="relative w-[280px] h-[400px] md:w-[400px] md:h-[600px]">
@@ -32,12 +32,12 @@ export default function Home() {
                 <div className="absolute top-[-11%] left-[-59%] right-0 h-[260px] md:h-[400px] w-[100%] pointer-events-none">
                   <Image
                     src="/images/notes.svg"
-                  alt="Musical Notes"
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              </div>
+                    alt="Musical Notes"
+                    fill
+                    className="object-contain"
+                    priority
+                  />
+                </div>
               )}
               <div className="absolute top-[200px] md:top-[330px] left-0 right-0 h-[150px] md:h-[250px]">
                 <Image

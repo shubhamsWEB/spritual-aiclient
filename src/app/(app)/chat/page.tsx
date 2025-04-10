@@ -193,7 +193,8 @@ export default function ChatPage() {
                   ref={chatContainerRef}
                   className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-2 sm:space-y-4 relative"
                   style={{
-                    backgroundColor: "rgba(255, 255, 255, 0.92)"
+                    backgroundColor: "rgba(255, 255, 255, 0.92)",
+                    position: "relative"
                   }}
                 >
                   {/* Background image container */}
@@ -208,7 +209,11 @@ export default function ChatPage() {
                       alt="" 
                       className="w-1/4 opacity-15"
                       style={{
-                        objectFit: "contain"
+                        objectFit: "contain",
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)"
                       }}
                     />
                   </div>
