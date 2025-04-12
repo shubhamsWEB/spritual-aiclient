@@ -76,12 +76,12 @@ function LoginContent() {
       <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-4 border border-amber-100">
         <div className="text-center mb-4">
           <div className="flex justify-center">
-            <div className="relative w-20 h-20">
+            <div className="relative w-24 h-24 sm:w-32 sm:h-32">
               <Image
-                src="/images/peacock-feather.svg"
+                src="/logo.png"
                 alt="Peacock Feather"
                 fill
-                className="object-contain peacock-feather"
+                className="object-contain"
               />
             </div>
           </div>

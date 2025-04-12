@@ -14,14 +14,14 @@ export default function Home() {
   const [isPlaying, setIsPlaying] = React.useState(false);
   return (
     <div className="min-h-screen bg-amber-50 overflow-x-hidden">
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-8 md:py-12 overflow-hidden">
         {/* Flying Birds */}
         {isPlaying && (
           <div className="relative w-full h-0">
-            <FlyingBirds count={4} />
+            <FlyingBirds count={5} />
           </div>
         )}
+      {/* Main Content */}
+      <main className="container mx-auto px-4 py-8 md:py-12 overflow-hidden">
         
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="w-full md:w-1/2 flex justify-center">
@@ -46,7 +46,7 @@ export default function Home() {
                   />
                 </div>
               )}
-              <div className="absolute top-[200px] md:top-[330px] left-0 right-0 h-[150px] md:h-[250px]">
+              <div className="absolute top-[240px] sm:top-[380px] left-0 right-0 h-[80px] sm:h-[120px]">
                 <Image
                   src="/images/peacock-feather.svg"
                   alt="Peacock Feathers"
