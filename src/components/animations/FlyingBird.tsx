@@ -77,7 +77,7 @@ export default function FlyingBird({
         }}
       >
         <Image
-          src="/images/flying-bird.svg"
+          src="/images/flying-bird-multi-wing.svg"
           alt="Flying Bird"
           width={size === 'small' ? 40 : (size === 'large' ? 80 : 60)}
           height={size === 'small' ? 30 : (size === 'large' ? 60 : 45)}

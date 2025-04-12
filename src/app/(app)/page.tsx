@@ -17,7 +17,7 @@ export default function Home() {
         {/* Flying Birds */}
         {isPlaying && (
           <div className="relative w-full h-0">
-            <FlyingBirds count={5} />
+            <FlyingBirds count={4} enableSound={isPlaying}/>
           </div>
         )}
       {/* Main Content */}

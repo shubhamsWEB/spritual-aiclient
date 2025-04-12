@@ -98,7 +98,7 @@ export default function RegisterPage() {
 
   return (
     <div className="bg-amber-50 flex items-center justify-center p-4 m-auto">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-4 border border-amber-100">
+      <div className="max-w-md my-18 w-full bg-white rounded-lg shadow-xl p-4 border border-amber-100">
         <div className="text-center mb-4">
           <div className="flex justify-center">
             <div className="relative w-24 h-24 sm:w-32 sm:h-32">
