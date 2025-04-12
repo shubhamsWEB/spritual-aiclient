@@ -25,7 +25,7 @@ export default function Home() {
         
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="w-full md:w-1/2 flex justify-center">
-            <div className="relative w-[280px] h-[400px] md:w-[400px] md:h-[600px]">
+            <div className="relative w-[280px] h-[320px] md:w-[400px] md:h-[600px]">
               <div className="absolute top-[10%] left-0 right-0 h-[260px] md:h-[400px]">
                 <Image
                   src="/images/homepage.png"
