@@ -77,7 +77,7 @@ export default function Header() {
             alt="Gita Speaks Logo" 
             width={40} 
             height={40} 
-            className="w-10 h-10"
+            className="w-8 h-8 sm:w-10 sm:h-10"
           />
           <span className="text-lg sm:text-2xl font-serif text-[#973B00] logo-font">GITA SPEAKS</span>
         </Link>
