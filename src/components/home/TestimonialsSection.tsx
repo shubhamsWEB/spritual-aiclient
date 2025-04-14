@@ -4,13 +4,13 @@ import ChatNowButton from '../common/ChatNowButton';
 
 const testimonials = [
   {
-    name: "Priyanka Gupta",
+    name: "Meenakshi Sharma",
     image: "/images/testimonials/1.jpeg",
     text: "During a difficult career transition, Gita Speaks provided me with the clarity I needed. The wisdom from the Gita helped me understand my purpose and make decisions with confidence.",
     rating: 5
   },
   {
-    name: "Meenakshi Sharma",
+    name: "Priyanka Gupta",
     image: "/images/testimonials/2.png",
     text: "I've been studying the Bhagavad Gita for years, but Gita Speaks helped me apply its teachings to my daily challenges. The AI found verses that perfectly addressed my situation and give me comfort during difficult times",
     rating: 5
@@ -137,13 +137,13 @@ export default function TestimonialsSection() {
                   className="w-full md:w-1/3 flex-shrink-0 flex flex-col items-center text-center space-y-4 px-4"
                 >
                   {/* Image Container */}
-                  <div className="w-24 h-24 md:w-32 md:h-32 rounded-lg overflow-hidden mb-4">
+                  <div className="w-24 h-24 md:w-32 md:h-32 rounded-lg overflow-hidden mb-4 flex items-center justify-center">
                     <Image
                       src={testimonial.image}
                       alt={testimonial.name}
                       width={128}
                       height={128}
-                      className="object-cover w-full h-full"
+                      className="w-full h-full object-cover"
                     />
                   </div>
 

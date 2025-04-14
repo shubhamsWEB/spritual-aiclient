@@ -21,6 +21,7 @@ const pricingPlans = [
   {
     name: "Devotee",
     price: "₹199",
+    strickoff: "₹399",
     period: "per month",
     description: "Deepen your spiritual practice with comprehensive Gita teachings.",
     features: [
@@ -78,7 +79,7 @@ export default function PricingSection() {
               <div className={`p-6 ${plan.highlighted ? 'bg-[#973B00] text-white' : 'bg-amber-100 text-gray-800'}`}>
                 <h3 className="text-2xl font-serif mb-2">{plan.name}</h3>
                 <div className="flex items-baseline">
-                  <span className="text-3xl font-bold">{plan.price}</span>
+                  <span className="text-3xl font-bold">{plan.strickoff && <span className="line-through text-[#999999] text-md">{plan.strickoff}</span>} {plan.price}</span>
                   <span className="ml-1 text-sm opacity-80">/{plan.period}</span>
                 </div>
               </div>
