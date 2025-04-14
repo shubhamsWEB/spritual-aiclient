@@ -126,7 +126,7 @@ export default function ContactPage() {
               
               <div className="flex gap-4">
                 <a
-                  href="/"
+                  href="https://www.instagram.com/gitaspeaks_ai/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-amber-100 p-3 rounded-full hover:bg-amber-200 transition-colors"
@@ -139,7 +139,7 @@ export default function ContactPage() {
                   />
                 </a>
                 <a
-                  href="/"
+                  href="https://www.facebook.com/GitaSpeaksAI/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-amber-100 p-3 rounded-full hover:bg-amber-200 transition-colors"
@@ -152,7 +152,7 @@ export default function ContactPage() {
                   />
                 </a>
                 <a
-                  href="/"
+                  href="https://x.com/gitaspeaks_ai"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-amber-100 p-3 rounded-full hover:bg-amber-200 transition-colors"
