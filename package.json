@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "postbuild": "next-sitemap",
     "generate-icons": "pwa-asset-generator public/logo.png public/icons --background '#fff9e6' --padding '15%' --splash-only --icon-only --maskable --type png"
   },
   "dependencies": {
@@ -16,6 +17,7 @@
     "date-fns": "^4.1.0",
     "next": "15.2.4",
     "next-pwa": "^5.6.0",
+    "next-sitemap": "^4.2.3",
     "pdfjs-dist": "^5.1.91",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

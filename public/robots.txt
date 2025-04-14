@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.gitaspeaks.com
+
+# Sitemaps
+Sitemap: https://www.gitaspeaks.com/sitemap.xml
