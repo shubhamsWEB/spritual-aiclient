@@ -12,7 +12,7 @@ export default function Footer() {
               alt="Gita Speaks Logo" 
               width={60} 
               height={60}
-              className="mr-3 rounded-full"
+              className="mr-3 rounded-lg"
             />
             <div>
               <span className="text-lg font-serif logo-font">GITA SPEAKS</span>

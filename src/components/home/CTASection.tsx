@@ -6,17 +6,17 @@ const socialLinks = [
   {
     name: 'Instagram',
     icon: '/images/social/instagram.svg',
-    url: '/'
+    url: 'https://www.instagram.com/gitaspeaks_ai/'
   },
   {
     name: 'Facebook',
     icon: '/images/social/facebook.svg',
-    url: '/'
+    url: 'https://www.facebook.com/GitaSpeaksAI/'
   },
   {
     name: 'X (Twitter)',
     icon: '/images/social/x.svg',
-    url: '/'
+    url: 'https://x.com/gitaspeaks_ai'
   }
 ];
 

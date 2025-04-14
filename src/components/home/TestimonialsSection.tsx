@@ -4,41 +4,35 @@ import ChatNowButton from '../common/ChatNowButton';
 
 const testimonials = [
   {
-    name: "Emma Rodriguez",
-    image: "https://randomuser.me/api/portraits/women/32.jpg",
-    text: "During a difficult career transition, GitaSpeaks provided me with the clarity I needed. The wisdom from the Gita helped me understand my purpose and make decisions with confidence.",
+    name: "Priyanka Gupta",
+    image: "/images/testimonials/1.jpeg",
+    text: "During a difficult career transition, Gita Speaks provided me with the clarity I needed. The wisdom from the Gita helped me understand my purpose and make decisions with confidence.",
     rating: 5
   },
   {
-    name: "Michael Chen",
-    image: "https://randomuser.me/api/portraits/men/54.jpg",
-    text: "I've been studying the Bhagavad Gita for years, but GitaSpeaks helped me apply its teachings to my daily challenges. The AI found verses that perfectly addressed my situation about letting go of attachment to results.",
+    name: "Meenakshi Sharma",
+    image: "/images/testimonials/2.png",
+    text: "I've been studying the Bhagavad Gita for years, but Gita Speaks helped me apply its teachings to my daily challenges. The AI found verses that perfectly addressed my situation and give me comfort during difficult times",
     rating: 5
   },
   {
-    name: "David Wilson",
-    image: "https://randomuser.me/api/portraits/men/76.jpg",
-    text: "As someone new to Hindu philosophy, I was amazed at how accessible GitaSpeaks made the Gita's wisdom. It's become an invaluable guide during my spiritual journey, especially when dealing with life's challenges.",
-    rating: 4.5
-  },
-  {
-    name: "Sarah Johnson",
-    image: "https://randomuser.me/api/portraits/women/45.jpg",
-    text: "I start each morning with a question for GitaSpeaks. The insights have transformed how I approach challenges at work and home. It's like having a spiritual mentor available whenever I need guidance.",
+    name: "Rajan Devnath",
+    image: "/images/testimonials/3.jpg",
+    text: "GitaSpeaks has deepened my understanding of selfless action. I've incorporated the Gita's teachings into my daily meditation practice, and it's helped me maintain balance while running my business.",
     rating: 5
   },
   {
-    name: "James Thompson",
-    image: "https://randomuser.me/api/portraits/men/22.jpg",
+    name: "Sandhya Thakur",
+    image: "/images/testimonials/4.png",
     text: "When I was struggling with grief, GitaSpeaks shared teachings on the eternal nature of the soul. It brought me immense peace during a difficult time and helped me process my emotions.",
     rating: 5
   },
   {
-    name: "Olivia Martinez",
-    image: "https://randomuser.me/api/portraits/women/68.jpg",
-    text: "GitaSpeaks has deepened my understanding of selfless action. I've incorporated the Gita's teachings into my daily meditation practice, and it's helped me maintain balance while running my business.",
-    rating: 5
-  }
+    name: "Vasudeva Das",
+    image: "/images/testimonials/5.jpg",
+    text: "I start each morning with a question for GitaSpeaks. The insights have transformed how I approach challenges at work and home. It's like having a spiritual mentor available whenever I need guidance.",
+    rating: 4.5
+  },
 ];
 
 const StarRating = ({ rating }: { rating: number }) => {
