@@ -104,7 +104,6 @@ export function useChat() {
       }
       
       const response = await sendChatMessage(messageText, conversationId, headers);
-      console.log("🚀 ~ sendMessage ~ response:", response);
       
       if (!response.success) {
         throw new Error(response.error?.message || 'Unknown error occurred');

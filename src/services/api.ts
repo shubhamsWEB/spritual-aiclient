@@ -30,10 +30,8 @@ export const sendChatMessage = async (
         ...headers
       }
     });
-    console.log("🚀 ~ sendChatMessage ~ response:", response);
     return handleApiResponse(response);
   } catch (error) {
-    console.log("🚀 ~ sendChatMessage ~ error:", error);
     console.error('Error sending message:', error);
     handleApiError(error);
   }
@@ -56,7 +54,6 @@ export const getConversations = async () => {
         'Authorization': `Bearer ${token}`
       }
     });
-    console.log("🚀 ~ getConversations ~ response:", response);
     return handleApiResponse(response);
   } catch (error) {
     console.error('Error getting conversations:', error);
@@ -158,7 +155,6 @@ export const deleteConversation = async (conversationId: string) => {
     });
     
     const data = await response.data;
-    console.log("🚀 ~ deleteConversation ~ data:", data);
     
     if (!data.success) {
       console.error('Error deleting conversation:', data);

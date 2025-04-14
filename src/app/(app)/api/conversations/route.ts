@@ -36,7 +36,6 @@ export async function GET(request: NextRequest) {
       `${process.env.NEXT_PUBLIC_API_URL}/api/v1/conversations`,
       { headers }
     );
-    console.log("🚀 ~ GET ~ response:", response);
     
     // Return the data from the external API to the client
     return NextResponse.json(response.data);
