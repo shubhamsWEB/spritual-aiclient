@@ -4,6 +4,7 @@ export interface ChatMessage {
   type: 'user' | 'bot' | 'system';
   sources?: any[];
   timestamp: number;
+  isNew?: boolean;
 }
 
 export interface Conversation {

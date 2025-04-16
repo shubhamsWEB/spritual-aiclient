@@ -6,7 +6,7 @@ import { getRandomWelcomeMessage } from '@/services/messages';
 import { useAuth } from '@/contexts/AuthContext';
 import { useConversations } from '@/contexts/ConversationsContext';
 import { getCookie } from '@/utils/cookies';
-
+import { splitMessageIntoParts } from '@/utils/messages';
 export function useChat() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -131,22 +131,6 @@ export function useChat() {
         }
       }
       
-      // Format source references
-      const sourceRefs: string[] = [];
-      if (response.data.sources && response.data.sources.length > 0) {
-        response.data.sources.forEach((source: any) => {
-          if (source.metadata && source.metadata.chapter) {
-            if (source.metadata.verse) {
-              sourceRefs.push(`Chapter ${source.metadata.chapter}, Verse ${source.metadata.verse}`);
-            } else {
-              sourceRefs.push(`Chapter ${source.metadata.chapter}`);
-            }
-          } else if (source.metadata && source.metadata.paragraph_id !== undefined) {
-            sourceRefs.push(`Paragraph ${source.metadata.paragraph_id}`);
-          }
-        });
-      }
-      
       // Update token usage
       if (response.data.metadata?.tokenUsage) {
         const tokensUsed = response.data.metadata.tokenUsage;
@@ -157,18 +141,39 @@ export function useChat() {
         }));
       }
       
-      // Create the AI message with the original sources structure
-      const aiMessage: ChatMessage = {
+      // Split the bot message into parts
+      const messageParts = splitMessageIntoParts(response.data.answer);
+     const responseConversationId = response.data.conversationId || conversationId;
+      
+      // Add the first part immediately
+      const firstPart: ChatMessage = {
         id: uuidv4(),
-        text: response.data.answer,
+        text: messageParts[0],
         type: 'bot',
         timestamp: Date.now(),
-        sources: response.data.sources // Keep the original sources structure
+        isNew: true,
+        sources: response.data.sources // Include sources with the first part
       };
       
-      // Use the conversation ID from the response
-      const responseConversationId = response.data.conversationId || conversationId;
-      addMessageToConversation(responseConversationId, aiMessage);
+      addMessageToConversation(responseConversationId, firstPart);
+      
+      // Add remaining parts with delay
+      if (messageParts.length > 1) {
+        for (let i = 1; i < messageParts.length; i++) {
+          setTimeout(() => {
+            const partMessage: ChatMessage = {
+              id: uuidv4(),
+              text: messageParts[i],
+              type: 'bot',
+              timestamp: Date.now(),
+              isNew: true,
+              sources: response.data.sources
+            };
+            
+            addMessageToConversation(responseConversationId, partMessage);
+          }, 1500 * i); // 1.5 second delay between parts
+        }
+      }
       
       // Update conversation title if it's a new conversation
       if (response.data.conversationId) {
@@ -176,7 +181,7 @@ export function useChat() {
         const title = messageText.split(' ').slice(0, 4).join(' ') + (messageText.split(' ').length > 4 ? '...' : '');
         updateConversation(response.data.conversationId, { title });
       }
-    } catch (err) {
+} catch (err) {
       console.error(err);
       setError(err instanceof Error ? err.message : 'An error occurred');
       
@@ -227,7 +232,7 @@ export function useChat() {
     setActiveConversationMessages([]);
     
     return conversationId;
-  }, [setCurrentConversationId, setActiveConversationMessages, addConversation, registerBackendConversation]);
+  }, [setCurrentConversationId, setActiveConversationMessages, addConversation]);
 
   return {
     messages,

@@ -5,7 +5,6 @@ import { Conversation } from '@/types';
 import { v4 as uuidv4 } from 'uuid';
 import { useAuth } from './AuthContext';
 import { getConversations, getConversationsMessages, deleteConversation as apiDeleteConversation } from '@/services/api';
-
 interface ConversationsContextType {
   conversations: Conversation[];
   currentConversationId: string | null;
