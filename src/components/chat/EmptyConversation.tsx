@@ -14,7 +14,7 @@ export default function EmptyConversation({ onNewChat }: EmptyConversationProps)
           src="/logo.png"
           alt="Gita Speaks Logo"
           fill
-          className="object-contain opacity-50"
+          className="object-contain"
         />
       </div>
       
@@ -28,7 +28,7 @@ export default function EmptyConversation({ onNewChat }: EmptyConversationProps)
       
       <button
         onClick={onNewChat}
-        className="flex items-center gap-2 bg-[#973B00] hover:bg-[#BA4D00] text-white py-3 px-6 rounded-lg transition-colors mb-4"
+        className="flex items-center gap-2 bg-[#973B00] hover:bg-[#BA4D00] text-white py-3 px-6 rounded-lg transition-colors mb-4 border border-[#973B00]"
       >
         <FiMessageSquare size={20} />
         <span>Start a New Conversation</span>

@@ -76,7 +76,7 @@ export default function ConversationsSidebar({
       <div className="flex-shrink-0 p-3 border-b border-amber-100">
         <button 
           onClick={onNewChat}
-          className="w-full flex items-center justify-center gap-2 bg-[#973B00] hover:bg-[#BA4D00] text-white py-2 px-4 rounded-lg transition-colors"
+          className="w-full flex items-center justify-center gap-2 bg-[#973B00] hover:bg-[#BA4D00] text-white py-2 px-4 rounded-lg transition-colors border border-[#973B00]"
         >
           <FiPlus size={18} />
           <span>New Chat</span>

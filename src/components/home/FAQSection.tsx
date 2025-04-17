@@ -58,7 +58,7 @@ export default function FAQSection() {
                 className="w-full text-left p-4 flex justify-between items-center focus:outline-none"
                 onClick={() => toggleFAQ(index)}
               >
-                <span className="text-lg font-serif text-gray-700">{faq.question}</span>
+                <span className="text-lg font-serif dark:text-gray-700 text-gray-700">{faq.question}</span>
                 {openIndex === index ? (
                   <FiChevronUp className="text-[#973B00]" />
                 ) : (
@@ -70,7 +70,7 @@ export default function FAQSection() {
                   openIndex === index ? 'max-h-96 pb-4' : 'max-h-0'
                 }`}
               >
-                <p className="text-gray-600">{faq.answer}</p>
+                <p className="dark:text-gray-300 text-gray-600">{faq.answer}</p>
               </div>
             </div>
           ))}
