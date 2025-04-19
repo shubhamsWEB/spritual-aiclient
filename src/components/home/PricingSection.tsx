@@ -58,10 +58,10 @@ export default function PricingSection() {
     <section className="py-16 bg-amber-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl sm:text-5xl font-serif dark:text-gray-700 mb-4">
+          <h2 className="text-4xl sm:text-5xl font-serif text-gray-700 mb-4">
             Choose Your Spiritual Path
           </h2>
-          <p className="text-xl dark:text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Select the offering that best supports your journey with the timeless wisdom of the Bhagavad Gita
           </p>
         </div>
