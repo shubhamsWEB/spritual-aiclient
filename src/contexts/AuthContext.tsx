@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { deleteCookie, getCookie, setCookie } from '@/utils/cookies';
 // Define types
+
 export interface User {
   id: string;
   email: string;
@@ -13,6 +14,14 @@ export interface User {
   profile: {
     full_name: string;
   }[];
+  subscription: {
+    plan: string;
+    status: string;
+    startDate: string;
+    endDate: string;
+    autoRenew: boolean;
+    hasActiveSubscription: boolean;
+  };
 }
 
 interface AuthContextType {

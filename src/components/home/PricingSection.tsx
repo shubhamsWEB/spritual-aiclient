@@ -1,8 +1,26 @@
+'use client'
 import React from 'react';
 import Link from 'next/link';
 import ChatNowButton from '../common/ChatNowButton';
+import PaymentButton from '../common/PaymentButton';
+import { useAuth } from '@/contexts/AuthContext';
+import { usePathname } from 'next/navigation';
 
-const pricingPlans = [
+interface PricingPlan {
+  name: string;
+  price: string;
+  period: string;
+  description: string;
+  features: string[];
+  buttonText: string;
+  buttonLink?: string;
+  amount?: number;
+  plan?: string;
+  strickoff?: string;
+  highlighted: boolean;
+}
+
+const pricingPlans: PricingPlan[] = [
   {
     name: "Free",
     price: "₹0",
@@ -32,7 +50,8 @@ const pricingPlans = [
       "Priority support"
     ],
     buttonText: "Become a Devotee",
-    buttonLink: "/auth/register",
+    amount: 199,
+    plan: "devotee",
     highlighted: true
   },
   {
@@ -48,12 +67,39 @@ const pricingPlans = [
       "Community access"
     ],
     buttonText: "Choose Guru",
-    buttonLink: "/auth/register",
+    amount: 1999,
+    plan: "guru",
     highlighted: false
   }
 ];
 
 export default function PricingSection() {
+  const { user } = useAuth();
+  const pathname = usePathname();
+  const isHomePage = pathname === '/';
+
+  // If user has an active subscription and we're on the home page, show thank you message
+  if (user?.subscription?.hasActiveSubscription && isHomePage) {
+    return (
+      <section className="py-16 bg-amber-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl sm:text-5xl font-serif text-gray-700 mb-4">
+              Thank You for Your Subscription
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              You are already subscribed to the {user.subscription.plan === 'devotee' ? 'Devotee' : 'Guru'} plan. 
+              Enjoy unlimited access to the wisdom of the Bhagavad Gita.
+            </p>
+          </div>
+          <div className="text-center">
+            <ChatNowButton />
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="py-16 bg-amber-50">
       <div className="container mx-auto px-4">
@@ -96,11 +142,9 @@ export default function PricingSection() {
                   ))}
                 </ul>
                 
-                {plan.highlighted ? (
-                  <ChatNowButton />
-                ) : (
+                {plan.name === "Free" ? (
                   <Link 
-                    href={plan.buttonLink}
+                    href={plan.buttonLink || '/'}
                     className={`block text-center py-2 px-4 rounded-full ${
                       plan.highlighted 
                         ? 'bg-[#973B00] dark:text-white hover:bg-[#BA4D00]' 
@@ -109,6 +153,17 @@ export default function PricingSection() {
                   >
                     {plan.buttonText}
                   </Link>
+                ) : (
+                  <PaymentButton
+                    amount={plan.amount || 0}
+                    plan={plan.plan || ''}
+                    buttonText={plan.buttonText}
+                    className={`block text-center py-2 px-4 rounded-full ${
+                      plan.highlighted 
+                        ? 'bg-[#973B00] dark:text-white hover:bg-[#BA4D00]' 
+                        : 'border border-[#973B00] dark:text-[#973B00] hover:bg-[#973B00] hover:text-white'
+                    } transition-colors`}
+                  />
                 )}
               </div>
               

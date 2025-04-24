@@ -43,7 +43,7 @@ export default function ProfilePage() {
             Your Spiritual Account
           </h1>
           
-          <div className="mb-8 flex justify-center">
+          {/* <div className="mb-8 flex justify-center">
             <div className="relative w-24 h-24">
               <Image
                 src="/logo.png"
@@ -52,7 +52,7 @@ export default function ProfilePage() {
                 className="object-contain peacock-feather"
               />
             </div>
-          </div>
+          </div> */}
           
           <UserProfile/>
           

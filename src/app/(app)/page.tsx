@@ -10,8 +10,12 @@ import FAQSection from '@/components/home/FAQSection';
 import PricingSection from '@/components/home/PricingSection';
 import ChatNowButton from '@/components/common/ChatNowButton';
 import FlyingBirds from '@/components/animations/FlyingBirds';
+import { useAuth } from '@/contexts/AuthContext';
+
 export default function Home() {
   const [isPlaying, setIsPlaying] = React.useState(false);
+  const { user } = useAuth();
+
   return (
     <div className="min-h-screen bg-amber-50 overflow-x-hidden">
         {/* Flying Birds */}
@@ -20,79 +24,79 @@ export default function Home() {
             <FlyingBirds count={4} enableSound={isPlaying}/>
           </div>
         )}
-      {/* Main Content */}
       <main className="container mx-auto px-4 py-8 md:py-12 overflow-hidden">
-        
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div className="w-full md:w-1/2 flex justify-center">
-            <div className="relative w-[280px] h-[320px] md:w-[400px] md:h-[600px]">
-              <div className="absolute top-[10%] left-0 right-0 h-[260px] md:h-[400px]">
-                <Image
-                  src="/images/homepage.png"
-                  alt="Krishna Playing Flute"
-                  fill
-                  className="object-contain scale-150"
-                  priority
-                />
-              </div>
-              {isPlaying && (
-                <div className="absolute top-[-11%] left-[-59%] right-0 h-[260px] md:h-[400px] w-[100%] pointer-events-none">
-                  <Image
-                    src="/images/notes.svg"
-                    alt="Musical Notes"
-                    fill
-                    className="object-contain"
-                    priority
-                  />
-                </div>
-              )}
-              <div className="absolute top-[240px] sm:top-[380px] left-0 right-0 h-[80px] sm:h-[120px]">
-                <Image
-                  src="/images/peacock-feather.svg"
-                  alt="Peacock Feathers"
-                  fill
-                  className="object-contain peacock-feather"
-                  priority
-                />
-              </div>
-            </div>
-          </div>
+         
+         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+           <div className="w-full md:w-1/2 flex justify-center">
+             <div className="relative w-[280px] h-[320px] md:w-[400px] md:h-[600px]">
+               <div className="absolute top-[10%] left-0 right-0 h-[260px] md:h-[400px]">
+                 <Image
+                   src="/images/homepage.png"
+                   alt="Krishna Playing Flute"
+                   fill
+                   className="object-contain scale-150"
+                   priority
+                 />
+               </div>
+               {isPlaying && (
+                 <div className="absolute top-[-11%] left-[-59%] right-0 h-[260px] md:h-[400px] w-[100%] pointer-events-none">
+                   <Image
+                     src="/images/notes.svg"
+                     alt="Musical Notes"
+                     fill
+                     className="object-contain"
+                     priority
+                   />
+                 </div>
+               )}
+               <div className="absolute top-[240px] sm:top-[380px] left-0 right-0 h-[80px] sm:h-[120px]">
+                 <Image
+                   src="/images/peacock-feather.svg"
+                   alt="Peacock Feathers"
+                   fill
+                   className="object-contain peacock-feather"
+                   priority
+                 />
+               </div>
+             </div>
+           </div>
 
-          <div className="w-full md:w-1/2 space-y-4 md:space-y-6 text-center md:text-left">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif text-gray-800">
-              Struggling with Life Problems?
-            </h1>
-            <h2 className="text-xl md:text-2xl lg:text-3xl text-gray-600">
-              <q>The Bhagavad Gita Has the Answers</q>
-            </h2>
-            
-            <div className="flex justify-center md:justify-start items-center gap-3">
-              <ChatNowButton />
-              <AudioPlayer audioSrc="/audio/flute.mp3" isPlaying={isPlaying} setIsPlaying={setIsPlaying} />
-            </div>
+           <div className="w-full md:w-1/2 space-y-4 md:space-y-6 text-center md:text-left">
+             <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif text-gray-800">
+               Struggling with Life Problems?
+             </h1>
+             <h2 className="text-xl md:text-2xl lg:text-3xl text-gray-600">
+               <q>The Bhagavad Gita Has the Answers</q>
+             </h2>
+             
+             <div className="flex justify-center md:justify-start items-center gap-3">
+               <ChatNowButton />
+               <AudioPlayer audioSrc="/audio/flute.mp3" isPlaying={isPlaying} setIsPlaying={setIsPlaying} />
+             </div>
 
-            <div className="space-y-3 md:space-y-4 mt-4 md:mt-8">
-              <h3 className="text-xl md:text-2xl text-gray-700">
-                Seek Wisdom from the AI-Powered Bhagvad Gita
-              </h3>
-              <p className="text-base md:text-lg text-gray-600 italic">
-                Now, with GitaSpeaks, you can experience that wisdom in a 
-                personal, accessible way.
-              </p>
-              <p className="text-base md:text-lg text-gray-600 italic">
-                Ask your questions. Share your challenges.<br className="hidden md:block" />
-                Clarity. Purpose. Peace — one message at a time.
-              </p>
-            </div>
-          </div>
-        </div>
-      </main>
-      <HowItWorksSection />
-      <FeatureSection />
-      <PricingSection />
-      <TestimonialsSection />
-      <FAQSection />
-      <CTASection />
+             <div className="space-y-3 md:space-y-4 mt-4 md:mt-8">
+               <h3 className="text-xl md:text-2xl text-gray-700">
+                 Seek Wisdom from the AI-Powered Bhagvad Gita
+               </h3>
+               <p className="text-base md:text-lg text-gray-600 italic">
+                 Now, with GitaSpeaks, you can experience that wisdom in a 
+                 personal, accessible way.
+               </p>
+               <p className="text-base md:text-lg text-gray-600 italic">
+                 Ask your questions. Share your challenges.<br className="hidden md:block" />
+                 Clarity. Purpose. Peace — one message at a time.
+               </p>
+             </div>
+           </div>
+         </div>
+       </main>
+       <HowItWorksSection />
+       <FeatureSection />
+       {/* Only show pricing section if user doesn't have an active subscription */}
+       {!user?.subscription?.hasActiveSubscription && <PricingSection />}
+       <TestimonialsSection />
+       <FAQSection />
+       <CTASection />
     </div>
   );
 }

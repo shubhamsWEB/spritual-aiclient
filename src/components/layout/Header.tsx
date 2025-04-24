@@ -102,6 +102,14 @@ export default function Header() {
                 START CHAT
               </Link>
             </li>
+            <li>
+              <Link 
+                href="/pricing" 
+                className="text-[#973B00] hover:text-[#BA4D00]"
+              >
+                PRICING
+              </Link>
+            </li>
             {isAuthenticated ? (
               <>
                 <li>
@@ -191,6 +199,15 @@ export default function Header() {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   START CHAT
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  href="/pricing" 
+                  className="text-[#973B00] hover:text-[#BA4D00] block py-3 border-b border-amber-100"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  PRICING
                 </Link>
               </li>
               {isAuthenticated ? (
