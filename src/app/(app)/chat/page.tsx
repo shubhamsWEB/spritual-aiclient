@@ -9,20 +9,30 @@ import ChatInput from '@/components/chat/ChatInput';
 import TypingIndicator from '@/components/chat/TypingIndicator';
 import ConversationsSidebar from '@/components/chat/ConversationsSidebar';
 import EmptyConversation from '@/components/chat/EmptyConversation';
+import PaywallModal from '@/components/chat/PaywallModal';
 import { useViewportHeight } from '@/hooks/useViewportHeight';
 import { FiArrowLeft, FiRefreshCw } from 'react-icons/fi';
 import styles from '@/components/chat/ConversationsSidebar.module.css';
+import { useRouter } from 'next/navigation';
 
 export default function ChatPage() {
   const { messages, isLoading, sendMessage, tokens, startNewChat } = useChat();
   const { isAuthenticated, user } = useAuth();
+  const router = useRouter();
   const { conversations, isLoadingMessages, fetchConversationMessages, setCurrentConversationId, currentConversationId } = useConversations();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const { viewportHeight, headerHeight } = useViewportHeight();
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [showPaywallModal, setShowPaywallModal] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [showConversationsOnMobile, setShowConversationsOnMobile] = useState(true);
+  const [freeChatCount, setFreeChatCount] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return parseInt(localStorage.getItem('freeChatCount') || '0', 10);
+    }
+    return 0;
+  });
 
   // Calculate available height (subtract header height and some padding)
   const chatContainerHeight = viewportHeight ? `${viewportHeight - headerHeight - 32}px` : '85vh';
@@ -37,7 +47,7 @@ export default function ChatPage() {
     }, 100);
 
     return () => clearTimeout(scrollTimer);
-  }, [messages, isLoading]); // Also trigger on isLoading changes to scroll when typing indicator appears
+  }, [messages, isLoading]);
 
   // Set a limit of free messages for non-authenticated users
   useEffect(() => {
@@ -45,6 +55,20 @@ export default function ChatPage() {
       setShowLoginPrompt(true);
     }
   }, [isAuthenticated]);
+
+  // Track free chat count
+  useEffect(() => {
+    if (isAuthenticated && messages.length > 0) {
+      const userMessages = messages.filter(msg => msg.type === 'user').length;
+      const newCount = Math.max(freeChatCount, userMessages);
+      setFreeChatCount(newCount);
+      localStorage.setItem('freeChatCount', newCount.toString());
+      
+      if (newCount >= 3) {
+        setShowPaywallModal(true);
+      }
+    }
+  }, [messages, isAuthenticated, freeChatCount]);
 
   // Function to refresh the current conversation messages
   const refreshConversation = useCallback(() => {
@@ -55,7 +79,12 @@ export default function ChatPage() {
 
   // Handle send message for authenticated and non-authenticated users
   const handleSendMessage = (message: string) => {
-    if (isAuthenticated || !showLoginPrompt) {
+    if (isAuthenticated && freeChatCount >= 3) {
+      setShowPaywallModal(true);
+      return;
+    }
+
+    if (isAuthenticated || (!showLoginPrompt && freeChatCount < 3)) {
       sendMessage(message);
       // On mobile, ensure we're showing the chat view after sending a message
       if (window.innerWidth < 768) {
@@ -191,7 +220,7 @@ export default function ChatPage() {
                 {/* Scrollable Messages Container */}
                 <div 
                   ref={chatContainerRef}
-                  className="flex-1 overflow-y-auto p-2 sm:p-4 space-y-2 sm:space-y-4 relative"
+                  className="flex-1 overflow-y-auto p-2"
                   style={{
                     backgroundColor: "rgba(255, 255, 255, 0.92)",
                     position: "relative"
@@ -242,7 +271,7 @@ export default function ChatPage() {
                   <ChatInput
                     onSendMessage={handleSendMessage}
                     isLoading={isLoading}
-                    isDisabled={(showLoginPrompt && !isAuthenticated) || isLoadingMessages}
+                    isDisabled={(showLoginPrompt && !isAuthenticated) || isLoadingMessages || (!isAuthenticated && freeChatCount >= 3)}
                   />
                 </div>
               </>
@@ -254,6 +283,17 @@ export default function ChatPage() {
           </div>
         </div>
       </div>
+
+      {/* Paywall Modal */}
+      <PaywallModal
+        isOpen={showPaywallModal}
+        onClose={() => setShowPaywallModal(false)}
+        onUpgrade={() => {
+          // TODO: Implement upgrade flow
+          router.push('/pricing');
+          setShowPaywallModal(false);
+        }}
+      />
     </div>
   );
 }
