@@ -9,23 +9,43 @@ type FAQItem = {
 const faqs: FAQItem[] = [
   {
     question: "What is GitaSpeaks?",
-    answer: "GitaSpeaks is an AI-powered spiritual guide that provides wisdom and guidance based on the teachings of the Bhagavad Gita. It helps you navigate life's challenges with insights from this ancient sacred text."
+    answer: "GitaSpeaks is an AI-powered spiritual companion that provides personalized guidance based on the timeless wisdom of the Bhagavad Gita. It combines advanced AI technology with ancient spiritual knowledge to help you find clarity, purpose, and answers to life's deepest questions."
   },
   {
     question: "How does GitaSpeaks work?",
-    answer: "Simply type your question or concern, and our AI, trained on the Bhagavad Gita, will respond with relevant wisdom and guidance. The responses include references to specific chapters and verses from the Gita."
+    answer: "GitaSpeaks uses advanced AI to understand your questions and concerns, then provides relevant guidance by drawing from the Bhagavad Gita's teachings. Each response is carefully crafted to include specific references to chapters and verses, making the wisdom both practical and authentic. You can ask questions about personal growth, dharma (duty), relationships, work-life balance, and spiritual development."
   },
   {
     question: "Is GitaSpeaks a substitute for professional advice?",
-    answer: "No, GitaSpeaks is not a substitute for professional mental health, medical, legal, or financial advice. While the wisdom of the Bhagavad Gita can provide spiritual guidance, please consult appropriate professionals for specific advice in these areas."
+    answer: "No, GitaSpeaks is designed for spiritual guidance and self-reflection, not as a replacement for professional services. While it offers valuable insights from the Bhagavad Gita, please consult qualified professionals for medical, mental health, legal, or financial advice. GitaSpeaks works best as a complementary tool for spiritual growth alongside other forms of support."
   },
   {
     question: "Do I need to know about the Bhagavad Gita to use GitaSpeaks?",
-    answer: "Not at all! GitaSpeaks is designed for everyone, whether you're familiar with the Bhagavad Gita or completely new to its teachings. Our AI explains concepts clearly and in accessible language."
+    answer: "Not at all! GitaSpeaks is designed for everyone, from beginners to advanced practitioners. Our AI explains complex spiritual concepts in simple, accessible language. Whether you're new to spirituality or well-versed in Vedic knowledge, GitaSpeaks adapts its responses to your level of understanding while maintaining the authenticity of the teachings."
   },
   {
-    question: "Can I read the original Bhagavad Gita text?",
-    answer: "Yes! GitaSpeaks provides access to the complete Bhagavad Gita text. You can explore the PDF version to read the original verses and deepen your understanding of the teachings."
+    question: "Can I access the original Bhagavad Gita text?",
+    answer: "Yes! GitaSpeaks provides access to the complete Bhagavad Gita text in multiple formats. You can read the original Sanskrit verses with English translations, explore detailed commentaries, and access chapter summaries. We also provide a downloadable PDF version for offline study."
+  },
+  {
+    question: "How accurate are the AI responses?",
+    answer: "GitaSpeaks' responses are based on careful analysis of the Bhagavad Gita's teachings and verified by spiritual experts. While AI generates the responses, the underlying knowledge comes directly from authentic scriptural sources. We regularly update and refine our AI model to ensure accuracy and adherence to traditional interpretations."
+  },
+  {
+    question: "Can I use GitaSpeaks for meditation and spiritual practices?",
+    answer: "Absolutely! GitaSpeaks can guide you through various spiritual practices mentioned in the Gita, including meditation techniques, mantra recitation, and devotional practices. It can provide personalized suggestions based on your spiritual inclination and experience level, helping you develop a consistent spiritual practice."
+  },
+  {
+    question: "Is my conversation with GitaSpeaks private?",
+    answer: "Yes, your privacy is important to us. All conversations with GitaSpeaks are private and confidential. While we may use anonymous data to improve our service, personal information is never shared with third parties. You can engage in open, honest spiritual discussions without concerns about privacy."
+  },
+  {
+    question: "How can I get the most out of GitaSpeaks?",
+    answer: "To maximize your experience with GitaSpeaks: 1) Ask specific questions rather than general ones, 2) Reflect on the responses and try to apply them in your daily life, 3) Use the verse references to dive deeper into the original text, 4) Maintain a regular practice of consulting the wisdom, and 5) Share your experiences with our community to enhance collective learning."
+  },
+  {
+    question: "What if I disagree with a response?",
+    answer: "The Bhagavad Gita encourages questioning and personal reflection. If you disagree with a response, you can ask for clarification, request alternative perspectives, or explore the original verses yourself. Remember that spiritual understanding is a personal journey, and GitaSpeaks is here to guide, not dictate."
   }
 ];
 
@@ -70,7 +90,7 @@ export default function FAQSection() {
                   openIndex === index ? 'max-h-96 pb-4' : 'max-h-0'
                 }`}
               >
-                <p className="dark:text-gray-300 text-gray-600">{faq.answer}</p>
+                <p className="dark:text-gray-600">{faq.answer}</p>
               </div>
             </div>
           ))}
