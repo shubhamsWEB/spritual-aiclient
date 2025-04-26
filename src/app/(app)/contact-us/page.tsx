@@ -12,22 +12,6 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
-      {/* Hero Section */}
-      {/* <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-[#973B00]/5 z-0"></div>
-        <div className="container mx-auto px-4 py-12 relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-serif text-[#973B00] mb-2">
-              Connect With Us
-            </h1>
-            <p className="text-lg text-gray-600">
-              We're here to help you on your spiritual journey. Whether you have questions,
-              need support, or want to share your experience, we'd love to hear from you.
-            </p>
-          </div>
-        </div>
-      </div> */}
-
       {/* Main Content */}
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
@@ -202,7 +186,7 @@ export default function ContactPage() {
               Check our FAQ section for answers to common questions about GitaSpeaks.
             </p>
             <Link
-              href="/#faq"
+              href="/faq"
               className="inline-block bg-[#973B00] hover:bg-[#BA4D00] text-white font-medium py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02]"
             >
               View FAQs
