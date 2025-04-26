@@ -10,7 +10,7 @@ const NAVIGATION_ITEMS = [
   { href: '/about-us', label: 'ABOUT US' },
   { href: '/chat', label: 'START CHAT' },
   { href: '/pricing', label: 'PRICING' },
-  { href: '/contact-us', label: 'CONTACT US' },
+  // { href: '/contact-us', label: 'CONTACT US' },
 ];
 
 export default function Header() {

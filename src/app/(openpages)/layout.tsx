@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import InstallPrompt from "@/components/common/InstallPrompt";
+import { CurrencyProvider } from "@/contexts/CurrencyContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -62,6 +63,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <CurrencyProvider>
           <div className="bg-amber-50 min-h-screen flex flex-col">
             <main className="flex-grow">
               {children}
@@ -70,6 +72,7 @@ export default function RootLayout({
           <InstallPrompt />
           <Analytics />
           <SpeedInsights />
+        </CurrencyProvider>
       </body>
     </html>
   );

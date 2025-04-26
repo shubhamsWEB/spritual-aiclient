@@ -1,12 +1,12 @@
 'use client'
 import React from 'react';
-import PricingSection from '@/components/home/PricingSection';
+import PricingWrapper from '@/components/home/PricingWrapper';
 
 
 export default function PricingPage() {
   return (
     <main>
-      <PricingSection />
+      <PricingWrapper />
     </main>
   );
 } 

@@ -7,7 +7,7 @@ import TestimonialsSection from '@/components/home/TestimonialsSection';
 import CTASection from '@/components/home/CTASection';
 import FeatureSection from '@/components/home/FeatureSection';
 import FAQSection from '@/components/home/FAQSection';
-import PricingSection from '@/components/home/PricingSection';
+import PricingWrapper from '@/components/home/PricingWrapper';
 import ChatNowButton from '@/components/common/ChatNowButton';
 import FlyingBirds from '@/components/animations/FlyingBirds';
 import { useAuth } from '@/contexts/AuthContext';
@@ -93,7 +93,7 @@ export default function Home() {
        <HowItWorksSection />
        <FeatureSection />
        {/* Only show pricing section if user doesn't have an active subscription */}
-       {!user?.subscription?.hasActiveSubscription && <PricingSection />}
+       {!user?.subscription?.hasActiveSubscription && <PricingWrapper />}
        <TestimonialsSection />
        <FAQSection />
        <CTASection />

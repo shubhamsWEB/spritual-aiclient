@@ -2,9 +2,11 @@ import React, { createContext, useContext, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from './AuthContext';
 
+type Currency = 'USD' | 'INR';
+
 interface PaymentContextType {
-  createOrder: (amount: number, plan: string) => Promise<{ success: boolean; orderId?: string; error?: string }>;
-  verifyPayment: (paymentId: string, orderId: string, signature: string) => Promise<{ success: boolean; error?: string }>;
+  createOrder: (amount: number, plan: string, currency?: Currency) => Promise<{ success: boolean; orderId?: string; error?: string }>;
+  verifyPayment: (paymentId: string, orderId: string, signature: string, currency?: Currency) => Promise<{ success: boolean; error?: string }>;
   isLoading: boolean;
 }
 
@@ -22,19 +24,21 @@ export function PaymentProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuth();
 
-  const createOrder = async (amount: number, plan: string) => {
+  const createOrder = async (amount: number, plan: string, currency: Currency = 'INR') => {
     try {
       setIsLoading(true);
       const response = await api.post('/api/payment/create-order', {
         amount,
         plan,
+        currency,
         userId: user?.id,
         email: user?.email,
         notes: {
           plan,
           name: user?.name,
           email: user?.email,
-          amount
+          amount,
+          currency
         }
       });
       console.log("🚀 ~ createOrder ~ response:", response);
@@ -60,13 +64,14 @@ export function PaymentProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const verifyPayment = async (paymentId: string, orderId: string, signature: string) => {
+  const verifyPayment = async (paymentId: string, orderId: string, signature: string, currency: Currency = 'INR') => {
     try {
       setIsLoading(true);
       const response = await api.post('/api/payment/verify', {
         paymentId,
         orderId,
         signature,
+        currency,
         userId: user?.id,
         email: user?.email
       });

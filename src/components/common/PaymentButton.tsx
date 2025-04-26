@@ -10,6 +10,7 @@ interface PaymentButtonProps {
   plan: string;
   buttonText: string;
   className?: string;
+  currency?: 'USD' | 'INR';
 }
 
 declare global {
@@ -18,7 +19,7 @@ declare global {
   }
 }
 
-export default function PaymentButton({ amount, plan, buttonText, className }: PaymentButtonProps) {
+export default function PaymentButton({ amount, plan, buttonText, className, currency = 'INR' }: PaymentButtonProps) {
   const { createOrder, verifyPayment, isLoading } = usePayment();
   const { isAuthenticated, user } = useAuth();
   const router = useRouter();
@@ -59,7 +60,6 @@ export default function PaymentButton({ amount, plan, buttonText, className }: P
       return;
     }
 
-    // Check if user already has an active subscription
     if (user?.subscription?.hasActiveSubscription) {
       setShowModal(true);
       return;
@@ -76,35 +76,31 @@ export default function PaymentButton({ amount, plan, buttonText, className }: P
     }
 
     try {
-      // Create order
       const orderAmount = amount * 100;
-      const orderResponse = await createOrder(orderAmount, plan);
+      const orderResponse = await createOrder(orderAmount, plan, currency);
       if (!orderResponse.success || !orderResponse.orderId) {
         throw new Error(orderResponse.error || 'Failed to create order');
       }
 
-      // Initialize Razorpay with additional options
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: orderAmount,
-        currency: 'INR',
+        currency: currency,
         name: 'GitaSpeaks',
         description: `Payment for ${plan} plan`,
         order_id: orderResponse.orderId,
         handler: async function (response: any) {
           try {
-            // Verify payment
             const verificationResponse = await verifyPayment(
               response.razorpay_payment_id,
               response.razorpay_order_id,
-              response.razorpay_signature
+              response.razorpay_signature,
+              currency
             );
 
             if (verificationResponse.success) {
-              // Payment successful
               router.push('/chat');
             } else {
-              // Payment verification failed
               throw new Error(verificationResponse.error || 'Payment verification failed');
             }
           } catch (error: any) {
@@ -128,23 +124,21 @@ export default function PaymentButton({ amount, plan, buttonText, className }: P
           display: {
             blocks: {
               banks: {
-                name: "Pay using UPI",
-                instruments: [
+                name: currency === 'INR' ? "Pay using UPI" : "Pay using Card",
+                instruments: currency === 'INR' ? [
                   {
                     method: "upi",
                     flows: ["collect"]
                   }
-                ]
+                ] : undefined
               }
             }
           }
         }
       };
 
-      // For localhost development, you can use test mode
       if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
         console.log('Running in development mode');
-        // You can add test-specific configurations here if needed
       }
 
       const razorpay = new window.Razorpay(options);

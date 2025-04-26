@@ -5,25 +5,26 @@ import ChatNowButton from '../common/ChatNowButton';
 import PaymentButton from '../common/PaymentButton';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePathname } from 'next/navigation';
+import { useCurrency } from '@/contexts/CurrencyContext';
+import CurrencyToggle from '../common/CurrencyToggle';
 
 interface PricingPlan {
   name: string;
-  price: string;
+  priceUSD: number;
   period: string;
   description: string;
   features: string[];
   buttonText: string;
   buttonLink?: string;
-  amount?: number;
   plan?: string;
-  strickoff?: string;
+  strickoffUSD?: number;
   highlighted: boolean;
 }
 
 const pricingPlans: PricingPlan[] = [
   {
     name: "Free",
-    price: "₹0",
+    priceUSD: 0,
     period: "forever",
     description: "Begin your spiritual journey with basic guidance from the Bhagavad Gita.",
     features: [
@@ -38,8 +39,8 @@ const pricingPlans: PricingPlan[] = [
   },
   {
     name: "Devotee",
-    price: "₹199",
-    strickoff: "₹399",
+    priceUSD: 4.99,
+    strickoffUSD: 9.99,
     period: "per month",
     description: "Deepen your spiritual practice with comprehensive Gita teachings.",
     features: [
@@ -50,13 +51,12 @@ const pricingPlans: PricingPlan[] = [
       "Priority support"
     ],
     buttonText: "Become a Devotee",
-    amount: 199,
     plan: "devotee",
     highlighted: true
   },
   {
     name: "Guru",
-    price: "₹1,999",
+    priceUSD: 49.99,
     period: "per year",
     description: "Full immersion in the divine wisdom for serious spiritual seekers.",
     features: [
@@ -67,7 +67,6 @@ const pricingPlans: PricingPlan[] = [
       "Community access"
     ],
     buttonText: "Choose Guru",
-    amount: 1999,
     plan: "guru",
     highlighted: false
   }
@@ -76,6 +75,7 @@ const pricingPlans: PricingPlan[] = [
 export default function PricingSection() {
   const { user } = useAuth();
   const pathname = usePathname();
+  const { formatPrice, currency } = useCurrency();
   const isHomePage = pathname === '/';
 
   // If user has an active subscription and we're on the home page, show thank you message
@@ -107,16 +107,19 @@ export default function PricingSection() {
           <h2 className="text-4xl sm:text-5xl font-serif text-gray-700 mb-4">
             Choose Your Spiritual Path
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
             Select the offering that best supports your journey with the timeless wisdom of the Bhagavad Gita
           </p>
+          <div className="flex justify-center">
+            <CurrencyToggle />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {pricingPlans.map((plan, index) => (
             <div 
               key={index}
-              className={`rounded-xl overflow-hidden shadow-lg transition-transform hover:scale-105 ${
+              className={`rounded-xl overflow-hidden shadow-lg transition-transform hover:scale-105 relative ${
                 plan.highlighted 
                   ? 'dark:bg-gradient-to-b from-amber-100 to-amber-50 border-2 border-[#973B00] transform scale-105 md:scale-110 z-10' 
                   : 'dark:bg-white'
@@ -125,7 +128,14 @@ export default function PricingSection() {
               <div className={`p-6 ${plan.highlighted ? 'dark:bg-[#973B00] dark:text-white' : 'dark:bg-amber-100 dark:text-gray-800'}`}>
                 <h3 className="text-2xl font-serif mb-2">{plan.name}</h3>
                 <div className="flex items-baseline">
-                  <span className="text-3xl font-bold">{plan.strickoff && <span className="line-through dark:text-[#999999] text-md">{plan.strickoff}</span>} {plan.price}</span>
+                  <span className="text-3xl font-bold">
+                    {plan.strickoffUSD && (
+                      <span className="line-through dark:text-[#999999] text-md mr-2">
+                        {formatPrice(plan.strickoffUSD)}
+                      </span>
+                    )}
+                    {formatPrice(plan.priceUSD)}
+                  </span>
                   <span className="ml-1 text-sm opacity-80">/{plan.period}</span>
                 </div>
               </div>
@@ -155,9 +165,10 @@ export default function PricingSection() {
                   </Link>
                 ) : (
                   <PaymentButton
-                    amount={plan.amount || 0}
+                    amount={currency === 'USD' ? plan.priceUSD : (plan.priceUSD === 4.99 ? 199 : 1999)}
                     plan={plan.plan || ''}
                     buttonText={plan.buttonText}
+                    currency={currency}
                     className={`block text-center py-2 px-4 rounded-full ${
                       plan.highlighted 
                         ? 'bg-[#973B00] dark:text-white hover:bg-[#BA4D00]' 

@@ -98,7 +98,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-            <Header />
+          <Header />
           <div className="bg-amber-50 min-h-screen max-w-screen flex flex-col overflow-x-hidden">
             <main className="w-full overflow-x-hidden">
               {children}
