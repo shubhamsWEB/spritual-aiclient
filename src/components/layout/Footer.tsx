@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Footer() {
   return (
@@ -22,7 +23,21 @@ export default function Footer() {
             </div>
           </div>
           
-          <div className="text-sm text-center md:text-right">
+          <div className="flex flex-col items-center md:items-end space-y-2">
+            <div className="flex flex-wrap justify-center md:justify-end gap-4 text-sm">
+              <Link href="/privacy-policy" className="hover:text-amber-200 transition-colors">
+                Privacy Policy
+              </Link>
+              <Link href="/terms-and-conditions" className="hover:text-amber-200 transition-colors">
+                Terms & Conditions
+              </Link>
+              <Link href="/refund-policy" className="hover:text-amber-200 transition-colors">
+                Refund Policy
+              </Link>
+              <Link href="/contact-us" className="hover:text-amber-200 transition-colors">
+                Contact Us
+              </Link>
+            </div>
             <p className="text-xs opacity-75 mt-1">
               © {new Date().getFullYear()} Spiritual Guidance Project
             </p>

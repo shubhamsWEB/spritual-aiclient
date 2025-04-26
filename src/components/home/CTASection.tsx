@@ -100,15 +100,15 @@ export default function CTASection() {
                   Terms and Conditions
                 </Link>
               </li>
-              {/* <li>
+              <li>
                 <Link
-                  href="/"
+                  href="/refund-policy"
                   className="text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   Refund Policy
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   href="/"
                   className="text-gray-600 hover:text-gray-900 transition-colors"

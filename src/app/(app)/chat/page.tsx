@@ -58,7 +58,7 @@ export default function ChatPage() {
 
   // Track free chat count
   useEffect(() => {
-    if (isAuthenticated && messages.length > 0) {
+    if (isAuthenticated && messages.length > 0 && !user?.subscription?.hasActiveSubscription) {
       const userMessages = messages.filter(msg => msg.type === 'user').length;
       const newCount = Math.max(freeChatCount, userMessages);
       setFreeChatCount(newCount);
@@ -79,12 +79,12 @@ export default function ChatPage() {
 
   // Handle send message for authenticated and non-authenticated users
   const handleSendMessage = (message: string) => {
-    if (isAuthenticated && freeChatCount >= 3) {
+    if (isAuthenticated && freeChatCount >= 3 && !user?.subscription?.hasActiveSubscription) {
       setShowPaywallModal(true);
       return;
     }
 
-    if (isAuthenticated || (!showLoginPrompt && freeChatCount < 3)) {
+    if (isAuthenticated || !showLoginPrompt) {
       sendMessage(message);
       // On mobile, ensure we're showing the chat view after sending a message
       if (window.innerWidth < 768) {
@@ -99,6 +99,10 @@ export default function ChatPage() {
 
   // Handle new chat creation
   const handleNewChat = () => {
+    if (isAuthenticated && freeChatCount >= 3 && !user?.subscription?.hasActiveSubscription) {
+      setShowPaywallModal(true);
+      return;
+    }
     const newConversationId = startNewChat();
     
     // On mobile, switch to chat view when creating a new chat
@@ -209,7 +213,7 @@ export default function ChatPage() {
 
             {/* Login Prompt (if needed) */}
             {!isAuthenticated && showLoginPrompt && (
-              <div className="flex-shrink-0 p-2 sm:p-4 bg-amber-50 text-amber-900">
+              <div className="flex-shrink-0 p-2 sm:p-4 bg-amber-50 text-amber-900 text-center">
                 <p>Please login to continue</p>
               </div>
             )}
@@ -271,7 +275,7 @@ export default function ChatPage() {
                   <ChatInput
                     onSendMessage={handleSendMessage}
                     isLoading={isLoading}
-                    isDisabled={(showLoginPrompt && !isAuthenticated) || isLoadingMessages || (!isAuthenticated && freeChatCount >= 3)}
+                    isDisabled={(showLoginPrompt && !isAuthenticated) || isLoadingMessages || (isAuthenticated && freeChatCount >= 3 && !user?.subscription?.hasActiveSubscription)}
                   />
                 </div>
               </>

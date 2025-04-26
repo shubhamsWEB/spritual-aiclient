@@ -1,7 +1,5 @@
 import React from 'react';
 import { Metadata } from 'next';
-import Header from '@/components/layout/SecondaryHeader';
-import Footer from '@/components/layout/Footer';
 
 export const metadata: Metadata = {
   title: 'Terms and Conditions – GitaSpeaks',
@@ -11,7 +9,6 @@ export const metadata: Metadata = {
 export default function TermsAndConditions() {
   return (
     <div>
-      <Header />
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <h1 className="text-3xl font-bold mb-6 text-[#973B00]">Terms and Conditions – GitaSpeaks</h1>
       <p className="mb-4 text-sm text-muted-foreground mb-8 text-gray-600"><strong>Effective Date: 10th April, 2025</strong></p>
@@ -80,7 +77,6 @@ export default function TermsAndConditions() {
         Email: <a href="mailto:contact@gitaspeaks.com" className="text-gray-600 hover:underline">contact@gitaspeaks.com</a>
       </p>
       </div>
-      <Footer />
     </div>
   );
 }
