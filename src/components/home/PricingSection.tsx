@@ -200,7 +200,7 @@ export default function PricingSection() {
             </Link>
             <span className="dark:text-gray-400">|</span>
             <Link 
-              href="/contact"
+              href="/contact-us"
               className="dark:text-[#973B00] hover:text-[#BA4D00] underline"
             >
               Contact us

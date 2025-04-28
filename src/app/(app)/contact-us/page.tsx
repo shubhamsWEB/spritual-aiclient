@@ -123,7 +123,7 @@ export default function ContactPage() {
                     <FiMap className="text-[#973B00]" size={20} />
                   </div>
                   <div>
-                    <h3 className="font-medium text-gray-800 mb-1">Main Office</h3>
+                    <h3 className="font-medium text-gray-800 mb-1">Main Address</h3>
                     <p className="text-gray-700">
                       Sopan Niket, Flat 3C, 14A, Raja Rammohan Roy Road,<br />
                       Behala Chowrasta, Kolkata - 700008
@@ -136,7 +136,7 @@ export default function ContactPage() {
                     <FiMap className="text-[#973B00]" size={20} />
                   </div>
                   <div>
-                    <h3 className="font-medium text-gray-800 mb-1">Alternate Office</h3>
+                    <h3 className="font-medium text-gray-800 mb-1">Alternate Address</h3>
                     <p className="text-gray-700">
                       40/4-1, Wellington Street,<br />
                       Richmond Town, Bengaluru - 560025
