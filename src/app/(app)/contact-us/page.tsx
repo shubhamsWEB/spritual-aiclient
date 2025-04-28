@@ -2,7 +2,7 @@ import React from 'react';
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FiMail, FiMessageCircle, FiSend, FiUser, FiHelpCircle } from 'react-icons/fi';
+import { FiMail, FiMessageCircle, FiSend, FiUser, FiHelpCircle, FiMap } from 'react-icons/fi';
 
 export const metadata: Metadata = {
   title: 'Contact Us – GitaSpeaks',
@@ -95,6 +95,16 @@ export default function ContactPage() {
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
                   <div className="bg-amber-100 p-3 rounded-full flex-shrink-0">
+                    <FiUser className="text-[#973B00]" size={20} />
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-gray-800 mb-1">Contact Person</h3>
+                    <p className="text-gray-700">Pritam Thakur</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-4">
+                  <div className="bg-amber-100 p-3 rounded-full flex-shrink-0">
                     <FiMail className="text-[#973B00]" size={20} />
                   </div>
                   <div>
@@ -105,6 +115,32 @@ export default function ContactPage() {
                     >
                       contact@gitaspeaks.com
                     </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="bg-amber-100 p-3 rounded-full flex-shrink-0">
+                    <FiMap className="text-[#973B00]" size={20} />
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-gray-800 mb-1">Main Office</h3>
+                    <p className="text-gray-700">
+                      Sopan Niket, Flat 3C, 14A, Raja Rammohan Roy Road,<br />
+                      Behala Chowrasta, Kolkata - 700008
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="bg-amber-100 p-3 rounded-full flex-shrink-0">
+                    <FiMap className="text-[#973B00]" size={20} />
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-gray-800 mb-1">Alternate Office</h3>
+                    <p className="text-gray-700">
+                      40/4-1, Wellington Street,<br />
+                      Richmond Town, Bengaluru - 560025
+                    </p>
                   </div>
                 </div>
 
