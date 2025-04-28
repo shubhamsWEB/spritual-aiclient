@@ -2,9 +2,8 @@
 import React from 'react';
 import Link from 'next/link';
 import ChatNowButton from '../common/ChatNowButton';
-import PaymentButton from '../common/PaymentButton';
 import { useAuth } from '@/contexts/AuthContext';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useCurrency } from '@/contexts/CurrencyContext';
 import CurrencyToggle from '../common/CurrencyToggle';
 
@@ -75,6 +74,7 @@ const pricingPlans: PricingPlan[] = [
 export default function PricingSection() {
   const { user } = useAuth();
   const pathname = usePathname();
+  const router = useRouter();
   const { formatPrice, currency } = useCurrency();
   const isHomePage = pathname === '/';
 
@@ -99,6 +99,15 @@ export default function PricingSection() {
       </section>
     );
   }
+
+  const handlePlanSelection = (plan: string, amount: number) => {
+    if (!user) {
+      router.push('/auth/login');
+      return;
+    }
+    
+    router.push(`/payment?plan=${plan}&amount=${amount}`);
+  };
 
   return (
     <section className="py-16 bg-amber-50">
@@ -164,17 +173,16 @@ export default function PricingSection() {
                     {plan.buttonText}
                   </Link>
                 ) : (
-                  <PaymentButton
-                    amount={currency === 'USD' ? plan.priceUSD : (plan.priceUSD === 4.99 ? 199 : 1999)}
-                    plan={plan.plan || ''}
-                    buttonText={plan.buttonText}
-                    currency={currency}
-                    className={`block text-center py-2 px-4 rounded-full ${
+                  <button
+                    onClick={() => handlePlanSelection(plan.plan || '', currency === 'USD' ? plan.priceUSD : (plan.priceUSD === 4.99 ? 199 : 1999))}
+                    className={`w-full text-center py-2 px-4 rounded-full ${
                       plan.highlighted 
                         ? 'bg-[#973B00] dark:text-white hover:bg-[#BA4D00]' 
                         : 'border border-[#973B00] dark:text-[#973B00] hover:bg-[#973B00] hover:text-white'
                     } transition-colors`}
-                  />
+                  >
+                    {plan.buttonText}
+                  </button>
                 )}
               </div>
               
