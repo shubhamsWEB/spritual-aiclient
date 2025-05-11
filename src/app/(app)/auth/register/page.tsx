@@ -12,6 +12,7 @@ export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [referralCode, setReferralCode] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -52,7 +53,7 @@ export default function RegisterPage() {
     try {
       setIsSubmitting(true);
       
-      const result = await register(email, password, name);
+      const result = await register(email, password, name, referralCode);
       
       if (result.success) {
         if (result.message) {
@@ -223,6 +224,20 @@ export default function RegisterPage() {
                 className="w-full p-3 border border-amber-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 text-[#973B00]"
                 placeholder="Confirm your password"
                 required
+              />
+            </div>
+
+            <div className="mb-6">
+              <label htmlFor="referralCode" className="block text-gray-700 text-sm font-medium mb-2">
+                Referral Code (Optional)
+              </label>
+              <input
+                type="text"
+                id="referralCode"
+                value={referralCode}
+                onChange={(e) => setReferralCode(e.target.value)}
+                className="w-full p-3 border border-amber-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 text-[#973B00]"
+                placeholder="Enter referral code if you have one"
               />
             </div>
 

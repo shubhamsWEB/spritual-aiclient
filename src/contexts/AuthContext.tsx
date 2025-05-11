@@ -22,6 +22,17 @@ export interface User {
     autoRenew: boolean;
     hasActiveSubscription: boolean;
   };
+  referral?: {
+    code: string;
+    count: number;
+    referrals: {
+      id: string;
+      referee_email: string;
+      referee_name: string;
+      status: string;
+      created_at: string;
+    }[];
+  };
 }
 
 interface AuthContextType {
@@ -29,7 +40,7 @@ interface AuthContextType {
   isLoading: boolean;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<{success: boolean, message?: string}>;
-  register: (email: string, password: string, name?: string) => Promise<{success: boolean, message?: string}>;
+  register: (email: string, password: string, name?: string, referralCode?: string) => Promise<{success: boolean, message?: string}>;
   logout: () => Promise<void>;
   checkAuth: () => Promise<boolean>;
   updateUserDetails: (user: User) => Promise<void>;
@@ -115,10 +126,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   // Register function
-  const register = async (email: string, password: string, name?: string): Promise<{success: boolean, message?: string}> => {
+  const register = async (email: string, password: string, name?: string, referralCode?: string): Promise<{success: boolean, message?: string}> => {
     try {
       setIsLoading(true);
-      const response = await axios.post('/api/auth/register', { email, password, name });
+      
+      // Create the request payload
+      const payload: any = { email, password };
+      
+      // Add name if provided
+      if (name) {
+        payload.name = name;
+      }
+      
+      // Add referral_code only if not empty
+      if (referralCode) {
+        payload.referral_code = referralCode;
+      }
+      
+      const response = await axios.post('/api/auth/register', payload);
       
       if (response.data.success) {
         // If email verification is required

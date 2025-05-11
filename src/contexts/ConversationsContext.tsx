@@ -5,6 +5,8 @@ import { Conversation } from '@/types';
 import { v4 as uuidv4 } from 'uuid';
 import { useAuth } from './AuthContext';
 import { getConversations, getConversationsMessages, deleteConversation as apiDeleteConversation } from '@/services/api';
+import { usePathname } from 'next/navigation';
+
 interface ConversationsContextType {
   conversations: Conversation[];
   currentConversationId: string | null;
@@ -31,26 +33,35 @@ export function ConversationsProvider({ children }: { children: React.ReactNode 
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
   const [activeConversationMessages, setActiveConversationMessages] = useState<any[]>([]);
   const { isAuthenticated } = useAuth();
+  const pathname = usePathname();
+  
+  const isChatPage = pathname?.startsWith('/chat');
 
-  // Fetch conversations when authenticated
+  // Fetch conversations only when authenticated AND on chat page
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && isChatPage) {
       fetchConversations();
     } else {
       setIsLoadingConversations(false);
-      setConversations([]);
-      setCurrentConversationId(null);
+      if (!isChatPage) {
+        // Clear conversation data if not on chat page
+        setConversations([]);
+        setCurrentConversationId(null);
+      }
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, isChatPage]);
 
-  // Fetch messages when a conversation is selected
+  // Fetch messages when a conversation is selected (only on chat page)
   useEffect(() => {
-    if (currentConversationId) {
+    if (currentConversationId && isChatPage) {
       fetchConversationMessages(currentConversationId);
     }
-  }, [currentConversationId]);
+  }, [currentConversationId, isChatPage]);
 
   const fetchConversations = async () => {
+    // Only fetch if on the chat page
+    if (!isChatPage) return;
+    
     try {
       setIsLoadingConversations(true);
       const response = await getConversations();
@@ -112,6 +123,9 @@ export function ConversationsProvider({ children }: { children: React.ReactNode 
   };
 
   const fetchConversationMessages = async (conversationId: string) => {
+    // Only fetch if on the chat page
+    if (!isChatPage) return;
+    
     try {
       setIsLoadingMessages(true);
       const response = await getConversationsMessages(conversationId);

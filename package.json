@@ -11,6 +11,7 @@
     "generate-icons": "pwa-asset-generator public/logo.png public/icons --background '#fff9e6' --padding '15%' --splash-only --icon-only --maskable --type png"
   },
   "dependencies": {
+    "@next/third-parties": "^15.3.2",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
     "axios": "^1.8.4",
