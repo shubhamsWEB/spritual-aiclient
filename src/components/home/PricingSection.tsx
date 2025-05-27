@@ -165,7 +165,7 @@ export default function PricingSection() {
                   </Link>
                 ) : (
                   <PaymentButton
-                    amount={currency === 'USD' ? plan.priceUSD : (plan.priceUSD === 4.99 ? 199 : 1999)}
+                    amount={currency === 'USD' ? plan.priceUSD : (plan.priceUSD === 4.99 ? 1 : 1999)}
                     plan={plan.plan || ''}
                     buttonText={plan.buttonText}
                     currency={currency}

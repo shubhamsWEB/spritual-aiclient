@@ -6,6 +6,9 @@ import Footer from "@/components/layout/Footer";
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import InstallPrompt from "@/components/common/InstallPrompt";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { LocationProvider } from "@/contexts/LocationContext";
+import { PaymentProvider } from "@/contexts/PaymentContext";
 import { CurrencyProvider } from "@/contexts/CurrencyContext";
 import { GoogleAnalytics } from '@next/third-parties/google';
 
@@ -64,17 +67,23 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <CurrencyProvider>
-          <div className="bg-amber-50 min-h-screen flex flex-col">
-            <main className="flex-grow">
-              {children}
-            </main>
-          </div>
-          <InstallPrompt />
-          <Analytics />
-          <SpeedInsights />
-          <GoogleAnalytics gaId="G-TLCDGNK42P" />
-        </CurrencyProvider>
+        <AuthProvider>
+          <LocationProvider>
+            <PaymentProvider>
+              <CurrencyProvider>
+                <div className="bg-amber-50 min-h-screen flex flex-col">
+                  <main className="flex-grow">
+                    {children}
+                  </main>
+                </div>
+                <InstallPrompt />
+                <Analytics />
+                <SpeedInsights />
+                <GoogleAnalytics gaId="G-TLCDGNK42P" />
+              </CurrencyProvider>
+            </PaymentProvider>
+          </LocationProvider>
+        </AuthProvider>
       </body>
     </html>
   );
