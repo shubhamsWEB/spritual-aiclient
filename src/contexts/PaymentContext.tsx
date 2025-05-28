@@ -1,13 +1,17 @@
+'use client'
 import React, { createContext, useContext, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from './AuthContext';
+import { useLocation } from './LocationContext';
 
 type Currency = 'USD' | 'INR';
+type PaymentGateway = 'payu' | 'razorpay';
 
 interface PaymentContextType {
   createOrder: (amount: number, plan: string, currency?: Currency) => Promise<{ success: boolean; orderId?: string; error?: string }>;
   verifyPayment: (paymentId: string, orderId: string, signature: string, currency?: Currency) => Promise<{ success: boolean; error?: string }>;
   isLoading: boolean;
+  paymentGateway: PaymentGateway | null;
 }
 
 const PaymentContext = createContext<PaymentContextType | undefined>(undefined);
@@ -23,16 +27,34 @@ const api = axios.create({
 export function PaymentProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuth();
+  const { isIndia } = useLocation();
+  
+  // Determine payment gateway based on location
+  const paymentGateway: PaymentGateway | null = isIndia === null 
+    ? null 
+    : isIndia ? 'payu' : 'razorpay';
 
   const createOrder = async (amount: number, plan: string, currency: Currency = 'INR') => {
     try {
       setIsLoading(true);
+      
+      // Use the location context to determine payment gateway
+      if (paymentGateway === null) {
+        return {
+          success: false,
+          error: 'Location detection is still in progress. Please try again.'
+        };
+      }
+      
+      console.log(`Creating order with ${paymentGateway} payment gateway for ${isIndia ? 'Indian' : 'non-Indian'} user`);
+      
       const response = await api.post('/api/payment/create-order', {
         amount,
         plan,
         currency,
         userId: user?.id,
         email: user?.email,
+        paymentGateway,
         notes: {
           plan,
           name: user?.name,
@@ -41,12 +63,12 @@ export function PaymentProvider({ children }: { children: React.ReactNode }) {
           currency
         }
       });
-      console.log("🚀 ~ createOrder ~ response:", response);
 
       if (response.data.success) {
         return {
           success: true,
-          orderId: response.data.orderId
+          orderId: response?.data?.orderId || response?.data?.paymentData?.txnid,
+          paymentData: response?.data?.paymentData || response?.data
         };
       } else {
         return {
@@ -67,13 +89,23 @@ export function PaymentProvider({ children }: { children: React.ReactNode }) {
   const verifyPayment = async (paymentId: string, orderId: string, signature: string, currency: Currency = 'INR') => {
     try {
       setIsLoading(true);
+      
+      // Use the location context to determine payment gateway
+      if (paymentGateway === null) {
+        return {
+          success: false,
+          error: 'Location detection is still in progress. Please try again.'
+        };
+      }
+      
       const response = await api.post('/api/payment/verify', {
         paymentId,
         orderId,
         signature,
         currency,
         userId: user?.id,
-        email: user?.email
+        email: user?.email,
+        paymentGateway
       });
 
       if (response.data.success) {
@@ -99,7 +131,8 @@ export function PaymentProvider({ children }: { children: React.ReactNode }) {
   const value = {
     createOrder,
     verifyPayment,
-    isLoading
+    isLoading,
+    paymentGateway
   };
 
   return <PaymentContext.Provider value={value}>{children}</PaymentContext.Provider>;

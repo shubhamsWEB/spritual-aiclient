@@ -23,7 +23,6 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
       try {
         const response = await fetch('https://ipapi.co/json/');
         const data = await response.json();
-        console.log("🚀 ~ detectUserLocation ~ data:", data);
         if (data.country === 'IN') {
           setCurrency('INR');
         }

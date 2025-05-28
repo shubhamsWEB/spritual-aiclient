@@ -8,7 +8,6 @@ export async function handleApiResponse(response: any) {
 
 export const handleApiError = (error: any) => {
     if (error.status === 401) {
-        console.log("🚀 ~ handleApiError ~ error:", error);
         deleteCookie('authToken');
         
         // Replace redirect with window.location for client-side navigation
