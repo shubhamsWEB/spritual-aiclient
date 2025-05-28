@@ -111,7 +111,7 @@ export default function PricingSection() {
             Select the offering that best supports your journey with the timeless wisdom of the Bhagavad Gita
           </p>
           <div className="flex justify-center">
-            <CurrencyToggle />
+            {/* <CurrencyToggle /> */}
           </div>
         </div>
 
