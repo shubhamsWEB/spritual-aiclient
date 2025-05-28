@@ -43,7 +43,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log(`Creating order with ${paymentGateway} gateway:`, { amount, currency, plan });
 
     // Generate a unique order ID
     const orderId = `txn_${Date.now()}${Math.floor(Math.random() * 10000)}`;
@@ -65,7 +64,6 @@ export async function POST(request: NextRequest) {
 
       try {
         const order = await razorpay.orders.create(options);
-        console.log("Created Razorpay order:", order);
 
         return NextResponse.json({
           success: true,
@@ -128,7 +126,6 @@ export async function POST(request: NextRequest) {
         // Add hash to payment data
         paymentData.hash = hash;
         
-        console.log("Created PayU order with data:", paymentData);
         
         return NextResponse.json({
           success: true,

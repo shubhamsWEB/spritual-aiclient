@@ -62,7 +62,6 @@ export function PaymentProvider({ children }: { children: React.ReactNode }) {
           currency
         }
       });
-      console.log("🚀 ~ createOrder ~ response:", response);
 
       if (response.data.success) {
         return {

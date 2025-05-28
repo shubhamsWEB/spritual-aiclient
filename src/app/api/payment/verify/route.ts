@@ -12,7 +12,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log(`Verifying ${paymentGateway} payment:`, { paymentId, orderId, status });
 
     if (paymentGateway === 'razorpay') {
       if (!signature) {
@@ -44,11 +43,7 @@ export async function POST(request: NextRequest) {
       try {
         // Here you would update your database to record the successful payment
         // This is just a placeholder for the actual implementation
-        console.log('Recording successful Razorpay payment:', {
-          paymentId,
-          orderId,
-          signature,
-        });
+     
 
         // Return success response
         return NextResponse.json({
@@ -68,7 +63,6 @@ export async function POST(request: NextRequest) {
       // For PayU, we verify the transaction status and payment ID
       try {
         // Log all the parameters for debugging
-        console.log('PayU verification details:', { paymentId, orderId, status, additionalParams });
         
         // Check if the status parameter is provided and is 'success'
         if (status && status.toLowerCase() !== 'success') {
@@ -84,11 +78,7 @@ export async function POST(request: NextRequest) {
         // 3. Check that the amount paid matches the expected amount
         
         // For now, we'll just assume the payment is valid if we have a payment ID and order ID
-        console.log('Recording successful PayU payment:', {
-          paymentId, // mihpayid from PayU
-          orderId,   // txnid from PayU
-          status
-        });
+      
         
         // Return success response
         return NextResponse.json({

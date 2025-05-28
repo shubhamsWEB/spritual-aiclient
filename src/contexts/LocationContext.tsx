@@ -37,7 +37,6 @@ export function LocationProvider({ children }: { children: React.ReactNode }) {
   // Detect location on initial load
   useEffect(() => {
     detectLocation();
-    console.log("🚀 ~ useEffect ~ detectLocation:");
   }, []);
 
   // Function to manually refresh location if needed

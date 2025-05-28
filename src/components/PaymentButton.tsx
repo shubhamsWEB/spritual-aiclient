@@ -54,10 +54,9 @@ export default function PaymentButton({
       }
       
       const gateway = isIndia ? 'PayU (India)' : 'Razorpay';
-      console.log(`Using ${gateway} as payment gateway`);
 
       // Create a payment order from the server
-      const orderResponse = await createPaymentOrder(100, 'INR', isIndia);
+      const orderResponse = await createPaymentOrder(amount, 'INR', isIndia);
       
       if (!orderResponse || !orderResponse.id) {
         throw new Error('Failed to create payment order');
@@ -70,7 +69,7 @@ export default function PaymentButton({
 
       // Initialize payment
       const paymentOptions: PaymentOptions = {
-        amount: 100,
+        amount: amount,
         currency: 'INR',
         name: productName,
         description,
@@ -79,13 +78,11 @@ export default function PaymentButton({
         contact,
         isIndia, // Pass the location information
         successCallback: (paymentId, orderId, signature) => {
-          console.log('Payment successful:', paymentId, orderId);
           if (onSuccess) {
             onSuccess({ paymentId, orderId, signature });
           }
         },
         failureCallback: (error) => {
-          console.error('Payment failed:', error);
           if (onFailure) {
             onFailure(error);
           }

@@ -22,13 +22,11 @@ export default function CheckoutPage() {
   };
 
   const handlePaymentSuccess = (data: any) => {
-    console.log('Payment successful:', data);
     // Navigate to a success page or order confirmation
     router.push('/payment/success?paymentId=' + data.paymentId + '&orderId=' + data.orderId);
   };
 
   const handlePaymentFailure = (error: any) => {
-    console.error('Payment failed:', error);
     // Navigate to a failure page
     router.push('/payment/failure?error=' + encodeURIComponent(error.message || 'Payment failed'));
   };
