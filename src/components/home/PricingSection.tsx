@@ -11,6 +11,7 @@ import CurrencyToggle from '../common/CurrencyToggle';
 interface PricingPlan {
   name: string;
   priceUSD: number;
+  priceINR: number;
   period: string;
   description: string;
   features: string[];
@@ -25,6 +26,7 @@ const pricingPlans: PricingPlan[] = [
   {
     name: "Free",
     priceUSD: 0,
+    priceINR: 0,
     period: "forever",
     description: "Begin your spiritual journey with basic guidance from the Bhagavad Gita.",
     features: [
@@ -40,6 +42,7 @@ const pricingPlans: PricingPlan[] = [
   {
     name: "Devotee",
     priceUSD: 4.99,
+    priceINR: 199,
     strickoffUSD: 9.99,
     period: "per month",
     description: "Deepen your spiritual practice with comprehensive Gita teachings.",
@@ -57,6 +60,7 @@ const pricingPlans: PricingPlan[] = [
   {
     name: "Guru",
     priceUSD: 49.99,
+    priceINR: 1999,
     period: "per year",
     description: "Full immersion in the divine wisdom for serious spiritual seekers.",
     features: [
@@ -165,10 +169,10 @@ export default function PricingSection() {
                   </Link>
                 ) : (
                   <PaymentButton
-                    amount={currency === 'USD' ? plan.priceUSD : (plan.priceUSD === 4.99 ? 199 : 1999)}
+                    amount={currency === 'USD' ? plan.priceUSD : plan.priceINR}
                     plan={plan.plan || ''}
                     buttonText={plan.buttonText}
-                    currency={currency}
+                    currency={currency || 'INR'}
                     className={`block text-center py-2 px-4 rounded-full ${
                       plan.highlighted 
                         ? 'bg-[#973B00] dark:text-white hover:bg-[#BA4D00]' 
